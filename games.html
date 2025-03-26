@@ -387,7 +387,7 @@
     if (gameNumber === '1') {
         setTimeout(() => {
             game1Content.style.display = 'block';
-            let text = "You have three questions to answer to solve the code. The first question is your unlock combination. The second and third questions are your locker numbers. Three lockers are up for grabs - but only two contain shields. You must remain together as a team at all times! No splitting up. No phone / laptop usage allowed once you leave your rooms. Click 'Next' once you are ready.";
+            let text = "You have three questions to answer to solve the code. The first question is your unlock combination. The second and third questions are your locker numbers. Three lockers are up for grabs - but only two contain shields. You must remain together as a team at all times! No splitting up, codes do not work without a full team present. No phone / laptop usage allowed once you leave your rooms. Click 'Next' once you are ready.";
             // Replace newlines with <p> tags
             let formattedText = text.split('. ').join('.</p><p>');
             formattedText = '<p>' + formattedText + '</p>'; // Add the first <p> and closing </p> tag
@@ -449,7 +449,7 @@ let isTyping = false; // Flag to track typing state
 
     prevIntroBtn.addEventListener('click', function() {
         if (isTyping) return; // Ignore click if typing
-        let text = "You have three questions to answer to solve the code. The first question is your combination. The second and third questions are your locker numbers. Three lockers are up for grabs - but only two contain shields. You must remain together as a team at all times! No splitting up. No phone / laptop usage allowed once you leave your rooms. Click 'Next' once you are ready.";
+        let text = "You have three questions to answer to solve the code. The first question is your combination. The second and third questions are your locker numbers. Three lockers are up for grabs - but only two contain shields. You must remain together as a team at all times! No splitting up, codes do not work without a full team present. No phone / laptop usage allowed once you leave your rooms. Click 'Next' once you are ready.";
         let formattedText = text.split('. ').join('.</p><p>');
         formattedText = '<p>' + formattedText + '</p>';
         typeWriter(formattedText, introText);
