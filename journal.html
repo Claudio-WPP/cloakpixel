@@ -303,42 +303,37 @@
         const tabs = document.querySelectorAll('.tab');
         const tabContents = document.querySelectorAll('.tab-content');
 
+        // Function to show tab content
+        function showTab(tabId) {
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+                content.style.display = 'none';
+                content.style.opacity = 0;
+            });
+
+            const activeTabContent = document.getElementById(tabId);
+            if (activeTabContent) {
+                activeTabContent.style.display = 'block';
+                // Delay setting opacity to trigger transition
+                setTimeout(() => {
+                    activeTabContent.style.opacity = 1;
+                }, 50);
+            }
+        }
+
         // Manually activate the initial tab
         const initialActiveTab = document.querySelector('.tab.active');
         if (initialActiveTab) {
             const initialTabId = initialActiveTab.dataset.tab;
-            const initialTabContent = document.getElementById(initialTabId);
-            if (initialTabContent) {
-                initialTabContent.style.display = 'block';
-                initialTabContent.style.opacity = 1;
-            }
+            showTab(initialTabId);
         }
-
-        // Initially hide all tab contents except the active one
-        tabContents.forEach(content => {
-            if (!content.classList.contains('active')) {
-                content.style.display = 'none';
-            }
-        });
 
         tabs.forEach(tab => {
             tab.addEventListener('click', () => {
                 const tabId = tab.dataset.tab;
-
                 tabs.forEach(t => t.classList.remove('active'));
-                tabContents.forEach(content => {
-                    content.classList.remove('active');
-                    content.style.opacity = 0; // Reset opacity before switching
-                });
-
                 tab.classList.add('active');
-                const activeTabContent = document.getElementById(tabId);
-                activeTabContent.style.display = 'block'; // Ensure display is block
-                activeTabContent.classList.add('active');
-                // Delay setting opacity to trigger transition
-                setTimeout(() => {
-                    activeTabContent.style.opacity = 1;
-                }, 50); // Small delay to ensure transition works
+                showTab(tabId);
             });
         });
     });
