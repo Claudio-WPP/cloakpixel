@@ -46,6 +46,28 @@
             transition: color 0.3s ease;
         }
 
+        .faq-question {
+            cursor: pointer;
+            font-weight: bold;
+            margin-bottom: 5px;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .faq-answer {
+            padding: 10px;
+            margin-bottom: 15px;
+            display: none; /* Initially hidden */
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+        }
+        
         .menu-bar a:hover {
             color: #a0a0a0;
             animation: wiggle 0.5s ease;
@@ -188,15 +210,20 @@
             <img src="Key-Image-Art.jpeg" alt="Key Image Art" class="key-image">
         </div>
         <div class="info-box">
-            <p>Look around at your colleagues</p>
-            <p>Are they faithful? Are they a traitor?</p>
-            <p>Eliminate the traitors in banishment opportunities</p>
-            <p>Be careful, as traitors can also 'murder' you and remove you from the game</p>
-            <p>Collect Cloak Pixels in in-game opportunities - each represents 1 hour off work</p>
-            <p>There will be opportunities to collect shields... whether you say you have one, is up to you</p>
-            <p>Shields won during games are in play for the next murder decision, which happens after any banishments.</p>
-            <p>If a bonus shield becomes available 10 minutes before a banishment, it will protect against the following murder decision, as the traitors will have already locked in their current murder choice.</p>
-            <p>Stay in the game until the end for a chance to win your share of the 72 Cloak Pixel</p>
+            <div class="faq-question">Question: What's the basics of the game?</div>
+            <div class="faq-answer">Look around at your colleagues. Are they faithful? Are they a traitor? Eliminate the traitors in banishment opportunities. Be careful, as traitors can also 'murder' you and remove you from the game.</div>
+
+            <div class="faq-question">Q: How were the Traitors selected?</div>
+            <div class="faq-answer">Traitors were selected completely at random using a random generator.</div>
+
+            <div class="faq-question">Q: What do we gain from doing tasks or games?</div>
+            <div class="faq-answer">You are as a team working to collect Cloak Pixels in in-game opportunities - each represents 1 hour off work. Stay in the game until the end for a chance to win your share of the 72 Cloak Pixel.</div>
+
+            <div class="faq-question">Q: Is there any way to protect myself from murders? In the TV show they have Shields</div>
+            <div class="faq-answer">Yes, we have those too! Shields can be won during games or in bonus tasks.<br><br>Shields won during games are in play for the next murder decision, which happens after any banishments.<br><br>If a bonus shield becomes available 10 minutes before a banishment, it will protect against the following murder decision, as the traitors will have already locked in their current murder choice.</div>
+
+            <div class="faq-question">Q: Who was involved in the making of this version of the game?</div>
+            <div class="faq-answer">Trish, Harry and Luke. Oh, and Claudio.</div>
         </div>
     </div>
 
@@ -256,6 +283,23 @@
     document.addEventListener('click', initAudio);
     document.addEventListener('touchstart', initAudio);
 });
+        // FAQ functionality
+            const questions = document.querySelectorAll('.faq-question');
+            let activeAnswer = null;
+
+            questions.forEach(question => {
+                question.addEventListener('click', function() {
+                    const answer = this.nextElementSibling;
+
+                    if (activeAnswer && activeAnswer !== answer) {
+                        activeAnswer.style.display = 'none';
+                    }
+
+                    answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
+                    activeAnswer = answer.style.display === 'block' ? answer : null;
+                });
+            });
+        });
     </script>
 </body>
 </html>
