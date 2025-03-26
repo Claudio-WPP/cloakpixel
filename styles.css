@@ -1,0 +1,363 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #001f3f;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    transition: background-color 1s ease-in-out;
+}
+
+@font-face {
+    font-family: 'YaroCut';
+    src: url('css/YaroCut.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Logo Section */
+.logo-container {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 15; /* Ensure logo stays above survey content */
+    margin-bottom: 10px; /* Add this to ensure the logo has some spacing */
+}
+
+.logo {
+    height: 95px;
+}
+
+#wpp-logo {
+    height: 85px; /* Set WPP logo height to 85px */
+}
+
+.separator {
+    font-size: 30px;
+    font-weight: bold;
+    color: darkgray;
+    margin: 0 10px;
+}
+
+/* Main Content */
+.container {
+    position: relative;
+    z-index: 10;
+    transition: opacity 1s ease-in-out;
+    max-width: 60%; /* Added max-width of 60% */
+    margin: 0 auto; /* Center content */
+    padding-bottom: 60px; /* Reduced padding to minimize whitespace */
+    max-height: 80vh;
+    overflow-y: auto;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+h1 {
+    font-size: 3em;
+}
+
+h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+hr {
+    width: 50%;
+    margin: 20px auto;
+    border: 1px solid white;
+}
+
+p {
+    font-size: 1.2em;
+}
+
+.justified-text {
+    text-align: justify;
+}
+
+/* Text highlight underline effect */
+strong {
+  position: relative;
+  display: inline-block;
+  background-image: linear-gradient(to right, white, white);
+  background-size: 0% 2px;
+  background-position: left bottom;
+  background-repeat: no-repeat;
+  transition: none; /* Remove the transition to control it with animation */
+}
+
+.highlight-active {
+  animation: underlinePen 1.2s ease-out forwards;
+}
+
+@keyframes underlinePen {
+  0% { background-size: 0% 2px; }
+  100% { background-size: 100% 2px; }
+}
+
+/* Fade in animation for text */
+.fade-in {
+    opacity: 0;
+    animation: fadeIn 1s forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Styles for fade elements */
+.fade-element {
+    transition: opacity 1s ease-in-out;
+}
+
+/* Styles for fade-in-element (second page) */
+.fade-in-element {
+    transition: opacity 1s ease-in-out;
+}
+
+/* Cracking Glass Effect */
+#crackCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+}
+
+/* Schedule Table Styles */
+.schedule-table {
+    width: 100%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    color: white;
+}
+
+.schedule-table th, 
+.schedule-table td {
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 8px 12px;
+    text-align: center;
+}
+
+.schedule-table th {
+    background-color: rgba(255, 255, 255, 0.1);
+    font-weight: bold;
+}
+
+.schedule-table tr:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.schedule-table td[rowspan] {
+    vertical-align: middle;
+    font-weight: bold;
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* TV Static Overlay (hidden initially) */
+.static-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('static.gif') repeat;
+    background-size: cover;
+    opacity: 0;
+    z-index: 25;
+    pointer-events: none;
+}
+
+/* Countdown Timer */
+.countdown {
+    font-size: 2em;
+    font-weight: bold;
+    color: #001f3f;
+    position: fixed;
+    bottom: 10px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    z-index: 100; /* Increased z-index to stay on top */
+    font-family: 'YaroCut', sans-serif !important;
+    padding: 5px 0;
+    margin: 0;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+    background-color: rgba(255, 255, 255, 0.7);
+    /* Initially hidden */
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* When body background is white (inverted state), change countdown text color */
+body[style*="background-color: white"] .countdown {
+    color: #001f3f;
+    text-shadow: none;
+}
+
+/* Font change after glitch */
+.glitch-text {
+    font-family: 'YaroCut', sans-serif !important;
+}
+
+/* Key Image Styling */
+#keyImage {
+    pointer-events: none;
+    aspect-ratio: 16/9;
+    width: auto;
+    max-width: 80vw;
+    max-height: 80vh;
+    border: 2px solid black;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+}
+
+/* Loading animation */
+.loading-text {
+    margin-top: 30px;
+}
+
+.ellipsis {
+    display: inline-block;
+    width: 30px;
+    text-align: left;
+}
+
+/* Survey Container Styling */
+.survey-container {
+    width: 100%;
+    max-width: 620px;
+    margin: 12px auto 0;
+    position: relative;
+    height: 460px; /* Reduced height to 460px */
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background: #fff;
+    margin-bottom: 25px;
+}
+
+.survey-container iframe {
+    width: 100%;
+    height: 460px; /* Reduced iframe height to match container */
+    border: 0;
+}
+
+/* Survey heading - match size with loading text */
+.survey-heading {
+    font-size: 1.2em !important;
+    font-weight: normal;
+    margin-bottom: 12px;
+    margin-top: 0;
+    padding-top: 32px;
+}
+
+/* Also adjust the wrapper to better position everything */
+.survey-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 80px);
+    overflow: hidden;
+    justify-content: flex-start; /* Changed from center to flex-start */
+    padding-top: 32px; /* Added padding-top instead of relying on justify-content: center */
+}
+
+/* Media query for smaller screens */
+@media screen and (max-width: 768px) {
+    .countdown {
+        font-size: 1.5em;
+        bottom: 0;
+        padding: 15px 0;
+    }
+    
+    .container {
+        padding-bottom: 60px;
+        max-height: 75vh;
+        max-width: 85%;
+    }
+    
+    body {
+        height: auto;
+        min-height: 100vh;
+    }
+    
+    .logo {
+        height: 70px;
+    }
+    
+    #wpp-logo {
+        height: 60px;
+    }
+    
+    h1 {
+        font-size: 2em;
+    }
+    
+    h2 {
+        font-size: 1.2em;
+    }
+    
+    p {
+        font-size: 1em;
+    }
+    
+    .survey-container {
+        width: 95%;
+        max-width: 95%;
+        height: 450px;
+        margin-bottom: 25px;
+    }
+    
+    .survey-container iframe {
+        height: 450px;
+    }
+    
+    .survey-heading {
+        padding-top: 80px;
+    }
+}
+
+#muteButton {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 1px solid white;
+    color: white;
+    padding: 10px 15px;
+    cursor: pointer;
+    z-index: 9999; /* Extremely high z-index to ensure it's always on top */
+    font-family: 'YaroCut', sans-serif;
+    transition: background-color 0.3s ease;
+}
+
+#muteButton:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Ensure visibility during white background state */
+body[style*="background-color: white"] #muteButton {
+    color: #001f3f;
+    border-color: #001f3f;
+    background-color: rgba(0, 31, 63, 0.1);
+}
+
+/* Media query for smaller screens */
+@media screen and (max-width: 768px) {
+    #muteButton {
+        bottom: 10px;
+        right: 10px;
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+}
