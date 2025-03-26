@@ -37,6 +37,36 @@
             z-index: 10;
         }
 
+        .tab-container {
+            display: flex;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            color: white;
+            font-family: 'YaroCut', sans-serif;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .tab.active {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .tab-content {
+            display: none;
+            text-align: left; /* Align text left */
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+        
         .menu-bar a {
             color: white;
             text-decoration: none;
@@ -187,12 +217,26 @@
         <div class="image-container" id="imageContainer">
             <img src="Key-Image-Art.jpeg" alt="Key Image Art" class="key-image">
         </div>
-        <div class="info-box">
-            <p>Wed @ 11:30</p>
-            <p>One traitor has already teased...</p>
-            <p>"These losers don't stand a chance"</p>
-            <p>Another said they are going to "pretend to be a beautician so people don't know their real job"</p>
-            <p>"(name removed) has a taste for murder"</p>
+         <div class="info-box">
+            <div class="tab-container">
+                <button class="tab active" data-tab="wed1130">Wed @ 11:30</button>
+                <button class="tab" data-tab="entry2">Entry 2</button>
+                <button class="tab" data-tab="entry3">Entry 3</button>
+            </div>
+            <div class="tab-content active" id="wed1130">
+                <p>One traitor has already teased...</p>
+                <p>"These losers don't stand a chance"</p>
+                <p>Another said they are going to "pretend to be a beautician so people don't know their real job"</p>
+                <p>"(name removed) has a taste for murder"</p>
+            </div>
+            <div class="tab-content" id="entry2">
+                <p>This is the content for Entry 2.</p>
+                <p>Add more details here.</p>
+            </div>
+            <div class="tab-content" id="entry3">
+                <p>This is the content for Entry 3.</p>
+                <p>More details for entry 3.</p>
+            </div>
         </div>
     </div>
 
@@ -251,7 +295,23 @@
     // Set up event listeners for user interaction to start audio
     document.addEventListener('click', initAudio);
     document.addEventListener('touchstart', initAudio);
-});
+
+          // Tab functionality
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.dataset.tab;
+
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+
+                    tab.classList.add('active');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+        });
     </script>
 </body>
 </html>
