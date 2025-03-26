@@ -59,6 +59,29 @@
             100% { transform: rotate(0deg); }
         }
 
+        .traitor .photo-image {
+    filter: grayscale(100%); /* Black and white */
+}
+
+.traitor-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+}
+
+.traitor-text {
+    color: red;
+    font-size: 24px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+        
         .content {
             display: flex;
             flex-direction: column;
@@ -298,39 +321,45 @@
     };
 
     // Create photo gallery
-    photos.forEach(name => {
-        const photoContainer = document.createElement('div');
-        photoContainer.classList.add('photo-container');
-        
-        // Set status class if defined
-        const status = photoStatus[name] || 'normal';
-        if (status !== 'normal') {
-            photoContainer.classList.add(status);
-        }
+        photos.forEach(name => {
+            const photoContainer = document.createElement('div');
+            photoContainer.classList.add('photo-container');
 
-        const img = document.createElement('img');
-        img.src = `Photo Wall/${name}.jpg`;
-        img.alt = name;
-        img.classList.add('photo-image');
-
-        const statusOverlay = document.createElement('div');
-        statusOverlay.classList.add('status-overlay');
-
-        if (status !== 'normal') {
-            const cross = document.createElement('div');
-            cross.classList.add('status-cross');
-            
-            if (status === 'banished') {
-                cross.classList.add('banished-cross');
+            const status = photoStatus[name] || 'normal';
+            if (status !== 'normal') {
+                photoContainer.classList.add(status);
             }
 
-            statusOverlay.appendChild(cross);
-        }
+            const img = document.createElement('img');
+            img.src = `Photo Wall/${name}.jpg`;
+            img.alt = name;
+            img.classList.add('photo-image');
 
-        photoContainer.appendChild(img);
-        photoContainer.appendChild(statusOverlay);
-        photoGallery.appendChild(photoContainer);
-    });
+            const statusOverlay = document.createElement('div');
+            statusOverlay.classList.add('status-overlay');
+
+            if (status !== 'normal') {
+                if (status === 'banished') {
+                    const cross = document.createElement('div');
+                    cross.classList.add('status-cross', 'banished-cross');
+                    statusOverlay.appendChild(cross);
+                } else if (status === 'traitor') {
+                    const traitorText = document.createElement('div');
+                    traitorText.classList.add('traitor-text');
+                    traitorText.textContent = 'Traitor';
+                    statusOverlay.appendChild(traitorText);
+                    statusOverlay.classList.add('traitor-overlay');
+                } else {
+                    const cross = document.createElement('div');
+                    cross.classList.add('status-cross');
+                    statusOverlay.appendChild(cross);
+                }
+            }
+
+            photoContainer.appendChild(img);
+            photoContainer.appendChild(statusOverlay);
+            photoGallery.appendChild(photoContainer);
+        });
 
 
     // Fade in the image
