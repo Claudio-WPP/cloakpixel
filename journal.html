@@ -249,7 +249,7 @@
         <source src="key-art-audio.wav" type="audio/wav">
     </audio>
 
-    <script>
+<script>
     document.addEventListener("DOMContentLoaded", function() {
         const audio = document.getElementById('backgroundAudio');
         const muteButton = document.getElementById('muteButton');
@@ -258,7 +258,7 @@
         // Fade in the image and info box
         setTimeout(() => {
             document.getElementById('imageContainer').style.opacity = '1';
-            document.querySelector('.info-box').style.opacity = '1'; // Fade in info-box
+            document.querySelector('.info-box').style.opacity = '1';
         }, 100);
 
         // Mute/Unmute functionality
@@ -314,6 +314,13 @@
             }
         }
 
+        // Initially hide all tab contents except the active one
+        tabContents.forEach(content => {
+            if (!content.classList.contains('active')) {
+                content.style.display = 'none';
+            }
+        });
+
         tabs.forEach(tab => {
             tab.addEventListener('click', () => {
                 const tabId = tab.dataset.tab;
@@ -326,6 +333,7 @@
 
                 tab.classList.add('active');
                 const activeTabContent = document.getElementById(tabId);
+                activeTabContent.style.display = 'block'; // Ensure display is block
                 activeTabContent.classList.add('active');
                 // Delay setting opacity to trigger transition
                 setTimeout(() => {
