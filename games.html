@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Games Page</title>
+    <title>Games</title>
     <link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="shortcut icon" href="favicon.ico">
@@ -68,80 +68,46 @@
             position: relative;
         }
 
-        .game-boxes {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            width: 100%;
-            position: absolute;
-            top: 50%; /* Or adjust if you want it lower */
-            left: 0; /* Added for clarity, though width: 100% handles it */
-            transform: translateY(-50%);
-            opacity: 0;
-            transition: opacity 2s ease;
-            z-index: 20; /* <-- ADD THIS LINE (must be > 15) */
-        }
-
-        .game-box {
+        .info-box {
             background-color: rgba(255, 255, 255, 0.2);
             border: 2px solid rgba(255, 255, 255, 0.5);
             border-radius: 10px;
-            padding: 20px;
-            width: 200px;
+            padding: 30px;
+            max-width: 600px;
+            width: 80%;
             text-align: center;
             backdrop-filter: blur(10px);
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-
-        .game-box:hover {
-            transform: scale(1.05);
-        }
-
-        .password-input {
-            display: none;
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .password-input input {
-            padding: 10px;
-            width: 200px;
-            background-color: rgba(255, 255, 255, 0.2);
-            border: 1px solid white;
-            color: white;
-            text-align: center;
-        }
-
-        .game-content {
-            display: none;
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #121b33;
-            padding: 20px;
-            text-align: center;
-            overflow-y: auto;
-            z-index: 30;
+            top: 120px; /* Positioned about 40px below the menu bar */
+            left: 50%;
+            transform: translate(-50%, 0);
+            z-index: 30; /* Increased z-index to be in front of key image */
+            opacity: 0; /* Initially hidden */
+            transition: opacity 1s ease; /* Fade transition */
         }
 
-        .typing-text {
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: left;
+        .info-box p {
+            font-size: 18px;
+            margin: 10px 0;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            line-height: 1.5;
         }
 
-        .navigation-buttons {
+        .info-box .highlight {
+            font-weight: bold;
+            color: #ffcc00;
+        }
+
+        .image-container {
+            position: relative;
             display: flex;
-            justify-content: space-between;
-            max-width: 800px;
-            margin: 20px auto;
-        }
-
-        .hidden {
-            display: none;
+            justify-content: center;
+            align-items: center;
+            max-height: 80vh;
+            opacity: 0;
+            transition: opacity 2s ease;
+            z-index: 20; /* Adjusted z-index */
         }
 
         .key-image {
@@ -153,12 +119,12 @@
             border: 2px solid black;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
             position: absolute;
-            top: 50%;
+            top: 10%;
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 15; /* Lowered z-index */
         }
-        
+
         #crackCanvas {
             position: absolute;
             top: 0;
@@ -213,14 +179,6 @@
                 padding: 8px 12px;
                 font-size: 14px;
             }
-             .image-container {
-            opacity: 0;
-            transition: opacity 2s ease;
-        }     
-     #dummyImage {
-    max-width: 80vw; /* 80% of the viewport width */
-    height: auto; /* Maintain aspect ratio */
-}
         }
     </style>
     <!-- Google tag (gtag.js) -->
@@ -233,37 +191,32 @@
     </script>
 </head>
 <body>
-    <div class="menu-bar">
-        <a href="/cloakpixel/" id="home-link">Home</a>
-        <a href="/cloakpixel/games" id="games-link">Games</a>
-        <a href="/cloakpixel/schedule" id="schedule-link">Schedule</a>
-        <a href="/cloakpixel/photo-wall" id="photo-wall-link">Photo Wall</a>
-        <a href="/cloakpixel/game-info" id="game-info-link">Game Info</a>
-        <a href="/cloakpixel/journal" id="journal-link">Journal</a>
-    </div>
+   <div class="menu-bar">
+    <a href="/cloakpixel/" id="home-link">Home</a>
+    <a href="/cloakpixel/games" id="games-link">Games</a>
+    <a href="/cloakpixel/schedule" id="schedule-link">Schedule</a>
+    <a href="/cloakpixel/photo-wall" id="photo-wall-link">Photo Wall</a>
+    <a href="/cloakpixel/game-info" id="game-info-link">Game Info</a>
+    <a href="/cloakpixel/journal" id="journal-link">Journal</a>
+</div>
 
     <div class="content">
         <!-- Cracking Glass Effect --> 
         <canvas id="crackCanvas"></canvas>
-      
+        
+ <div class="info-box">
+    <p>There is a shield somewhere in our office - solve the below, text a host a photo, before 15:30!</p>
+    <br>
+    <p>I have three wheels, but I'm built to last</p>
+    <p>Small and nimble, moving fast.</p>
+    <p>In bright red, I roll usually through the street,</p>
+    <p>Carrying loads with wheels that meet.</p>
+    <p>I'm not a car, but I'm strong and lean,</p>
+    <p>What am I, often seen on the scene?</p>
+</div>>
+        
         <div class="image-container" id="imageContainer">
             <img src="Key-Image-Art.jpeg" alt="Key Image Art" class="key-image">
-        </div>
-
-        <div class="game-boxes" id="gameBoxes">
-            <div class="game-box" data-game="1">Game 1</div>
-            <div class="game-box" data-game="2">Game 2</div>
-            <div class="game-box" data-game="3">Game 3</div>
-        </div>
-
-        <div class="game-content" id="game1Content">
-            <h1>Welcome to Game 1: Codebreaker</h1>
-            <div class="typing-text" id="introText"></div>
-            <img src="dummy-image-code.jpg" alt="Dummy Image Code" class="hidden" id="dummyImage">
-            <div class="navigation-buttons">
-                <button id="prevIntro" class="hidden">Previous</button>
-                <button id="nextIntro">Next</button>
-            </div>
         </div>
     </div>
 
@@ -275,188 +228,53 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            const audio = document.getElementById('backgroundAudio');
-            const muteButton = document.getElementById('muteButton');
-            const gameBoxes = document.getElementById('gameBoxes');
-            const gameBoxElements = document.querySelectorAll('.game-box');
-            const game1Content = document.getElementById('game1Content');
-            const imageContainer = document.getElementById('imageContainer');
-            const introText = document.getElementById('introText');
-            const dummyImage = document.getElementById('dummyImage');
-            const nextIntroBtn = document.getElementById('nextIntro');
-            const prevIntroBtn = document.getElementById('prevIntro');
-            let isMuted = false;
+    const audio = document.getElementById('backgroundAudio');
+    const muteButton = document.getElementById('muteButton');
+    let isMuted = false;
 
-            // Fade in the image container
-            setTimeout(() => {
-                imageContainer.style.opacity = '1';
-                gameBoxes.style.opacity = '1';
-            }, 100);
+    // Fade in the image and info box
+    setTimeout(() => {
+        document.getElementById('imageContainer').style.opacity = '1';
+        document.querySelector('.info-box').style.opacity = '1'; // Fade in info-box
+    }, 100);
 
-            // Mute/Unmute functionality
-            muteButton.addEventListener('click', function() {
-                isMuted = !isMuted;
-                audio.muted = isMuted;
-                muteButton.textContent = isMuted ? 'Unmute' : 'Mute';
-            });
+    // Mute/Unmute functionality
+    muteButton.addEventListener('click', function() {
+        isMuted = !isMuted;
+        audio.muted = isMuted;
+        muteButton.textContent = isMuted ? 'Unmute' : 'Mute';
+    });
 
-            // Start audio play on user interaction
-            function initAudio() {
-                audio.volume = 0;
-                audio.play().then(() => {
-                    muteButton.textContent = 'Mute';
-                    
-                    let volume = 0;
-                    const fadeInterval = setInterval(() => {
-                        volume += 0.05;
-                        if (volume >= 1) {
-                            clearInterval(fadeInterval);
-                            volume = 1;
-                        }
-                        audio.volume = volume;
-                    }, 100);
-                }).catch((error) => {
-                    console.log("Audio play failed:", error);
-                });
-                
-                document.removeEventListener('click', initAudio);
-                document.removeEventListener('touchstart', initAudio);
-            }
+    // Start audio play on user interaction
+    function initAudio() {
+        // Play audio with fade-in effect
+        audio.volume = 0;
+        audio.play().then(() => {
+            // Update button text to 'Mute' after first interaction
+            muteButton.textContent = 'Mute';
             
-            document.addEventListener('click', initAudio);
-            document.addEventListener('touchstart', initAudio);
-
-            // Game box click handlers
-            gameBoxElements.forEach(box => {
-                box.addEventListener('click', function() {
-                    const gameNumber = this.getAttribute('data-game');
-                    const passwordInput = this.querySelector('.password-input') || createPasswordInput(this, gameNumber);
-                });
-            });
-
-            function createPasswordInput(box, gameNumber) {
-                const passwordDiv = document.createElement('div');
-                passwordDiv.className = 'password-input';
-                
-                const passwordInput = document.createElement('input');
-                passwordInput.type = 'password';
-                passwordInput.placeholder = 'Enter password';
-                
-                passwordInput.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        const passwords = {
-                            '1': 'rushrequest',
-                            '2': 'tbc',
-                            '3': 'tbc'
-                        };
-
-                        if (this.value === passwords[gameNumber]) {
-                            handleCorrectPassword(gameNumber);
-                        } else {
-                            alert('Incorrect password');
-                        }
-                    }
-                });
-
-                passwordDiv.appendChild(passwordInput);
-                box.appendChild(passwordDiv);
-                passwordDiv.style.display = 'block';
-                return passwordDiv;
-            }
-
-            function handleCorrectPassword(gameNumber) {
-    // Slide off other boxes
-    gameBoxElements.forEach(box => {
-        if (box.getAttribute('data-game') !== gameNumber) {
-            box.style.transition = 'transform 1s ease';
-            box.style.transform = 'translateY(100vh)';
-        }
-    });
-
-    // Expand selected game box with new dimensions
-    const selectedBox = document.querySelector(`.game-box[data-game="${gameNumber}"]`);
-    selectedBox.style.transition = 'all 1s ease';
-    selectedBox.style.position = 'absolute';
-    selectedBox.style.top = '15%';
-    selectedBox.style.left = '20%';
-    selectedBox.style.width = '60%';
-    selectedBox.style.height = '70%';
-    selectedBox.style.zIndex = '1000';
-
-    // Show game 1 content if game 1 is selected
-    if (gameNumber === '1') {
-        setTimeout(() => {
-            game1Content.style.display = 'block';
-            let text = "You have three questions to answer to solve the code. The first question is your unlock combination. The second and third questions are your locker numbers. Three lockers are up for grabs - but only two contain shields. You must remain together as a team at all times! No splitting up, codes do not work without a full team present. No phone / laptop usage allowed once you leave your rooms. Click 'Next' once you are ready.";
-            // Replace newlines with <p> tags
-            let formattedText = text.split('. ').join('.</p><p>');
-            formattedText = '<p>' + formattedText + '</p>'; // Add the first <p> and closing </p> tag
-            typeWriter(formattedText, introText);
-        }, 1000);
-    }
-}
-
-let isTyping = false; // Flag to track typing state
-
-    function typeWriter(text, element, speed = 32) {
-        element.innerHTML = '';
-        let i = 0;
-        let tag = '';
-        let isTag = false;
-        isTyping = true; // Set typing flag to true
-
-        function type() {
-            if (i < text.length) {
-                const char = text[i];
-                if (char === '<') {
-                    isTag = true;
+            // Fade in audio over 2 seconds
+            let volume = 0;
+            const fadeInterval = setInterval(() => {
+                volume += 0.05;
+                if (volume >= 1) {
+                    clearInterval(fadeInterval);
+                    volume = 1;
                 }
-                if (isTag) {
-                    tag += char;
-                    if (char === '>') {
-                        isTag = false;
-                        element.innerHTML += tag;
-                        tag = '';
-                    }
-                } else {
-                    element.innerHTML += char;
-                }
-                i++;
-                setTimeout(type, speed);
-            } else {
-                isTyping = false; // Set typing flag to false
-                // Show dummy image and next button after typing
-                setTimeout(() => {
-                    dummyImage.classList.remove('hidden');
-                    nextIntroBtn.classList.remove('hidden');
-                }, 500);
-            }
-        }
-        type();
+                audio.volume = volume;
+            }, 100);
+        }).catch((error) => {
+            console.log("Audio play failed:", error);
+        });
+        
+        // Remove event listeners after first interaction
+        document.removeEventListener('click', initAudio);
+        document.removeEventListener('touchstart', initAudio);
     }
-
-    // Next/Previous buttons for game content
-    nextIntroBtn.addEventListener('click', function() {
-        if (isTyping) return; // Ignore click if typing
-        let text = "Locker Combination Q1: To unlock your locker, you'll need the right combination. Head to the Anchor, locate your host and provide the code word mentioned this morning. Good luck!";
-        let formattedText = text.split('. ').join('.</p><p>');
-        formattedText = '<p>' + formattedText + '</p>';
-        typeWriter(formattedText, introText);
-        dummyImage.classList.add('hidden');
-        nextIntroBtn.classList.add('hidden');
-        prevIntroBtn.classList.remove('hidden');
-    });
-
-    prevIntroBtn.addEventListener('click', function() {
-        if (isTyping) return; // Ignore click if typing
-        let text = "You have three questions to answer to solve the code. The first question is your combination. The second and third questions are your locker numbers. Three lockers are up for grabs - but only two contain shields. You must remain together as a team at all times! No splitting up, codes do not work without a full team present. No phone / laptop usage allowed once you leave your rooms. Click 'Next' once you are ready.";
-        let formattedText = text.split('. ').join('.</p><p>');
-        formattedText = '<p>' + formattedText + '</p>';
-        typeWriter(formattedText, introText);
-        prevIntroBtn.classList.add('hidden');
-        dummyImage.classList.remove('hidden');
-        nextIntroBtn.classList.remove('hidden');
-    });
+    
+    // Set up event listeners for user interaction to start audio
+    document.addEventListener('click', initAudio);
+    document.addEventListener('touchstart', initAudio);
 });
     </script>
     <script src="script.js"></script>
