@@ -309,72 +309,81 @@
         'Ellie', 'Fatima', 'Frank', 'Gavin', 'Georgia', 'Glenn', 
         'Isobel', 'Jett', 'Joe', 'Lauren', 'Lisa', 'Matt', 
         'Mehnaj', 'Mihaela', 'Oana', 'Rita', 'Santiago', 'Shreya', 'Temitope', 'Tim',
-        'Claudio' // Added Claudio at the end as requested
+        'Claudio'
     ];
 
-    // Track status of photos (can be updated dynamically)
+    // Track status of photos with specific delays
     const photoStatus = {
-        'Claudio': 'normal',
-        'Gavin': 'banished',
-        'Andre': 'banished',
-        'Glenn': 'murdered',
-        'Georgia': 'murdered',
-        'Frank': 'traitor',
-        'Alex': 'banished',
-        'Claire': 'murdered',
-        'Anusha': 'murdered',
-        // Add other statuses as needed
-        // Example: 'Andre': 'murdered',
-        // Example: 'Anju': 'banished',
-        // Example: 'Gavin': 'traitor'
+        'Claudio': { status: 'normal', delay: 0 },
+        'Gavin': { status: 'banished', delay: 500 },
+        'Andre': { status: 'banished', delay: 1000 },
+        'Glenn': { status: 'murdered', delay: 1500 },
+        'Georgia': { status: 'murdered', delay: 2000 },
+        'Frank': { status: 'traitor', delay: 2500 },
+        'Alex': { status: 'banished', delay: 3000 },
+        'Claire': { status: 'murdered', delay: 6000 },
+        'Anusha': { status: 'murdered', delay: 7000 }
     };
 
     // Create photo gallery
-        photos.forEach(name => {
-            const photoContainer = document.createElement('div');
-            photoContainer.classList.add('photo-container');
+    photos.forEach(name => {
+        const photoContainer = document.createElement('div');
+        photoContainer.classList.add('photo-container');
 
-            const status = photoStatus[name] || 'normal';
+        const img = document.createElement('img');
+        img.src = `Photo Wall/${name}.jpg`;
+        img.alt = name;
+        img.classList.add('photo-image');
+
+        const statusOverlay = document.createElement('div');
+        statusOverlay.classList.add('status-overlay');
+
+        photoContainer.appendChild(img);
+        photoContainer.appendChild(statusOverlay);
+        photoGallery.appendChild(photoContainer);
+    });
+
+    // Animate status changes
+    function animateStatusChanges() {
+        Object.entries(photoStatus).forEach(([name, { status, delay }]) => {
             if (status !== 'normal') {
-                photoContainer.classList.add(status);
+                setTimeout(() => {
+                    const photoContainer = Array.from(photoGallery.children).find(
+                        container => container.querySelector('img').alt === name
+                    );
+
+                    if (photoContainer) {
+                        photoContainer.classList.add(status);
+                        const statusOverlay = photoContainer.querySelector('.status-overlay');
+
+                        if (status === 'banished') {
+                            const cross = document.createElement('div');
+                            cross.classList.add('status-cross', 'banished-cross');
+                            statusOverlay.appendChild(cross);
+                        } else if (status === 'traitor') {
+                            const traitorText = document.createElement('div');
+                            traitorText.classList.add('traitor-text');
+                            traitorText.textContent = 'Traitor';
+                            statusOverlay.appendChild(traitorText);
+                            statusOverlay.classList.add('traitor-overlay');
+                        } else {
+                            const cross = document.createElement('div');
+                            cross.classList.add('status-cross');
+                            statusOverlay.appendChild(cross);
+                        }
+                    }
+                }, delay + 1000); // Adding 1 second to the start for initial page load
             }
-
-            const img = document.createElement('img');
-            img.src = `Photo Wall/${name}.jpg`;
-            img.alt = name;
-            img.classList.add('photo-image');
-
-            const statusOverlay = document.createElement('div');
-            statusOverlay.classList.add('status-overlay');
-
-            if (status !== 'normal') {
-                if (status === 'banished') {
-                    const cross = document.createElement('div');
-                    cross.classList.add('status-cross', 'banished-cross');
-                    statusOverlay.appendChild(cross);
-                } else if (status === 'traitor') {
-                    const traitorText = document.createElement('div');
-                    traitorText.classList.add('traitor-text');
-                    traitorText.textContent = 'Traitor';
-                    statusOverlay.appendChild(traitorText);
-                    statusOverlay.classList.add('traitor-overlay');
-                } else {
-                    const cross = document.createElement('div');
-                    cross.classList.add('status-cross');
-                    statusOverlay.appendChild(cross);
-                }
-            }
-
-            photoContainer.appendChild(img);
-            photoContainer.appendChild(statusOverlay);
-            photoGallery.appendChild(photoContainer);
         });
-
+    }
 
     // Fade in the image
     setTimeout(() => {
         document.getElementById('imageContainer').style.opacity = '1';
     }, 100);
+
+    // Schedule status change animations
+    animateStatusChanges();
 
     // Mute/Unmute functionality
     muteButton.addEventListener('click', function() {
