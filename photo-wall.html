@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -53,51 +52,36 @@
         }
 
         @keyframes wiggle {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            25% {
-                transform: rotate(2deg);
-            }
-
-            50% {
-                transform: rotate(0deg);
-            }
-
-            75% {
-                transform: rotate(-2deg);
-            }
-
-            100% {
-                transform: rotate(0deg);
-            }
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(2deg); }
+            50% { transform: rotate(0deg); }
+            75% { transform: rotate(-2deg); }
+            100% { transform: rotate(0deg); }
         }
 
         .traitor .photo-image {
-            filter: grayscale(100%);
-            /* Black and white */
-        }
+    filter: grayscale(100%); /* Black and white */
+}
 
-        .traitor-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            pointer-events: none;
-        }
+.traitor-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+}
 
-        .traitor-text {
-            color: red;
-            font-size: 24px;
-            font-weight: bold;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-        }
-
+.traitor-text {
+    color: red;
+    font-size: 24px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+        
         .content {
             display: flex;
             flex-direction: column;
@@ -107,34 +91,30 @@
             position: relative;
         }
 
-        /* Updated photo gallery styles */
-        .photo-gallery {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 30px;
-            padding: 20px;
-            max-height: 80vh;
-            /* Increased height */
-            min-height: 40vh;
-            /* Added minimum height */
-            overflow-y: auto;
-            background-color: rgba(0, 0, 0, 0.3);
-            margin-top: 15px;
-            /* Moved closer to menu */
-            margin-bottom: 25px;
-            z-index: 7;
-            position: relative;
-        }
+      /* Updated photo gallery styles */
+.photo-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    padding: 20px;
+    max-height: 80vh; /* Increased height */
+    min-height: 40vh; /* Added minimum height */
+    overflow-y: auto;
+    background-color: rgba(0, 0, 0, 0.3);
+    margin-top: 15px; /* Moved closer to menu */
+    margin-bottom: 25px;
+    z-index: 7;
+    position: relative;
+}
 
-        .photo-container {
-            position: relative;
-            width: calc(10% - 15px);
-            /* Reduced width to show more photos */
-            aspect-ratio: 1/1;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-            transition: transform 0.3s ease;
-        }
+.photo-container {
+    position: relative;
+    width: calc(10% - 15px); /* Reduced width to show more photos */
+    aspect-ratio: 1/1;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    transition: transform 0.3s ease;
+}
 
         .photo-container:hover {
             transform: scale(1.10);
@@ -208,23 +188,20 @@
             z-index: 5;
         }
 
-        .key-image {
-            pointer-events: none;
-            aspect-ratio: 16/9;
-            width: auto;
-            max-width: 80vw;
-            max-height: 85vh;
-            border: 2px solid black;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
-            position: absolute;
-            top: 50%;
-            /* Centered vertically */
-            left: 50%;
-            /* Centered horizontally */
-            transform: translate(-50%, -50%);
-            /* Ensures perfect centering */
-            z-index: 6;
-        }
+       .key-image {
+    pointer-events: none;
+    aspect-ratio: 16/9;
+    width: auto;
+    max-width: 80vw;
+    max-height: 85vh;
+    border: 2px solid black;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+    position: absolute;
+    top: 50%; /* Centered vertically */
+    left: 50%; /* Centered horizontally */
+    transform: translate(-50%, -50%); /* Ensures perfect centering */
+    z-index: 6;
+}
 
         #crackCanvas {
             position: absolute;
@@ -266,6 +243,8 @@
                 font-size: 16px;
             }
 
+
+
             #muteButton {
                 bottom: 10px;
                 right: 10px;
@@ -274,45 +253,38 @@
             }
 
             .photo-container {
-                width: calc(25% - 15px);
-                /* Adjust for mobile */
-            }
-        }
-
-        .status-change {
-            transition: opacity 1s ease, filter 1s ease;
-            opacity: 0;
-            filter: grayscale(100%) brightness(0%);
+        width: calc(25% - 15px); /* Adjust for mobile */
+    }
         }
     </style>
+    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-QJCJYMJ15J"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
+        function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
         gtag('config', 'G-QJCJYMJ15J');
     </script>
 </head>
-
 <body>
     <div class="menu-bar">
-        <a href="/cloakpixel/" id="home-link">Home</a>
-        <a href="/cloakpixel/games" id="games-link">Games</a>
-        <a href="/cloakpixel/schedule" id="schedule-link">Schedule</a>
-        <a href="/cloakpixel/photo-wall" id="photo-wall-link">Photo Wall</a>
-        <a href="/cloakpixel/game-info" id="game-info-link">Game Info</a>
-        <a href="/cloakpixel/journal" id="journal-link">Journal</a>
-    </div>
+    <a href="/cloakpixel/" id="home-link">Home</a>
+    <a href="/cloakpixel/games" id="games-link">Games</a>
+    <a href="/cloakpixel/schedule" id="schedule-link">Schedule</a>
+    <a href="/cloakpixel/photo-wall" id="photo-wall-link">Photo Wall</a>
+    <a href="/cloakpixel/game-info" id="game-info-link">Game Info</a>
+    <a href="/cloakpixel/journal" id="journal-link">Journal</a>
+</div>
 
     <div class="content">
+        <!-- Photo Gallery -->
         <div class="photo-gallery" id="photoGallery">
-            </div>
+            <!-- Photos will be dynamically added here -->
+        </div>
 
+        <!-- Cracking Glass Effect --> 
         <canvas id="crackCanvas"></canvas>
-
+        
         <div class="image-container" id="imageContainer">
             <img src="Key-Image-Art.jpeg" alt="Key Image Art" class="key-image">
         </div>
@@ -324,38 +296,46 @@
         <source src="key-art-audio.wav" type="audio/wav">
     </audio>
 
-Okay, let's refactor the code to combine the photoStatus and animation timing information into a single data structure. This will make it easier to manage and update the photo statuses and their corresponding animation delays.
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+    const audio = document.getElementById('backgroundAudio');
+    const muteButton = document.getElementById('muteButton');
+    const photoGallery = document.getElementById('photoGallery');
+    let isMuted = false;
 
-Here's the updated JavaScript:
+    // List of all photo names
+    const photos = [
+        'Alex', 'Andre', 'Anju', 'Anusha', 'Callum', 'Charlotte', 'Claire', 
+        'Ellie', 'Fatima', 'Frank', 'Gavin', 'Georgia', 'Glenn', 
+        'Isobel', 'Jett', 'Joe', 'Lauren', 'Lisa', 'Matt', 
+        'Mehnaj', 'Mihaela', 'Oana', 'Rita', 'Santiago', 'Shreya', 'Temitope', 'Tim',
+        'Claudio' // Added Claudio at the end as requested
+    ];
 
-JavaScript
+    // Track status of photos (can be updated dynamically)
+    const photoStatus = {
+        'Claudio': 'normal',
+        'Gavin': 'banished',
+        'Andre': 'banished',
+        'Glenn': 'murdered',
+        'Georgia': 'murdered',
+        'Frank': 'traitor',
+        'Alex': 'banished',
+        // Add other statuses as needed
+        // Example: 'Andre': 'murdered',
+        // Example: 'Anju': 'banished',
+        // Example: 'Gavin': 'traitor'
+    };
 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const audio = document.getElementById('backgroundAudio');
-        const muteButton = document.getElementById('muteButton');
-        const photoGallery = document.getElementById('photoGallery');
-        let isMuted = false;
-
-        // Photo data with status and animation delay
-        const photoData = {
-            'Claudio': { status: 'normal' },
-            'Gavin': { status: 'banished', delay: 0 },
-            'Andre': { status: 'banished', delay: 500 },
-            'Glenn': { status: 'murdered', delay: 1000 },
-            'Georgia': { status: 'murdered', delay: 1500 },
-            'Frank': { status: 'traitor', delay: 2000 },
-            'Alex': { status: 'banished', delay: 2500 },
-            'Claire': { status: 'murdered', delay: 4500 },
-            'Anusha': { status: 'murdered', delay: 4500 },
-            // Add other photos and their statuses/delays here
-            // Example: 'Anju': { status: 'banished', delay: 2500 }
-        };
-
-        // Function to create photo elements
-        function createPhotoElement(name, status) {
+    // Create photo gallery
+        photos.forEach(name => {
             const photoContainer = document.createElement('div');
             photoContainer.classList.add('photo-container');
+
+            const status = photoStatus[name] || 'normal';
+            if (status !== 'normal') {
+                photoContainer.classList.add(status);
+            }
 
             const img = document.createElement('img');
             img.src = `Photo Wall/${name}.jpg`;
@@ -376,7 +356,7 @@ JavaScript
                     traitorText.textContent = 'Traitor';
                     statusOverlay.appendChild(traitorText);
                     statusOverlay.classList.add('traitor-overlay');
-                } else if (status === 'murdered') {
+                } else {
                     const cross = document.createElement('div');
                     cross.classList.add('status-cross');
                     statusOverlay.appendChild(cross);
@@ -385,114 +365,54 @@ JavaScript
 
             photoContainer.appendChild(img);
             photoContainer.appendChild(statusOverlay);
-            return photoContainer;
-        }
-
-        // Create initial photo gallery
-        for (const name in photoData) {
-            const status = photoData[name].status || 'normal';
-            const photoElement = createPhotoElement(name, status);
-            photoGallery.appendChild(photoElement);
-        }
-
-        // Function to animate status change
-        function animateStatusChange(name, newStatus, delay) {
-            const photoContainer = Array.from(photoGallery.children).find(
-                (child) => child.querySelector('img').alt === name
-            );
-
-            if (photoContainer) {
-                setTimeout(() => {
-                    photoContainer.classList.add('status-change'); // Add transition class
-
-                    // Update status and elements
-                    photoContainer.className = 'photo-container'; // Reset class
-                    photoContainer.classList.add(newStatus);
-
-                    const img = photoContainer.querySelector('.photo-image');
-                    const statusOverlay = photoContainer.querySelector('.status-overlay');
-                    statusOverlay.innerHTML = ''; // Clear previous overlay content
-
-                    if (newStatus === 'banished') {
-                        const cross = document.createElement('div');
-                        cross.classList.add('status-cross', 'banished-cross');
-                        statusOverlay.appendChild(cross);
-                    } else if (newStatus === 'traitor') {
-                        const traitorText = document.createElement('div');
-                        traitorText.classList.add('traitor-text');
-                        traitorText.textContent = 'Traitor';
-                        statusOverlay.appendChild(traitorText);
-                        statusOverlay.classList.add('traitor-overlay');
-                    } else if (newStatus === 'murdered') {
-                        const cross = document.createElement('div');
-                        cross.classList.add('status-cross');
-                        statusOverlay.appendChild(cross);
-                    }
-
-                    // Trigger animation
-                    setTimeout(() => {
-                        photoContainer.style.opacity = 1;
-                        img.style.filter = newStatus === 'normal' ? '' : 'grayscale(100%) brightness(50%)';
-                    }, 50);
-
-                }, delay);
-            }
-        }
-
-        // Start animations after 1 second
-        setTimeout(() => {
-            for (const name in photoData) {
-                if (photoData[name].delay !== undefined) {
-                    animateStatusChange(name, photoData[name].status, photoData[name].delay);
-                }
-            }
-        }, 1000);
-
-        // Fade in the image
-        setTimeout(() => {
-            document.getElementById('imageContainer').style.opacity = '1';
-        }, 100);
-
-        // Mute/Unmute functionality
-        muteButton.addEventListener('click', function() {
-            isMuted = !isMuted;
-            audio.muted = isMuted;
-            muteButton.textContent = 'Unmute' : 'Mute';
+            photoGallery.appendChild(photoContainer);
         });
 
-        // Start audio play on user interaction
-        function initAudio() {
-            // Play audio with fade-in effect
-            audio.volume = 0;
-            audio.play().then(() => {
-                // Update button text to 'Mute' after first interaction
-                muteButton.textContent = 'Mute';
 
-                // Fade in audio over 2 seconds
-                let volume = 0;
-                const fadeInterval = setInterval(() => {
-                    volume += 0.05;
-                    if (volume >= 1) {
-                        clearInterval(fadeInterval);
-                        volume = 1;
-                    }
-                    audio.volume = volume;
-                }, 100);
-            }).catch((error) => {
-                console.log("Audio play failed:", error);
-            });
+    // Fade in the image
+    setTimeout(() => {
+        document.getElementById('imageContainer').style.opacity = '1';
+    }, 100);
 
-            // Remove event listeners after first interaction
-            document.removeEventListener('click', initAudio);
-            document.removeEventListener('touchstart', initAudio);
-        }
-
-        // Set up event listeners for user interaction to start audio
-        document.addEventListener('click', initAudio);
-        document.addEventListener('touchstart', initAudio);
+    // Mute/Unmute functionality
+    muteButton.addEventListener('click', function() {
+        isMuted = !isMuted;
+        audio.muted = isMuted;
+        muteButton.textContent = isMuted ? 'Unmute' : 'Mute';
     });
-</script>
+
+    // Start audio play on user interaction
+    function initAudio() {
+        // Play audio with fade-in effect
+        audio.volume = 0;
+        audio.play().then(() => {
+            // Update button text to 'Mute' after first interaction
+            muteButton.textContent = 'Mute';
+            
+            // Fade in audio over 2 seconds
+            let volume = 0;
+            const fadeInterval = setInterval(() => {
+                volume += 0.05;
+                if (volume >= 1) {
+                    clearInterval(fadeInterval);
+                    volume = 1;
+                }
+                audio.volume = volume;
+            }, 100);
+        }).catch((error) => {
+            console.log("Audio play failed:", error);
+        });
+        
+        // Remove event listeners after first interaction
+        document.removeEventListener('click', initAudio);
+        document.removeEventListener('touchstart', initAudio);
+    }
+    
+    // Set up event listeners for user interaction to start audio
+    document.addEventListener('click', initAudio);
+    document.addEventListener('touchstart', initAudio);
+});
+    </script>
     <script src="script.js"></script>
 </body>
-
 </html>
