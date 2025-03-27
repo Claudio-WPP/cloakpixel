@@ -324,6 +324,12 @@
         <source src="key-art-audio.wav" type="audio/wav">
     </audio>
 
+Okay, let's refactor the code to combine the photoStatus and animation timing information into a single data structure. This will make it easier to manage and update the photo statuses and their corresponding animation delays.
+
+Here's the updated JavaScript:
+
+JavaScript
+
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const audio = document.getElementById('backgroundAudio');
