@@ -63,16 +63,6 @@
     filter: grayscale(100%); /* Black and white */
 }
 
-         /* Animation styles */
-        .status-change-animation {
-            animation: statusChange 2s ease-in-out forwards;
-        }
-
-        @keyframes statusChange {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
-        }
-        
 .traitor-overlay {
     position: absolute;
     top: 0;
@@ -322,127 +312,106 @@
         'Claudio' // Added Claudio at the end as requested
     ];
 
-   // Track status of photos with animation delays
-            const photoStatus = {
-                'Claudio': { status: 'normal', delay: 0 },
-                'Gavin': { status: 'banished', delay: Math.random() * 5000 },
-                'Andre': { status: 'banished', delay: Math.random() * 5000 },
-                'Glenn': { status: 'murdered', delay: Math.random() * 5000 },
-                'Georgia': { status: 'murdered', delay: Math.random() * 5000 },
-                'Frank': { status: 'traitor', delay: Math.random() * 5000 },
-                'Alex': { status: 'banished', delay: Math.random() * 5000 },
-                'Claire': { status: 'murdered', delay: Math.random() * 5000 },
-                'Anusha': { status: 'murdered', delay: Math.random() * 5000 },
-                // Add other statuses as needed
-                // Example: 'Andre': { status: 'murdered', delay: Math.random() * 5000 },
-                // Example: 'Anju': { status: 'banished', delay: Math.random() * 5000 },
-                // Example: 'Gavin': { status: 'traitor', delay: Math.random() * 5000 }
-            };
+    // Track status of photos (can be updated dynamically)
+    const photoStatus = {
+        'Claudio': 'normal',
+        'Gavin': 'banished',
+        'Andre': 'banished',
+        'Glenn': 'murdered',
+        'Georgia': 'murdered',
+        'Frank': 'traitor',
+        'Alex': 'banished',
+        // Add other statuses as needed
+        // Example: 'Andre': 'murdered',
+        // Example: 'Anju': 'banished',
+        // Example: 'Gavin': 'traitor'
+    };
 
     // Create photo gallery
-            photos.forEach(name => {
-                const photoContainer = document.createElement('div');
-                photoContainer.classList.add('photo-container');
+        photos.forEach(name => {
+            const photoContainer = document.createElement('div');
+            photoContainer.classList.add('photo-container');
 
-                const status = photoStatus[name].status;
-                if (status !== 'normal') {
-                    photoContainer.classList.add(status);
-                }
-
-                const img = document.createElement('img');
-                img.src = `Photo Wall/${name}.jpg`;
-                img.alt = name;
-                img.classList.add('photo-image');
-
-                const statusOverlay = document.createElement('div');
-                statusOverlay.classList.add('status-overlay');
-
-                if (status !== 'normal') {
-                    if (status === 'banished') {
-                        const cross = document.createElement('div');
-                        cross.classList.add('status-cross', 'banished-cross');
-                        statusOverlay.appendChild(cross);
-                    } else if (status === 'traitor') {
-                        const traitorText = document.createElement('div');
-                        traitorText.classList.add('traitor-text');
-                        traitorText.textContent = 'Traitor';
-                        statusOverlay.appendChild(traitorText);
-                        statusOverlay.classList.add('traitor-overlay');
-                    } else {
-                        const cross = document.createElement('div');
-                        cross.classList.add('status-cross');
-                        statusOverlay.appendChild(cross);
-                    }
-                }
-
-                photoContainer.appendChild(img);
-                photoContainer.appendChild(statusOverlay);
-                photoGallery.appendChild(photoContainer);
-
-                if(photoStatus[name].delay > 0){
-                    const delayDisplay = document.createElement('div');
-                    delayDisplay.textContent = `Delay: ${(photoStatus[name].delay / 1000).toFixed(2)}s`;
-                    photoContainer.appendChild(delayDisplay);
-                }
-            });
-
-            // Fade in the image
-            setTimeout(() => {
-                document.getElementById('imageContainer').style.opacity = '1';
-            }, 100);
-
-            // Mute/Unmute functionality
-            muteButton.addEventListener('click', function() {
-                isMuted = !isMuted;
-                audio.muted = isMuted;
-                muteButton.textContent = isMuted ? 'Unmute' : 'Mute';
-            });
-
-            // Start audio play on user interaction
-            function initAudio() {
-                // Play audio with fade-in effect
-                audio.volume = 0;
-                audio.play().then(() => {
-                    // Update button text to 'Mute' after first interaction
-                    muteButton.textContent = 'Mute';
-
-                    // Fade in audio over 2 seconds
-                    let volume = 0;
-                    const fadeInterval = setInterval(() => {
-                        volume += 0.05;
-                        if (volume >= 1) {
-                            clearInterval(fadeInterval);
-                            volume = 1;
-                        }
-                        audio.volume = volume;
-                    }, 100);
-                }).catch((error) => {
-                    console.log("Audio play failed:", error);
-                });
-
-                // Remove event listeners after first interaction
-                document.removeEventListener('click', initAudio);
-                document.removeEventListener('touchstart', initAudio);
+            const status = photoStatus[name] || 'normal';
+            if (status !== 'normal') {
+                photoContainer.classList.add(status);
             }
 
-            // Set up event listeners for user interaction to start audio
-            document.addEventListener('click', initAudio);
-            document.addEventListener('touchstart', initAudio);
+            const img = document.createElement('img');
+            img.src = `Photo Wall/${name}.jpg`;
+            img.alt = name;
+            img.classList.add('photo-image');
 
-            // Animate status changes with unique times
-            setTimeout(() => {
-                Object.keys(photoStatus).forEach(name => {
-                    if (photoStatus[name].status !== 'normal') {
-                        const photoContainer = Array.from(photoGallery.children).find(container => container.querySelector('img').alt === name);
-                        if (photoContainer) {
-                            setTimeout(() => {
-                                photoContainer.querySelector('.status-overlay').classList.add('status-change-animation');
-                            }, photoStatus[name].delay);
-                        }
-                    }
-                });
-            }, 1000); // Start animations 1 second after page load
+            const statusOverlay = document.createElement('div');
+            statusOverlay.classList.add('status-overlay');
+
+            if (status !== 'normal') {
+                if (status === 'banished') {
+                    const cross = document.createElement('div');
+                    cross.classList.add('status-cross', 'banished-cross');
+                    statusOverlay.appendChild(cross);
+                } else if (status === 'traitor') {
+                    const traitorText = document.createElement('div');
+                    traitorText.classList.add('traitor-text');
+                    traitorText.textContent = 'Traitor';
+                    statusOverlay.appendChild(traitorText);
+                    statusOverlay.classList.add('traitor-overlay');
+                } else {
+                    const cross = document.createElement('div');
+                    cross.classList.add('status-cross');
+                    statusOverlay.appendChild(cross);
+                }
+            }
+
+            photoContainer.appendChild(img);
+            photoContainer.appendChild(statusOverlay);
+            photoGallery.appendChild(photoContainer);
         });
+
+
+    // Fade in the image
+    setTimeout(() => {
+        document.getElementById('imageContainer').style.opacity = '1';
+    }, 100);
+
+    // Mute/Unmute functionality
+    muteButton.addEventListener('click', function() {
+        isMuted = !isMuted;
+        audio.muted = isMuted;
+        muteButton.textContent = isMuted ? 'Unmute' : 'Mute';
+    });
+
+    // Start audio play on user interaction
+    function initAudio() {
+        // Play audio with fade-in effect
+        audio.volume = 0;
+        audio.play().then(() => {
+            // Update button text to 'Mute' after first interaction
+            muteButton.textContent = 'Mute';
+            
+            // Fade in audio over 2 seconds
+            let volume = 0;
+            const fadeInterval = setInterval(() => {
+                volume += 0.05;
+                if (volume >= 1) {
+                    clearInterval(fadeInterval);
+                    volume = 1;
+                }
+                audio.volume = volume;
+            }, 100);
+        }).catch((error) => {
+            console.log("Audio play failed:", error);
+        });
+        
+        // Remove event listeners after first interaction
+        document.removeEventListener('click', initAudio);
+        document.removeEventListener('touchstart', initAudio);
+    }
+    
+    // Set up event listeners for user interaction to start audio
+    document.addEventListener('click', initAudio);
+    document.addEventListener('touchstart', initAudio);
+});
     </script>
     <script src="script.js"></script>
 </body>
