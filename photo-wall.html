@@ -395,22 +395,26 @@
                                     cross.classList.add('status-cross', 'banished-cross');
                                     statusOverlay.appendChild(cross);
                                 } else if (status === 'traitor') {
-                                    const traitorText = document.createElement('div');
-                                    traitorText.classList.add('traitor-text');
-                                    traitorText.textContent = 'Traitor';
-                                    statusOverlay.appendChild(traitorText);
-                                    statusOverlay.classList.add('traitor-overlay');
-                                    photoContainer.style.cursor = "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"32\" height=\"32\" viewBox=\"0 0 32 32\"><path d=\"M27.3 4.7l-4.2 4.2c.4 1.3.6 2.7.6 4.2 0 4.1-3.3 7.4-7.4 7.4-1.5 0-2.9-.4-4.2-1.1l-4.2 4.2c2.2 1.8 5 2.9 8.4 2.9 6.1 0 11-4.9 11-11 0-3.4-1.2-6.2-2.9-8.4zM8.7 19.3c-2.3 0-4.2-1.9-4.2-4.2 0-2.3 1.9-4.2 4.2-4.2 2.3 0 4.2 1.9 4.2 4.2 0 2.3-1.9 4.2-4.2 4.2z\" fill=\"white\"/></svg>') 16 16, pointer";
-                                    photoContainer.addEventListener('click', function() {
-                                        const tomato = document.createElement('img');
-                                        tomato.src = 'tomato.png';
-                                        tomato.style.position = 'absolute';
-                                        tomato.style.width = '50px';
-                                        tomato.style.top = Math.random() * window.innerHeight + 'px';
-                                        tomato.style.left = Math.random() * window.innerWidth + 'px';
-                                        document.body.appendChild(tomato);
-                                        setTimeout(() => tomato.remove(), 2000);
-                                    });
+                                    if (!photoContainer.querySelector('.traitor-text')) {
+                                        const traitorText = document.createElement('div');
+                                        traitorText.classList.add('traitor-text');
+                                        traitorText.textContent = 'Traitor';
+                                        statusOverlay.appendChild(traitorText);
+                                        statusOverlay.classList.add('traitor-overlay');
+                                        if (document.querySelector('.filter-toggle button.active').dataset.filter === 'traitor') {
+                                            photoContainer.style.cursor = "url('cursor-hand-grab-svgrepo-com.svg') 16 16, pointer";
+                                        }
+                                        photoContainer.addEventListener('click', function() {
+                                            const tomato = document.createElement('img');
+                                            tomato.src = 'tomato.png';
+                                            tomato.style.position = 'absolute';
+                                            tomato.style.width = '50px';
+                                            tomato.style.top = Math.random() * window.innerHeight + 'px';
+                                            tomato.style.left = Math.random() * window.innerWidth + 'px';
+                                            document.body.appendChild(tomato);
+                                            setTimeout(() => tomato.remove(), 2000);
+                                        });
+                                    }
                                 } else {
                                     const cross = document.createElement('div');
                                     cross.classList.add('status-cross');
@@ -464,6 +468,19 @@
                     this.classList.add('active');
                     createPhotoGallery(this.dataset.filter);
                     animateStatusChanges();
+                    if (this.dataset.filter === 'traitor') {
+                        document.querySelectorAll('.photo-container').forEach(container => {
+                            if (container.classList.contains('traitor')) {
+                                container.style.cursor = "url('cursor-hand-grab-svgrepo-com.svg') 16 16, pointer";
+                            } else {
+                                container.style.cursor = 'default';
+                            }
+                        });
+                    } else {
+                        document.querySelectorAll('.photo-container').forEach(container => {
+                            container.style.cursor = 'default';
+                        });
+                    }
                 });
             });
         });
