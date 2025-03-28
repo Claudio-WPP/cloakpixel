@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Schedule</title>
-    <link rel="stylesheet" href="styles.css">
     <style>
         @font-face {
             font-family: 'YaroCut';
+            /* Assuming CSS folder is relative to HTML or adjust path */
             src: url('css/YaroCut.woff') format('woff');
             font-weight: normal;
             font-style: normal;
@@ -22,7 +22,7 @@
             height: 100vh;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
+            overflow: hidden; /* Keep body overflow hidden if desired */
         }
 
         .menu-bar {
@@ -59,23 +59,90 @@
 
         .content {
             flex-grow: 1;
-            overflow-y: auto;
+            overflow-y: auto; /* Allow content scrolling */
             padding: 20px;
         }
 
+        /* --- Updated Table Styles --- */
         .schedule-table {
             width: 100%;
-            border-collapse: collapse;
+            /* Change border-collapse and add border-spacing */
+            border-collapse: separate;
+            border-spacing: 0;
             margin-top: 20px;
-            font-family: Arial, sans-serif;
+            /* Apply border-radius and overflow:hidden */
+            border-radius: 10px;
+            overflow: hidden;
+            /* Optional: Add a subtle background to the table itself */
+            /* background-color: rgba(255, 255, 255, 0.03); */
+            /* Optional: Add a border around the whole table */
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-family: Arial, sans-serif; /* Keep Arial for readability or change */
         }
 
-        .schedule-table th, .schedule-table td {
-            border: 1px solid white;
-            padding: 10px;
+        .schedule-table th,
+        .schedule-table td {
+            /* Remove individual cell borders */
+            /* border: 1px solid white; */
+            padding: 12px 15px; /* Slightly increased padding */
             text-align: center;
             color: white;
+            /* Add a subtle bottom border for row separation */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
         }
+
+        /* Header specific styles */
+        .schedule-table th {
+            background-color: rgba(255, 255, 255, 0.1); /* Header background */
+            font-weight: bold; /* Ensure header is bold */
+            font-family: 'YaroCut', sans-serif; /* Use custom font for header */
+            font-size: 1.1em; /* Slightly larger header text */
+            /* Stronger border below header */
+            border-bottom: 2px solid rgba(255, 255, 255, 0.25);
+        }
+
+        /* Body cell specific styles */
+        .schedule-table td {
+             background-color: rgba(25, 40, 75, 0.3); /* Subtle background for data cells */
+        }
+
+         /* Style for the first column (Day) - center might be fine */
+        .schedule-table td:first-child,
+        .schedule-table th:first-child {
+             font-weight: bold;
+             background-color: rgba(255, 255, 255, 0.05); /* Slightly different background for day */
+             border-right: 1px solid rgba(255, 255, 255, 0.15); /* Separator line */
+         }
+
+        /* Left-align Notes column for better readability */
+         .schedule-table td:last-child,
+         .schedule-table th:last-child {
+            text-align: left;
+         }
+
+
+        /* Remove bottom border from the last row cells */
+        .schedule-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Optional: Zebra-striping for rows */
+        /* .schedule-table tbody tr:nth-child(even) td {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+         .schedule-table tbody tr:nth-child(odd) td {
+             background-color: rgba(25, 40, 75, 0.3);
+         } */
+         /* Adjust first-child background if using zebra stripes */
+         /* .schedule-table tbody tr:nth-child(even) td:first-child {
+             background-color: rgba(255, 255, 255, 0.08);
+         }
+         .schedule-table tbody tr:nth-child(odd) td:first-child {
+             background-color: rgba(255, 255, 255, 0.05);
+         } */
+
+
+        /* --- End of Updated Table Styles --- */
 
 
         #muteButton {
@@ -90,6 +157,7 @@
             z-index: 100;
             font-family: 'YaroCut', sans-serif;
             transition: background-color 0.3s ease;
+            border-radius: 5px; /* Added subtle radius to button */
         }
 
         #muteButton:hover {
@@ -113,9 +181,18 @@
                 padding: 8px 12px;
                 font-size: 14px;
             }
+
+            /* Adjust table padding on smaller screens */
+            .schedule-table th,
+            .schedule-table td {
+                 padding: 8px 10px;
+            }
+             .schedule-table th {
+                 font-size: 1em;
+             }
         }
     </style>
-    
+
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-QJCJYMJ15J"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -123,7 +200,7 @@
         gtag('js', new Date());
         gtag('config', 'G-QJCJYMJ15J');
     </script>
-    
+
     <link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="shortcut icon" href="favicon.ico">
@@ -132,24 +209,21 @@
 </head>
 <body>
     <canvas id="crackCanvas"></canvas>
-    
-       <div class="menu-bar">
-    <a href="/cloakpixel/" id="home-link">Home</a>
-    <a href="/cloakpixel/games" id="games-link">Games</a>
-    <a href="/cloakpixel/schedule" id="schedule-link">Schedule</a>
-    <a href="/cloakpixel/photo-wall" id="photo-wall-link">Photo Wall</a>
-    <a href="/cloakpixel/game-info" id="game-info-link">Game Info</a>
-    <a href="/cloakpixel/journal" id="journal-link">Journal</a>
-</div>
+
+    <div class="menu-bar">
+        <a href="/cloakpixel/" id="home-link">Home</a>
+        <a href="/cloakpixel/games" id="games-link">Games</a>
+        <a href="/cloakpixel/schedule" id="schedule-link">Schedule</a>
+        <a href="/cloakpixel/photo-wall" id="photo-wall-link">Photo Wall</a>
+        <a href="/cloakpixel/game-info" id="game-info-link">Game Info</a>
+        <a href="/cloakpixel/journal" id="journal-link">Journal</a>
+    </div>
 
     <div class="content">
-        <p></p>
-        
-        <table class="schedule-table">
+        <p></p> <table class="schedule-table">
             <thead>
                 <tr>
-                    <th></th>
-                    <th>Session Start</th>
+                    <th>Day</th> <th>Session Start</th>
                     <th>Session End</th>
                     <th>Location</th>
                     <th>Notes</th>
@@ -225,7 +299,7 @@
                     <td>Classified</td>
                     <td>Classified</td>
                 </tr>
-                  <tr>
+                    <tr>
                     <td>12:00</td>
                     <td>12:30</td>
                     <td>Classified</td>
@@ -258,53 +332,90 @@
     <audio id="backgroundAudio" loop preload="auto">
         <source src="tick-tock.mp3" type="audio/mp3">
     </audio>
-    
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const audio = document.getElementById('backgroundAudio');
             const muteButton = document.getElementById('muteButton');
-            let isMuted = false;
+            let isMuted = true; // Start muted until interaction
+            let hasInteracted = false; // Track first interaction
+
+            // Initialize button text based on muted state
+             muteButton.textContent = 'Click Page To Enable Audio'; // Initial text
+             audio.muted = true; // Ensure audio starts muted
+
 
             // Mute/Unmute functionality
-            muteButton.addEventListener('click', function() {
-                isMuted = !isMuted;
-                audio.muted = isMuted;
-                muteButton.textContent = isMuted ? 'Unmute' : 'Mute';
+            muteButton.addEventListener('click', function(event) {
+                 // Prevent click from triggering the document listener if audio is already enabled
+                 event.stopPropagation();
+
+                 if (!hasInteracted) {
+                     initAudio(); // Initialize audio if this is the first click
+                 } else {
+                     isMuted = !isMuted;
+                     audio.muted = isMuted;
+                     muteButton.textContent = isMuted ? 'Unmute' : 'Mute';
+                 }
             });
 
-            // Start audio play on user interaction
+            // Start audio play on user interaction anywhere on the page *once*
             function initAudio() {
+                 if (hasInteracted) return; // Only run once
+                 hasInteracted = true;
+                 isMuted = false; // Unmute for playback
+                 audio.muted = false;
+
                 // Play audio with fade-in effect
                 audio.volume = 0;
                 audio.play().then(() => {
                     // Update button text to 'Mute' after first interaction
                     muteButton.textContent = 'Mute';
-                    
+
                     // Fade in audio over 2 seconds
                     let volume = 0;
                     const fadeInterval = setInterval(() => {
-                        volume += 0.05;
+                        volume += 0.05; // Adjust step for fade speed
                         if (volume >= 1) {
                             clearInterval(fadeInterval);
                             volume = 1;
                         }
-                        audio.volume = volume;
-                    }, 100);
+                        // Only set volume if not manually muted in the meantime
+                        if (!isMuted) {
+                             audio.volume = volume;
+                        } else {
+                             // If user muted during fade-in, stop fading and ensure muted
+                             clearInterval(fadeInterval);
+                             audio.volume = 0; // Or keep track of intended volume separately
+                             audio.muted = true;
+                        }
+                    }, 100); // Adjust interval timing for fade speed
                 }).catch((error) => {
                     console.log("Audio play failed:", error);
+                     // Revert state if play fails
+                     hasInteracted = false;
+                     isMuted = true;
+                     muteButton.textContent = 'Audio Failed'; // Indicate error
                 });
-                
-                // Remove event listeners after first interaction
-                document.removeEventListener('click', initAudio);
-                document.removeEventListener('touchstart', initAudio);
+
+                 // Remove the document-level listener after first interaction
+                 document.removeEventListener('click', initAudioWrapper);
+                 document.removeEventListener('touchstart', initAudioWrapper);
             }
-            
+
+             // Wrapper function to ensure the button click doesn't re-trigger document listener
+             function initAudioWrapper(event) {
+                 // Do not initialize if the click was on the mute button itself
+                 if (event.target !== muteButton) {
+                     initAudio();
+                 }
+             }
+
             // Set up event listeners for user interaction to start audio
-            document.addEventListener('click', initAudio);
-            document.addEventListener('touchstart', initAudio);
+            document.addEventListener('click', initAudioWrapper);
+            document.addEventListener('touchstart', initAudioWrapper);
         });
     </script>
-    
-    <script src="script.js"></script>
-</body>
+
+    </body>
 </html>
