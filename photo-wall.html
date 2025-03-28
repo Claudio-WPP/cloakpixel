@@ -254,14 +254,26 @@
         }
         
        .filter-container {
-        position: fixed; /* Change to fixed positioning */
-        top: 80px;      /* Adjust to the desired distance from the top */
-        background-color: transparent;
-        z-index: 9;
+        position: fixed;
+        top: 80px;
+        z-index: 10;
         width: 100%;
         display: flex;
         justify-content: center;
         padding: 10px 0;
+    }
+
+    .filter-background {
+        position: absolute;
+        top: 0;
+        left: 50%; /* Center horizontally */
+        transform: translateX(-50%); /* Center horizontally */
+        background-color: #111b34;
+        z-index: -1; /* Place behind the buttons */
+        border-radius: 5px; /* Optional: Add rounded corners */
+        padding: 10px; /* Match the padding of .filter-container */
+        display: flex;
+        justify-content: center;
     }
 
     .filter-toggle {
@@ -278,6 +290,7 @@
         cursor: pointer;
         font-family: 'YaroCut', sans-serif;
         transition: background-color 0.3s ease;
+        position: relative; /* Ensure buttons are above the background */
     }
 
     .filter-toggle button.active {
@@ -285,7 +298,7 @@
     }
 
     .filter-toggle button:hover {
-        background-color: rgba(255, 255, 255, 0.08); /* Added hover effect */
+        background-color: rgba(255, 255, 255, 0.08);
     }
     </style>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-QJCJYMJ15J"></script>
@@ -308,13 +321,13 @@
 
      <div class="content">
         <div class="filter-container">
-            <div class="filter-toggle">
-                <button data-filter="all" class="active">All</button>
-                <button data-filter="remaining">Remaining</button>
-                <button data-filter="mourning">Mourning</button>
-                <button data-filter="traitor">Traitor</button>
-            </div>
-        </div>
+    <div class="filter-background"></div> <div class="filter-toggle">
+        <button data-filter="all" class="active">All</button>
+        <button data-filter="remaining">Remaining</button>
+        <button data-filter="mourning">Mourning</button>
+        <button data-filter="traitor">Traitor</button>
+    </div>
+</div>
         <div class="photo-gallery" id="photoGallery">
         </div>
         <canvas id="crackCanvas"></canvas>
