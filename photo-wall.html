@@ -253,26 +253,36 @@
             }
         }
         
-        .filter-toggle {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
+        .filter-container {
+        position: sticky;
+        top: 80px; /* Adjust this value as needed to position it below the menu-bar */
+        background-color: #111b34; /* Match the body background */
+        z-index: 9; /* Ensure it's above the photo gallery */
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        padding: 10px 0;
+    }
 
-        .filter-toggle button {
-            background-color: rgba(0, 0, 0, 0.3);
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            margin: 0 10px;
-            cursor: pointer;
-            font-family: 'YaroCut', sans-serif;
-            transition: background-color 0.3s ease;
-        }
+    .filter-toggle {
+        display: flex;
+        justify-content: center;
+    }
 
-        .filter-toggle button.active {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
+    .filter-toggle button {
+        background-color: rgba(0, 0, 0, 0.3);
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        margin: 0 10px;
+        cursor: pointer;
+        font-family: 'YaroCut', sans-serif;
+        transition: background-color 0.3s ease;
+    }
+
+    .filter-toggle button.active {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
     </style>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-QJCJYMJ15J"></script>
     <script>
@@ -292,12 +302,14 @@
         <a href="/cloakpixel/journal" id="journal-link">Journal</a>
     </div>
 
-    <div class="content">
-        <div class="filter-toggle">
-            <button data-filter="all" class="active">All</button>
-            <button data-filter="remaining">Remaining</button>
-            <button data-filter="mourning">Mourning</button>
-            <button data-filter="traitor">Traitor</button>
+     <div class="content">
+        <div class="filter-container">
+            <div class="filter-toggle">
+                <button data-filter="all" class="active">All</button>
+                <button data-filter="remaining">Remaining</button>
+                <button data-filter="mourning">Mourning</button>
+                <button data-filter="traitor">Traitor</button>
+            </div>
         </div>
         <div class="photo-gallery" id="photoGallery">
         </div>
