@@ -492,7 +492,7 @@
     document.addEventListener("DOMContentLoaded", function() {
         const audio = document.getElementById('backgroundAudio');
         const muteButton = document.getElementById('muteButton');
-        const photoGallery = document.getElementById('photoGallery');
+        const rainContainer = document.querySelector('.rain-container');
         let isMuted = false;
 
         const photos = [
@@ -523,7 +523,8 @@
             'Tim': { status: 'murdered', delay: 5500 }
         };
 
-        const rainContainer = document.querySelector('.rain-container');
+        // Declare photoGallery outside of DOMContentLoaded
+        const photoGallery = document.getElementById('photoGallery');
 
         function createPhotoGallery(filter = 'all') {
             photoGallery.innerHTML = '';
