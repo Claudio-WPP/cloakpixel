@@ -488,215 +488,216 @@
         <source src="key-art-audio.wav" type="audio/wav">
     </audio>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const audio = document.getElementById('backgroundAudio');
-        const muteButton = document.getElementById('muteButton');
-        const photoGallery = document.getElementById('photoGallery');
-        let isMuted = false;
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const audio = document.getElementById('backgroundAudio');
+            const muteButton = document.getElementById('muteButton');
+            const photoGallery = document.getElementById('photoGallery');
+            let isMuted = false;
 
-        const photos = [
-            'Alex', 'Andre', 'Anju', 'Anusha', 'Callum', 'Charlotte', 'Claire',
-            'Ellie', 'Fatima', 'Frank', 'Gavin', 'Georgia', 'Glenn',
-            'Isobel', 'Jett', 'Joe', 'Lauren', 'Lisa', 'Matt',
-            'Mehnaj', 'Mihaela', 'Oana', 'Rita', 'Santiago', 'Shreya', 'Temitope', 'Tim'
-        ];
+            const photos = [
+                'Alex', 'Andre', 'Anju', 'Anusha', 'Callum', 'Charlotte', 'Claire',
+                'Ellie', 'Fatima', 'Frank', 'Gavin', 'Georgia', 'Glenn',
+                'Isobel', 'Jett', 'Joe', 'Lauren', 'Lisa', 'Matt',
+                'Mehnaj', 'Mihaela', 'Oana', 'Rita', 'Santiago', 'Shreya', 'Temitope', 'Tim'
+            ];
 
-        const photoStatus = {
-            'Gavin': { status: 'banished', delay: 500 },
-            'Andre': { status: 'banished', delay: 500 },
-            'Glenn': { status: 'murdered', delay: 1000 },
-            'Georgia': { status: 'murdered', delay: 1000 },
-            'Frank': { status: 'traitor', delay: 1500 },
-            'Alex': { status: 'banished', delay: 1500 },
-            'Claire': { status: 'murdered', delay: 2000 },
-            'Anusha': { status: 'murdered', delay: 2000 },
-            'Oana': { status: 'banished', delay: 2500 },
-            'Santiago': { status: 'banished', delay: 2500 },
-            'Isobel': { status: 'murdered', delay: 3000 },
-            'Shreya': { status: 'murdered', delay: 3500 },
-            'Temitope': { status: 'traitor', delay: 4000 },
-            'Charlotte': { status: 'banished', delay: 4500 },
-            'Joe': { status: 'traitor', delay: 4500 },
-            'Callum': { status: 'banished', delay: 4500 },
-            'Fatima': { status: 'murdered', delay: 5000 },
-            'Tim': { status: 'murdered', delay: 5500 }
-        };
+            const photoStatus = {
+    'Gavin': { status: 'banished', delay: 500 },
+    'Andre': { status: 'banished', delay: 500 },
+    'Glenn': { status: 'murdered', delay: 1000 },
+    'Georgia': { status: 'murdered', delay: 1000 },
+    'Frank': { status: 'traitor', delay: 1500 },
+    'Alex': { status: 'banished', delay: 1500 },
+    'Claire': { status: 'murdered', delay: 2000 },
+    'Anusha': { status: 'murdered', delay: 2000 },
+    'Oana': { status: 'banished', delay: 2500 },
+    'Santiago': { status: 'banished', delay: 2500 },
+    'Isobel': { status: 'murdered', delay: 3000 },
+    'Shreya': { status: 'murdered', delay: 3500 },
+    'Temitope': { status: 'traitor', delay: 4000 },
+    'Charlotte': { status: 'banished', delay: 4500 },
+    'Joe': { status: 'traitor', delay: 4500 },
+    'Callum': { status: 'banished', delay: 4500 },
+    'Fatima': { status: 'murdered', delay: 5000 },
+    'Tim': { status: 'murdered', delay: 5500 }
+};
+            };
 
-        const rainContainer = document.querySelector('.rain-container');
+            const rainContainer = document.querySelector('.rain-container');
 
-        function createPhotoGallery(filter = 'all') {
-            photoGallery.innerHTML = '';
-            photos.forEach(name => {
-                const photoContainer = document.createElement('div');
-                photoContainer.classList.add('photo-container');
+            function createPhotoGallery(filter = 'all') {
+                photoGallery.innerHTML = '';
+                photos.forEach(name => {
+                    const photoContainer = document.createElement('div');
+                    photoContainer.classList.add('photo-container');
 
-                const img = document.createElement('img');
-                img.src = `Photo Wall/${name}.jpg`;
-                img.alt = name;
-                img.classList.add('photo-image');
+                    const img = document.createElement('img');
+                    img.src = `Photo Wall/${name}.jpg`;
+                    img.alt = name;
+                    img.classList.add('photo-image');
 
-                const statusOverlay = document.createElement('div');
-                statusOverlay.classList.add('status-overlay');
+                    const statusOverlay = document.createElement('div');
+                    statusOverlay.classList.add('status-overlay');
 
-                photoContainer.appendChild(img);
-                photoContainer.appendChild(statusOverlay);
+                    photoContainer.appendChild(img);
+                    photoContainer.appendChild(statusOverlay);
 
-                const status = photoStatus[name] ? photoStatus[name].status : 'normal';
+                    const status = photoStatus[name] ? photoStatus[name].status : 'normal';
 
-                if (filter === 'all' ||
-                    (filter === 'remaining' && status === 'normal') ||
-                    (filter === 'mourning' && status === 'murdered') ||
-                    (filter === 'traitor' && status === 'traitor')) {
-                    photoGallery.appendChild(photoContainer);
-                }
-            });
-
-            // Show/hide rain based on filter
-            if (filter === 'mourning') {
-                rainContainer.style.display = 'block';
-                makeItRain();
-            } else {
-                rainContainer.style.display = 'none';
-                $('.rain').empty();
-                // Clear rain effect when not mourning
-            }
-        }
-
-        function animateStatusChanges() {
-            Object.entries(photoStatus).forEach(([name, {
-                status,
-                delay
-            }]) => {
-                if (status !== 'normal') {
-                    setTimeout(() => {
-                        const photoContainer = Array.from(photoGallery.children).find(
-                            container => container.querySelector('img').alt === name
-                        );
-
-                        if (photoContainer) {
-                            photoContainer.classList.add(status);
-                            const statusOverlay = photoContainer.querySelector('.status-overlay');
-
-                            if (status === 'banished') {
-                                const cross = document.createElement('div');
-                                cross.classList.add('status-cross', 'banished-cross');
-                                statusOverlay.appendChild(cross);
-                            } else if (status === 'traitor') {
-                                if (!photoContainer.querySelector('.traitor-text')) {
-                                    const traitorText = document.createElement('div');
-                                    traitorText.classList.add('traitor-text');
-                                    traitorText.textContent = 'Traitor';
-                                    statusOverlay.appendChild(traitorText);
-                                    statusOverlay.classList.add('traitor-overlay');
-                                    if (document.querySelector('.filter-toggle button.active').dataset.filter === 'traitor') {
-                                        photoContainer.style.cursor = "url('cursor-hand-grab-svgrepo-com.svg') 16 16, pointer";
-                                    }
-                                    photoContainer.addEventListener('click', function() {
-                                        const tomato = document.createElement('img');
-                                        tomato.src = 'tomato.png';
-                                        tomato.style.position = 'absolute';
-                                        tomato.style.width = '50px';
-                                        tomato.style.top = Math.random() * window.innerHeight + 'px';
-                                        tomato.style.left = Math.random() * window.innerWidth + 'px';
-                                        document.body.appendChild(tomato);
-                                        setTimeout(() => tomato.remove(), 2000);
-                                    });
-                                }
-                            } else {
-                                const cross = document.createElement('div');
-                                cross.classList.add('status-cross');
-                                statusOverlay.appendChild(cross);
-                            }
-                        }
-                    }, delay + 1000);
-                }
-            });
-        }
-
-        setTimeout(() => {
-            document.getElementById('imageContainer').style.opacity = '1';
-        }, 100);
-
-        createPhotoGallery('all');
-        animateStatusChanges();
-
-        muteButton.addEventListener('click', function() {
-            isMuted = !isMuted;
-            audio.muted = isMuted;
-            muteButton.textContent = isMuted ? 'Unmute' : 'Mute';
-        });
-
-        function initAudio() {
-            audio.volume = 0;
-            audio.play().then(() => {
-                muteButton.textContent = 'Mute';
-                let volume = 0;
-                const fadeInterval = setInterval(() => {
-                    volume += 0.05;
-                    if (volume >= 1) {
-                        clearInterval(fadeInterval);
-                        volume = 1;
+                    if (filter === 'all' ||
+                        (filter === 'remaining' && status === 'normal') ||
+                        (filter === 'mourning' && status === 'murdered') ||
+                        (filter === 'traitor' && status === 'traitor')) {
+                        photoGallery.appendChild(photoContainer);
                     }
-                    audio.volume = volume;
-                }, 100);
-            }).catch((error) => {
-                console.log("Audio play failed:", error);
-            });
-            document.removeEventListener('click', initAudio);
-            document.removeEventListener('touchstart', initAudio);
-        }
+                });
 
-        document.addEventListener('click', initAudio);
-        document.addEventListener('touchstart', initAudio);
-
-        document.querySelectorAll('.filter-toggle button').forEach(button => {
-            button.addEventListener('click', function() {
-                document.querySelectorAll('.filter-toggle button').forEach(btn => btn.classList.remove('active'));
-                this.classList.add('active');
-                createPhotoGallery(this.dataset.filter);
-                animateStatusChanges();
-                if (this.dataset.filter === 'traitor') {
-                    document.querySelectorAll('.photo-container').forEach(container => {
-                        if (container.classList.contains('traitor')) {
-                            container.style.cursor = "url('cursor-hand-grab-svgrepo-com.svg') 16 16, pointer";
-                        } else {
-                            container.style.cursor = 'default';
-                        }
-                    });
+                // Show/hide rain based on filter
+                if (filter === 'mourning') {
+                    rainContainer.style.display = 'block';
+                    makeItRain();
                 } else {
-                    document.querySelectorAll('.photo-container').forEach(container => {
-                        container.style.cursor = 'default';
-                    });
+                    rainContainer.style.display = 'none';
+                    $('.rain').empty();
+                    // Clear rain effect when not mourning
                 }
+            }
+
+            function animateStatusChanges() {
+                Object.entries(photoStatus).forEach(([name, {
+                    status,
+                    delay
+                }]) => {
+                    if (status !== 'normal') {
+                        setTimeout(() => {
+                            const photoContainer = Array.from(photoGallery.children).find(
+                                container => container.querySelector('img').alt === name
+                            );
+
+                            if (photoContainer) {
+                                photoContainer.classList.add(status);
+                                const statusOverlay = photoContainer.querySelector('.status-overlay');
+
+                                if (status === 'banished') {
+                                    const cross = document.createElement('div');
+                                    cross.classList.add('status-cross', 'banished-cross');
+                                    statusOverlay.appendChild(cross);
+                                } else if (status === 'traitor') {
+                                    if (!photoContainer.querySelector('.traitor-text')) {
+                                        const traitorText = document.createElement('div');
+                                        traitorText.classList.add('traitor-text');
+                                        traitorText.textContent = 'Traitor';
+                                        statusOverlay.appendChild(traitorText);
+                                        statusOverlay.classList.add('traitor-overlay');
+                                        if (document.querySelector('.filter-toggle button.active').dataset.filter === 'traitor') {
+                                            photoContainer.style.cursor = "url('cursor-hand-grab-svgrepo-com.svg') 16 16, pointer";
+                                        }
+                                        photoContainer.addEventListener('click', function() {
+                                            const tomato = document.createElement('img');
+                                            tomato.src = 'tomato.png';
+                                            tomato.style.position = 'absolute';
+                                            tomato.style.width = '50px';
+                                            tomato.style.top = Math.random() * window.innerHeight + 'px';
+                                            tomato.style.left = Math.random() * window.innerWidth + 'px';
+                                            document.body.appendChild(tomato);
+                                            setTimeout(() => tomato.remove(), 2000);
+                                        });
+                                    }
+                                } else {
+                                    const cross = document.createElement('div');
+                                    cross.classList.add('status-cross');
+                                    statusOverlay.appendChild(cross);
+                                }
+                            }
+                        }, delay + 1000);
+                    }
+                });
+            }
+
+            setTimeout(() => {
+                document.getElementById('imageContainer').style.opacity = '1';
+            }, 100);
+
+            createPhotoGallery('all');
+            animateStatusChanges();
+
+            muteButton.addEventListener('click', function() {
+                isMuted = !isMuted;
+                audio.muted = isMuted;
+                muteButton.textContent = isMuted ? 'Unmute' : 'Mute';
+            });
+
+            function initAudio() {
+                audio.volume = 0;
+                audio.play().then(() => {
+                    muteButton.textContent = 'Mute';
+                    let volume = 0;
+                    const fadeInterval = setInterval(() => {
+                        volume += 0.05;
+                        if (volume >= 1) {
+                            clearInterval(fadeInterval);
+                            volume = 1;
+                        }
+                        audio.volume = volume;
+                    }, 100);
+                }).catch((error) => {
+                    console.log("Audio play failed:", error);
+                });
+                document.removeEventListener('click', initAudio);
+                document.removeEventListener('touchstart', initAudio);
+            }
+
+            document.addEventListener('click', initAudio);
+            document.addEventListener('touchstart', initAudio);
+
+            document.querySelectorAll('.filter-toggle button').forEach(button => {
+                button.addEventListener('click', function() {
+                    document.querySelectorAll('.filter-toggle button').forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    createPhotoGallery(this.dataset.filter);
+                    animateStatusChanges();
+                    if (this.dataset.filter === 'traitor') {
+                        document.querySelectorAll('.photo-container').forEach(container => {
+                            if (container.classList.contains('traitor')) {
+                                container.style.cursor = "url('cursor-hand-grab-svgrepo-com.svg') 16 16, pointer";
+                            } else {
+                                container.style.cursor = 'default';
+                            }
+                        });
+                    } else {
+                        document.querySelectorAll('.photo-container').forEach(container => {
+                            container.style.cursor = 'default';
+                        });
+                    }
+                });
             });
         });
-    });
 
-    var makeItRain = function() {
-        //clear out everything
-        $('.rain').empty();
+        var makeItRain = function() {
+            //clear out everything
+            $('.rain').empty();
 
-        var increment = 0;
-        var drops = "";
-        var backDrops = "";
+            var increment = 0;
+            var drops = "";
+            var backDrops = "";
 
-        while (increment < 100) {
-            //couple random numbers to use for various randomizations
-            //random number between 98 and 1
-            var randoHundo = (Math.floor(Math.random() * (98 - 1 + 1) + 1));
-            //random number between 5 and 2
-            var randoFiver = (Math.floor(Math.random() * (5 - 2 + 1) + 2));
-            //increment
-            increment += randoFiver;
-            //add in a new raindrop with various randomizations to certain CSS properties
-            drops += '<div class="drop" style="left: ' + increment + '%; bottom: ' + (randoFiver + randoFiver - 1 + 100) + '%; animation-delay: 0.' + randoHundo + 's; animation-duration: 0.5' + randoHundo + 's;"><div class="stem" style="animation-delay: 0.' + randoHundo + 's; animation-duration: 0.5' + randoHundo + 's;"></div><div class="splat" style="animation-delay: 0.' + randoHundo + 's; animation-duration: 0.5' + randoHundo + 's;"></div></div>';
-            backDrops += '<div class="drop" style="right: ' + increment + '%; bottom: ' + (randoFiver + randoFiver - 1 + 100) + '%; animation-delay: 0.' + randoHundo + 's; animation-duration: 0.5' + randoHundo + 's;"><div class="stem" style="animation-delay: 0.' + randoHundo + 's; animation-duration: 0.5' + randoHundo + 's;"></div><div class="splat" style="animation-delay: 0.' + randoHundo + 's; animation-duration: 0.5' + randoHundo + 's;"></div></div>';
+            while (increment < 100) {
+                //couple random numbers to use for various randomizations
+                //random number between 98 and 1
+                var randoHundo = (Math.floor(Math.random() * (98 - 1 + 1) + 1));
+                //random number between 5 and 2
+                var randoFiver = (Math.floor(Math.random() * (5 - 2 + 1) + 2));
+                //increment
+                increment += randoFiver;
+                //add in a new raindrop with various randomizations to certain CSS properties
+                drops += '<div class="drop" style="left: ' + increment + '%; bottom: ' + (randoFiver + randoFiver - 1 + 100) + '%; animation-delay: 0.' + randoHundo + 's; animation-duration: 0.5' + randoHundo + 's;"><div class="stem" style="animation-delay: 0.' + randoHundo + 's; animation-duration: 0.5' + randoHundo + 's;"></div><div class="splat" style="animation-delay: 0.' + randoHundo + 's; animation-duration: 0.5' + randoHundo + 's;"></div></div>';
+                backDrops += '<div class="drop" style="right: ' + increment + '%; bottom: ' + (randoFiver + randoFiver - 1 + 100) + '%; animation-delay: 0.' + randoHundo + 's; animation-duration: 0.5' + randoHundo + 's;"><div class="stem" style="animation-delay: 0.' + randoHundo + 's; animation-duration: 0.5' + randoHundo + 's;"></div><div class="splat" style="animation-delay: 0.' + randoHundo + 's; animation-duration: 0.5' + randoHundo + 's;"></div></div>';
+            }
+
+            $('.rain.front-row').append(drops);
+            $('.rain.back-row').append(backDrops);
         }
-
-        $('.rain.front-row').append(drops);
-        $('.rain.back-row').append(backDrops);
-    }
     </script>
     <script src="script.js"></script>
 </body>
