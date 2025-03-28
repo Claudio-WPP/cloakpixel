@@ -254,10 +254,14 @@
         }
         
         .filter-toggle {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    position: fixed; /* Added */
+    top: 60px; /* Adjust this value as needed to position it correctly */
+    width: 100%; /* Ensure it spans the width of the container */
+    z-index: 10; /* Make sure it's above the gallery */
+}
 
         .filter-toggle button {
             background-color: rgba(0, 0, 0, 0.3);
@@ -273,6 +277,60 @@
         .filter-toggle button.active {
             background-color: rgba(255, 255, 255, 0.2);
         }
+
+        .filter-toggle input[type="radio"] {
+    display: none; /* Hide the actual radio buttons */
+}
+
+.filter-toggle label {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 0 5px;
+    cursor: pointer;
+    font-family: 'YaroCut', sans-serif;
+    position: relative;
+    transition: color 0.3s ease;
+    color: white; /* Default color */
+}
+
+.filter-toggle label:hover {
+    color: #a0a0a0;
+}
+
+.filter-toggle label::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: 100%;
+    height: 2px;
+    background-color: rgba(255, 255, 255, 0.3); /* Track color */
+    z-index: -1;
+}
+
+.filter-toggle label::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: white; /* Thumb color */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.filter-toggle input[type="radio"]:checked + label {
+    color: white; /* Active color */
+}
+
+.filter-toggle input[type="radio"]:checked + label::after {
+    transform: translateY(-50%) translateX(calc(100% - 20px));
+    background-color: rgba(255, 255, 255, 0.8); /* Active thumb color */
+}
     </style>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-QJCJYMJ15J"></script>
     <script>
@@ -294,11 +352,18 @@
 
     <div class="content">
         <div class="filter-toggle">
-            <button data-filter="all" class="active">All</button>
-            <button data-filter="remaining">Remaining</button>
-            <button data-filter="mourning">Mourning</button>
-            <button data-filter="traitor">Traitor</button>
-        </div>
+    <input type="radio" name="filter" id="filter-all" value="all" checked>
+    <label for="filter-all">All</label>
+
+    <input type="radio" name="filter" id="filter-remaining" value="remaining">
+    <label for="filter-remaining">Remaining</label>
+
+    <input type="radio" name="filter" id="filter-mourning" value="mourning">
+    <label for="filter-mourning">Mourning</label>
+
+    <input type="radio" name="filter" id="filter-traitor" value="traitor">
+    <label for="filter-traitor">Traitor</label>
+</div>
         <div class="photo-gallery" id="photoGallery">
         </div>
         <canvas id="crackCanvas"></canvas>
@@ -462,27 +527,25 @@
             document.addEventListener('click', initAudio);
             document.addEventListener('touchstart', initAudio);
 
-            document.querySelectorAll('.filter-toggle button').forEach(button => {
-                button.addEventListener('click', function() {
-                    document.querySelectorAll('.filter-toggle button').forEach(btn => btn.classList.remove('active'));
-                    this.classList.add('active');
-                    createPhotoGallery(this.dataset.filter);
-                    animateStatusChanges();
-                    if (this.dataset.filter === 'traitor') {
-                        document.querySelectorAll('.photo-container').forEach(container => {
-                            if (container.classList.contains('traitor')) {
-                                container.style.cursor = "url('cursor-hand-grab-svgrepo-com.svg') 16 16, pointer";
-                            } else {
-                                container.style.cursor = 'default';
-                            }
-                        });
-                    } else {
-                        document.querySelectorAll('.photo-container').forEach(container => {
-                            container.style.cursor = 'default';
-                        });
-                    }
-                });
+            document.querySelectorAll('.filter-toggle input[type="radio"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        createPhotoGallery(this.value);
+        animateStatusChanges();
+        if (this.value === 'traitor') {
+            document.querySelectorAll('.photo-container').forEach(container => {
+                if (container.classList.contains('traitor')) {
+                    container.style.cursor = "url('cursor-hand-grab-svgrepo-com.svg') 16 16, pointer";
+                } else {
+                    container.style.cursor = 'default';
+                }
             });
+        } else {
+            document.querySelectorAll('.photo-container').forEach(container => {
+                container.style.cursor = 'default';
+            });
+        }
+    });
+});
         });
     </script>
     <script src="script.js"></script>
