@@ -253,11 +253,11 @@
             }
         }
         
-        .filter-container {
-        position: sticky;
-        top: 80px; /* Adjust this value as needed to position it below the menu-bar */
-        background-color: #111b34; /* Match the body background */
-        z-index: 9; /* Ensure it's above the photo gallery */
+       .filter-container {
+        position: fixed; /* Change to fixed positioning */
+        top: 80px;      /* Adjust to the desired distance from the top */
+        background-color: transparent;
+        z-index: 9;
         width: 100%;
         display: flex;
         justify-content: center;
@@ -282,6 +282,10 @@
 
     .filter-toggle button.active {
         background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .filter-toggle button:hover {
+        background-color: rgba(255, 255, 255, 0.08); /* Added hover effect */
     }
     </style>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-QJCJYMJ15J"></script>
