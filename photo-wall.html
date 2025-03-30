@@ -449,6 +449,10 @@
         <source src="key-art-audio.wav" type="audio/wav">
     </audio>
 
+    <audio id="rainAudio" loop preload="auto">
+    <source src="ThunderstormRain_BW.59774.mp3" type="audio/mpeg">
+</audio>
+
     <script>
     document.addEventListener("DOMContentLoaded", function() {
         const audio = document.getElementById('backgroundAudio');
@@ -618,36 +622,57 @@
         document.addEventListener('touchstart', initAudio);
 
         document.querySelectorAll('.filter-toggle button').forEach(button => {
-            button.addEventListener('click', function() {
-                document.querySelectorAll('.filter-toggle button').forEach(btn => btn.classList.remove('active'));
-                this.classList.add('active');
-                createPhotoGallery(this.dataset.filter);
-                animateStatusChanges();
-                localStorage.setItem('selectedFilter', this.dataset.filter); // Store the filter
+    button.addEventListener('click', function() {
+        document.querySelectorAll('.filter-toggle button').forEach(btn => btn.classList.remove('active'));
+        this.classList.add('active');
+        createPhotoGallery(this.dataset.filter);
+        animateStatusChanges();
+        localStorage.setItem('selectedFilter', this.dataset.filter);
 
-                // Toggle rain effect when mourning filter is selected
-                if (this.dataset.filter === 'mourning') {
-                    document.body.classList.add('mourning-active');
-                    makeItRain();
-                } else {
-                    document.body.classList.remove('mourning-active');
-                }
+        const backgroundAudio = document.getElementById('backgroundAudio');
+        const rainAudio = document.getElementById('rainAudio');
 
-                if (this.dataset.filter === 'traitor') {
-                    document.querySelectorAll('.photo-container').forEach(container => {
-                        if (container.classList.contains('traitor')) {
-                            container.style.cursor = "url('cursor-hand-grab-svgrepo-com.svg') 16 16, pointer";
-                        } else {
-                            container.style.cursor = 'default';
-                        }
-                    });
+        if (this.dataset.filter === 'mourning') {
+            document.body.classList.add('mourning-active');
+            makeItRain();
+            // Play rain audio at 80% volume
+            rainAudio.volume = 0.8;
+            rainAudio.play().catch(error => console.error("Rain audio play failed:", error));
+            // Optionally reduce main background audio volume if desired
+        } else {
+            document.body.classList.remove('mourning-active');
+            // Fade out rain audio over 3 seconds
+            fadeOutAudio(rainAudio, 3000);
+        }
+
+        if (this.dataset.filter === 'traitor') {
+            document.querySelectorAll('.photo-container').forEach(container => {
+                if (container.classList.contains('traitor')) {
+                    container.style.cursor = "url('cursor-hand-grab-svgrepo-com.svg') 16 16, pointer";
                 } else {
-                    document.querySelectorAll('.photo-container').forEach(container => {
-                        container.style.cursor = 'default';
-                    });
+                    container.style.cursor = 'default';
                 }
             });
-        });
+        } else {
+            document.querySelectorAll('.photo-container').forEach(container => {
+                container.style.cursor = 'default';
+            });
+        }
+    });
+});
+        function fadeOutAudio(audio, duration) {
+    let currentVolume = audio.volume;
+    const fadeInterval = setInterval(() => {
+        if (currentVolume > 0.01) {
+            currentVolume -= 0.01;
+            audio.volume = currentVolume;
+        } else {
+            clearInterval(fadeInterval);
+            audio.pause();
+            audio.volume = 0;
+        }
+    }, duration / 100); // Adjust interval for smoother fade
+}
         
         // Rain effect function
         function makeItRain() {
