@@ -46,10 +46,11 @@
             width: 100%;
             z-index: 10;
             transition: opacity 2s ease;
+            opacity: 0;
         }
 
-        .menu-bar.hidden {
-            opacity: 0;
+        .menu-bar:hover {
+            opacity: 1;
         }
 
         .menu-bar a {
@@ -159,6 +160,8 @@
             max-width: 1000px;
             color: white;
             opacity: 0;
+            position: absolute;
+            top: 0;
         }
 
         .credits-scroll {
@@ -552,7 +555,7 @@
             const fadeOverlay = document.getElementById('fadeOverlay');
             let isMuted = false;
             const menuBar = document.getElementById('menuBar');
-            let menuTimeout;
+            let hasInteracted = false;
             
             // Intro credits elements
             const introCredits = [
@@ -585,22 +588,18 @@
                         credit.style.opacity = '0';
                     });
                     
-                    // Start playing the credit music
-                    if (!isMuted) {
-                        audio.play();
-                    }
-                    
-                    // Hide menu when starting the scrolling credits
-                    menuBar.classList.add('hidden');
-                    
+                    // Make the scrolling credits visible and start music
                     setTimeout(() => {
                         // Make the scrolling credits visible
                         creditsContent.style.opacity = '1';
+                        
+                        // Start playing the credit music
+                        playBackgroundMusic();
+                        
                         // Start the scrolling animation
                         creditsContent.style.animation = 'scrollCredits 90s linear forwards';
                         
-                        // Calculate when "Thank You" message should be leaving the screen
-                        // This is roughly 80% through the animation (72 seconds)
+                        // Show "Claudio Will Return" 54 seconds after credits start (corrected from 72s)
                         setTimeout(() => {
                             finalMessage.style.opacity = '1';
                             
@@ -613,7 +612,7 @@
                                     window.location.href = 'https://claudio-wpp.github.io/cloakpixel/';
                                 }, 2000);
                             }, 2000);
-                        }, 72000);
+                        }, 54000); // Corrected timing (18s earlier)
                     }, 500);
                     
                     return;
@@ -633,17 +632,24 @@
                 }, 2000); // 2s display time
             }
 
-            // Mute/Unmute functionality
-            muteButton.addEventListener('click', function() {
-                isMuted = !isMuted;
-                audio.muted = isMuted;
-                muteButton.textContent = isMuted ? 'Unmute' : 'Mute';
-            });
+            // Function to play background music
+            function playBackgroundMusic() {
+                if (!isMuted && hasInteracted) {
+                    audio.play().catch(e => {
+                        console.log("Audio playback failed:", e);
+                    });
+                }
+            }
 
-            // Start audio play on user interaction
+            // Handle audio initialization on user interaction
             function initAudio() {
-                // Don't auto-play, wait for the credits to scroll
+                hasInteracted = true;
                 muteButton.textContent = 'Mute';
+                
+                // If credits are already scrolling, play the music immediately
+                if (creditsContent.style.opacity === '1') {
+                    playBackgroundMusic();
+                }
                 
                 // Remove event listeners after first interaction
                 document.removeEventListener('click', initAudio);
@@ -654,36 +660,29 @@
             document.addEventListener('click', initAudio);
             document.addEventListener('touchstart', initAudio);
 
-            // Menu hover/touch detection
-            document.addEventListener('mousemove', function() {
-                menuBar.classList.remove('hidden');
+            // Mute/Unmute functionality
+            muteButton.addEventListener('click', function(e) {
+                e.stopPropagation(); // Prevent triggering document click
+                isMuted = !isMuted;
                 
-                clearTimeout(menuTimeout);
-                menuTimeout = setTimeout(() => {
-                    menuBar.classList.add('hidden');
-                }, 1000);
+                if (isMuted) {
+                    audio.pause();
+                    muteButton.textContent = 'Unmute';
+                } else {
+                    if (creditsContent.style.opacity === '1') {
+                        audio.play();
+                    }
+                    muteButton.textContent = 'Mute';
+                }
             });
-            
-            // Keep menu visible while hovering over it
-            menuBar.addEventListener('mouseenter', function() {
-                clearTimeout(menuTimeout);
-                menuBar.classList.remove('hidden');
-            });
-            
-            menuBar.addEventListener('mouseleave', function() {
-                menuTimeout = setTimeout(() => {
-                    menuBar.classList.add('hidden');
-                }, 1000);
-            });
-            
-            // Touch events for mobile
-            document.addEventListener('touchstart', function() {
-                menuBar.classList.remove('hidden');
-                
-                clearTimeout(menuTimeout);
-                menuTimeout = setTimeout(() => {
-                    menuBar.classList.add('hidden');
-                }, 1000);
+
+            // Show menu only when hovering over menu area
+            document.addEventListener('mousemove', function(e) {
+                if (e.clientY < 60) { // Only show if mouse is near top of screen
+                    menuBar.style.opacity = '1';
+                } else {
+                    menuBar.style.opacity = '0';
+                }
             });
         });
     </script>
