@@ -114,8 +114,19 @@
             transition: opacity 2s ease;
         }
 
+        .game-title {
+            font-family: 'PathwayGothicOne', sans-serif;
+            text-align: center;
+            width: 80%;
+            max-width: 800px;
+            color: #ff8100;
+            font-size: 36px;
+            position: absolute;
+            line-height: 1.2;
+        }
+
         .intro-credit {
-            font-family: 'YaroCut', sans-serif;
+            font-family: 'PathwayGothicOne', sans-serif;
             text-align: center;
             width: 80%;
             max-width: 800px;
@@ -162,9 +173,12 @@
         }
 
         .credits-content .role {
-            font-size: 22px;
-            color: #ccc;
-            margin-bottom: 20px;
+            font-size: 24px;
+            margin: 10px 0;
+            line-height: 1.4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .credits-content .cast-entry {
@@ -175,7 +189,6 @@
         }
 
         .credits-content .cast-name {
-            font-weight: bold;
             text-align: right;
             flex: 1;
             padding-right: 10px;
@@ -243,7 +256,7 @@
             }
 
             .credits-content .role {
-                font-size: 18px;
+                font-size: 20px;
             }
 
             .logo-container {
@@ -277,8 +290,13 @@
 
     <div class="content">
         <div class="credits-container" id="creditsContainer">
+            <!-- Game title that lingers -->
+            <div class="game-title" id="gameTitle">
+                The Traitors<br>
+                TPO Edition #1
+            </div>
+            
             <!-- Intro credits that appear one by one -->
-            <div class="intro-credit" id="title">The Traitors: TPO Edition #1</div>
             <div class="intro-credit" id="director">Directed by - Claudio Winkerman</div>
             <div class="intro-credit" id="writer">Written by - Claudio Winkerman</div>
             <div class="intro-credit" id="producer">Produced by - Claudio Winkerman</div>
@@ -426,11 +444,31 @@
                 
                 <h3>Production:</h3>
                 
-                <p class="role">Site Creation and Editing - Claudio Winkerman</p>
-                <p class="role">Editor - Claudio Winkerman</p>
-                <p class="role">Costumer Designer - Amazon</p>
-                <p class="role">Music Composer - Claudio Winkerman</p>
-                <p class="role">Casting Director - EssenceMediacom Hiring Policies</p>
+                <p class="cast-entry">
+                    <span class="cast-name">Site Creation and Editing</span>
+                    <span class="cast-separator">-</span>
+                    <span class="cast-role">Claudio Winkerman</span>
+                </p>
+                <p class="cast-entry">
+                    <span class="cast-name">Editor</span>
+                    <span class="cast-separator">-</span>
+                    <span class="cast-role">Claudio Winkerman</span>
+                </p>
+                <p class="cast-entry">
+                    <span class="cast-name">Costumer Designer</span>
+                    <span class="cast-separator">-</span>
+                    <span class="cast-role">Amazon</span>
+                </p>
+                <p class="cast-entry">
+                    <span class="cast-name">Music Composer</span>
+                    <span class="cast-separator">-</span>
+                    <span class="cast-role">Claudio Winkerman</span>
+                </p>
+                <p class="cast-entry">
+                    <span class="cast-name">Casting Director</span>
+                    <span class="cast-separator">-</span>
+                    <span class="cast-role">EssenceMediacom Hiring Policies</span>
+                </p>
                 
                 <div class="logo-container">
                     <img src="WPP-logo.png" alt="WPP Logo">
@@ -460,12 +498,12 @@
             const creditsContainer = document.getElementById('creditsContainer');
             const creditsContent = document.getElementById('creditsContent');
             const finalMessage = document.getElementById('finalMessage');
+            const gameTitle = document.getElementById('gameTitle');
             let isMuted = false;
             const menuBar = document.getElementById('menuBar');
             
             // Intro credits elements
             const introCredits = [
-                document.getElementById('title'),
                 document.getElementById('director'),
                 document.getElementById('writer'),
                 document.getElementById('producer'),
@@ -477,8 +515,14 @@
                 creditsContainer.style.opacity = '1';
                 body.style.backgroundColor = '#000000';
                 
-                // Start the intro credits sequence
-                showIntroCreditsSequentially(0);
+                // Keep game title visible for 4 seconds before starting the sequence
+                setTimeout(() => {
+                    // Hide game title
+                    gameTitle.style.display = 'none';
+                    
+                    // Start the intro credits sequence
+                    showIntroCreditsSequentially(0);
+                }, 4000);
             }, 1000);
 
             // Function to show intro credits one by one
