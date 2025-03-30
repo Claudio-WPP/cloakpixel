@@ -454,11 +454,12 @@
 </audio>
 
     <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const audio = document.getElementById('backgroundAudio');
-        const muteButton = document.getElementById('muteButton');
-        const photoGallery = document.getElementById('photoGallery');
-        let isMuted = false;
+document.addEventListener("DOMContentLoaded", function() {
+    const audio = document.getElementById('backgroundAudio');
+    const rainAudio = document.getElementById('rainAudio');
+    const muteButton = document.getElementById('muteButton');
+    const photoGallery = document.getElementById('photoGallery');
+    let isMuted = false;
 
         const photos = [
             'Alex', 'Andre', 'Anju', 'Anusha', 'Callum', 'Charlotte', 'Claire',
@@ -592,77 +593,109 @@
             animateStatusChanges();
         }
 
-        muteButton.addEventListener('click', function() {
-    isMuted = !isMuted;
-    backgroundAudio.muted = isMuted;
-    rainAudio.muted = isMuted;
-    muteButton.textContent = isMuted ? 'Unmute' : 'Mute';
-});
+       muteButton.addEventListener('click', function() {
+        isMuted = !isMuted;
+        audio.muted = isMuted;
+        rainAudio.muted = isMuted;
+        muteButton.textContent = isMuted ? 'Unmute' : 'Mute';
 
-        function initAudio() {
-            audio.volume = 0;
-            audio.play().then(() => {
-                muteButton.textContent = 'Mute';
-                let volume = 0;
-                const fadeInterval = setInterval(() => {
-                    volume += 0.05;
-                    if (volume >= 1) {
-                        clearInterval(fadeInterval);
-                        volume = 1;
-                    }
-                    audio.volume = volume;
-                }, 100);
-            }).catch((error) => {
-                console.log("Audio play failed:", error);
-            });
-            document.removeEventListener('click', initAudio);
-            document.removeEventListener('touchstart', initAudio);
+        // If switching to mourning and unmuted, start rain
+        if (document.querySelector('.filter-toggle button.active').dataset.filter === 'mourning' && !isMuted) {
+          makeItRain();
         }
+    });
 
-        document.addEventListener('click', initAudio);
-        document.addEventListener('touchstart', initAudio);
+         function initAudio() {
+        audio.volume = 0;
+        audio.play().then(() => {
+            muteButton.textContent = 'Mute';
+            let volume = 0;
+            const fadeInterval = setInterval(() => {
+                volume += 0.05;
+                if (volume >= 1) {
+                    clearInterval(fadeInterval);
+                    volume = 1;
+                }
+                audio.volume = volume;
+            }, 100);
 
-        document.querySelectorAll('.filter-toggle button').forEach(button => {
-    button.addEventListener('click', function() {
-    document.querySelectorAll('.filter-toggle button').forEach(btn => btn.classList.remove('active'));
-    this.classList.add('active');
-    createPhotoGallery(this.dataset.filter);
-    animateStatusChanges();
-    localStorage.setItem('selectedFilter', this.dataset.filter);
+            // --- Check for 'mourning' filter after audio starts ---
+           let storedFilter = localStorage.getItem('selectedFilter');
+           if (storedFilter === 'mourning') {
+                document.body.classList.add('mourning-active');
+                fadeOutAudio(audio, 3000, () => {
+                    audio.pause();
+                    rainAudio.volume = 0.8;
+                    rainAudio.play().catch(error => console.error("Rain audio play failed:", error));
+                    if (!isMuted) {
+                        makeItRain();
+                    }
+                });
+            }
 
-    const backgroundAudio = document.getElementById('backgroundAudio');
-    const rainAudio = document.getElementById('rainAudio');
+        }).catch((error) => {
+            console.log("Audio play failed:", error);
+        });
+        document.removeEventListener('click', initAudio);
+        document.removeEventListener('touchstart', initAudio);
+    }
 
-    if (this.dataset.filter === 'mourning') {
-        document.body.classList.add('mourning-active');
-        fadeOutAudio(backgroundAudio, 3000, () => {
-            backgroundAudio.pause();
-            rainAudio.volume = 0.8;
-            rainAudio.play().catch(error => console.error("Rain audio play failed:", error));
-        });
-        makeItRain();
-    } else {
-        document.body.classList.remove('mourning-active');
-        fadeOutAudio(rainAudio, 3000, () => {
-            rainAudio.pause();
-            backgroundAudio.volume = 1;
-            backgroundAudio.play().catch(error => console.error("Background audio play failed:", error));
-        });
-    }
+    document.addEventListener('click', initAudio);
+    document.addEventListener('touchstart', initAudio);
 
-    if (this.dataset.filter === 'traitor') {
-        document.querySelectorAll('.photo-container').forEach(container => {
-            if (container.classList.contains('traitor')) {
-                container.style.cursor = "url('cursor-hand-grab-svgrepo-com.svg') 16 16, pointer";
-            } else {
-                container.style.cursor = 'default';
-            }
-        });
-    } else {
-        document.querySelectorAll('.photo-container').forEach(container => {
-            container.style.cursor = 'default';
-        });
-    }
+        document.querySelectorAll('.filter-toggle button').forEach(button => {
+        button.addEventListener('click', function() {
+            document.querySelectorAll('.filter-toggle button').forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            createPhotoGallery(this.dataset.filter);
+            animateStatusChanges();
+            localStorage.setItem('selectedFilter', this.dataset.filter);
+
+            if (this.dataset.filter === 'mourning') {
+                document.body.classList.add('mourning-active');
+                if (!isMuted) { // Only fade if not muted
+                  fadeOutAudio(audio, 3000, () => {
+                      audio.pause();
+                      rainAudio.volume = 0.8;
+                      rainAudio.play().catch(error => console.error("Rain audio play failed:", error));
+                      if (!isMuted) {
+                        makeItRain();
+                      }
+                  });
+                } else {
+                  audio.pause(); // Ensure other audio is paused
+                  rainAudio.volume = 0.8;
+                  rainAudio.play().catch(error => console.error("Rain audio play failed:", error));
+
+                }
+            } else {
+                document.body.classList.remove('mourning-active');
+                if (!isMuted) { // Only fade if not muted
+                  fadeOutAudio(rainAudio, 3000, () => {
+                      rainAudio.pause();
+                      audio.volume = 1;
+                      audio.play().catch(error => console.error("Background audio play failed:", error));
+                  });
+                } else {
+                  rainAudio.pause(); // Ensure rain audio is paused
+                  audio.volume = 1;
+                  audio.play().catch(error => console.error("Background audio play failed:", error));
+                }
+            }
+
+    if (this.dataset.filter === 'traitor') {
+        document.querySelectorAll('.photo-container').forEach(container => {
+            if (container.classList.contains('traitor')) {
+                container.style.cursor = "url('cursor-hand-grab-svgrepo-com.svg') 16 16, pointer";
+            } else {
+                container.style.cursor = 'default';
+            }
+        });
+    } else {
+        document.querySelectorAll('.photo-container').forEach(container => {
+            container.style.cursor = 'default';
+        });
+    }
 });
 });
 
