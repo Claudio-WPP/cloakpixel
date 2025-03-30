@@ -5,7 +5,7 @@
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <title>Schedule</title>
      <link rel="stylesheet" href="styles.css">
-     <style>
+    <style>
   @font-face {
   font-family: 'YaroCut';
   src: url('css/YaroCut.woff') format('woff');
@@ -77,9 +77,9 @@
   background-color: rgba(50, 50, 50, 0.4);
   box-shadow: 0 3px 12px rgba(0, 0, 0, 0.6);
   border-radius: 10px;
-  padding: 20px; /* Reduced padding slightly */
-  width: 90%;
-  max-width: 800px; /* Added a max-width for larger screens */
+  padding: 10px; /* Minimal padding */
+  width: 95%;
+  max-width: 800px;
   text-align: center;
   backdrop-filter: blur(15px);
   position: absolute;
@@ -90,25 +90,28 @@
   opacity: 0;
   transition: opacity 1s ease;
   overflow-x: auto;
+  display: grid; /* Use Grid Layout */
+  grid-template-columns: 1fr; /* Single column grid */
   }
  
 
   .schedule-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 10px; /* Reduced margin */
   font-family: Arial, sans-serif;
+  display: block; /* Important for overflow-x */
+  min-width: 600px; /* Ensure table doesn't collapse */
   }
  
 
   .schedule-table th,
   .schedule-table td {
   border: 1px solid white;
-  padding: 8px; /* Reduced padding in cells */
+  padding: 6px; /* Very minimal padding */
   text-align: center;
   color: white;
   white-space: nowrap;
-  font-size: 14px; /* Slightly smaller font */
+  font-size: 12px; /* Small font */
   }
  
 
@@ -188,15 +191,15 @@
 
   .info-box {
   top: 100px;
-  padding: 15px; /* Further reduced padding on small screens */
-  width: 95%; /* Wider on small screens */
+  padding: 5px; /* Even less padding on small screens */
+  width: 98%; /* Almost full width on small screens */
   }
  
 
   .schedule-table th,
   .schedule-table td {
-  font-size: 12px; /* Even smaller font on small screens */
-  padding: 6px;
+  font-size: 10px; /* Tiny font on mobile */
+  padding: 4px;
   }
   }
  </style>
