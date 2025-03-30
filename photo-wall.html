@@ -308,12 +308,12 @@
         left: 0;
         width: 100%;
         height: 100%;
-        z-index: 2;
+        z-index: 8;
         pointer-events: none;
     }
     
     .rain.back-row {
-        z-index: 1;
+        z-index: 7;
         bottom: 60px;
         opacity: 0.5;
     }
@@ -600,51 +600,52 @@ document.addEventListener("DOMContentLoaded", function() {
         muteButton.textContent = isMuted ? 'Unmute' : 'Mute';
 
         // If switching to mourning and unmuted, start rain
-        if (document.querySelector('.filter-toggle button.active').dataset.filter === 'mourning' && !isMuted) {
-          makeItRain();
+       if (document.querySelector('.filter-toggle button.active').dataset.filter === 'mourning' && !isMuted) {
+            makeItRain();
+            document.body.classList.add('mourning-active');
+            fadeInRainAudio(); // Start the fade-in
         }
     });
 
-         function initAudio() {
-        audio.volume = 0;
-        audio.play().then(() => {
-            muteButton.textContent = 'Mute';
-            let volume = 0;
-            const fadeInterval = setInterval(() => {
-                volume += 0.05;
-                if (volume >= 1) {
-                    clearInterval(fadeInterval);
-                    volume = 1;
-                }
-                audio.volume = volume;
-            }, 100);
+        function initAudio() {
+        audio.volume = 0;
+        audio.play().then(() => {
+            muteButton.textContent = 'Mute';
+            let volume = 0;
+            const fadeInterval = setInterval(() => {
+                volume += 0.05;
+                if (volume >= 1) {
+                    clearInterval(fadeInterval);
+                    volume = 1;
+                }
+                audio.volume = volume;
+            }, 100);
 
-            // --- Check for 'mourning' filter after audio starts ---
-           let storedFilter = localStorage.getItem('selectedFilter');
-           if (storedFilter === 'mourning') {
-                document.body.classList.add('mourning-active');
-                fadeOutAudio(audio, 3000, () => {
-                    audio.pause();
-                    rainAudio.volume = 0.8;
-                    rainAudio.play().catch(error => console.error("Rain audio play failed:", error));
-                    if (!isMuted) {
-                        makeItRain();
-                    }
-                });
-            }
+            let storedFilter = localStorage.getItem('selectedFilter');
+            if (storedFilter === 'mourning') {
+                fadeOutAudio(audio, 3000, () => {
+                    audio.pause();
+                    rainAudio.volume = 0; // Start at 0 volume
+                    rainAudio.play().catch(error => console.error("Rain audio play failed:", error));
+                    makeItRain();
+                    document.body.classList.add('mourning-active');
+                    fadeInRainAudio(); // Start the fade-in
+                });
+            }
 
-        }).catch((error) => {
-            console.log("Audio play failed:", error);
-        });
-        document.removeEventListener('click', initAudio);
-        document.removeEventListener('touchstart', initAudio);
-    }
+        }).catch((error) => {
+            console.log("Audio play failed:", error);
+        });
+        document.removeEventListener('click', initAudio);
+        document.removeEventListener('touchstart', initAudio);
+    }
 
-    document.addEventListener('click', initAudio);
-    document.addEventListener('touchstart', initAudio);
+    document.addEventListener('click', initAudio);
+    document.addEventListener('touchstart', initAudio);
 
-        document.querySelectorAll('.filter-toggle button').forEach(button => {
-        button.addEventListener('click', function() {
+    document.querySelectorAll('.filter-toggle button').forEach(button => {
+        button.addEventListener('click', function() {
+
             document.querySelectorAll('.filter-toggle button').forEach(btn => btn.classList.remove('active'));
             this.classList.add('active');
             createPhotoGallery(this.dataset.filter);
@@ -652,37 +653,37 @@ document.addEventListener("DOMContentLoaded", function() {
             localStorage.setItem('selectedFilter', this.dataset.filter);
 
             if (this.dataset.filter === 'mourning') {
-                document.body.classList.add('mourning-active');
-                if (!isMuted) { // Only fade if not muted
-                  fadeOutAudio(audio, 3000, () => {
-                      audio.pause();
-                      rainAudio.volume = 0.8;
-                      rainAudio.play().catch(error => console.error("Rain audio play failed:", error));
-                      if (!isMuted) {
-                        makeItRain();
-                      }
-                  });
-                } else {
-                  audio.pause(); // Ensure other audio is paused
-                  rainAudio.volume = 0.8;
-                  rainAudio.play().catch(error => console.error("Rain audio play failed:", error));
-
-                }
-            } else {
-                document.body.classList.remove('mourning-active');
-                if (!isMuted) { // Only fade if not muted
-                  fadeOutAudio(rainAudio, 3000, () => {
-                      rainAudio.pause();
-                      audio.volume = 1;
-                      audio.play().catch(error => console.error("Background audio play failed:", error));
-                  });
-                } else {
-                  rainAudio.pause(); // Ensure rain audio is paused
-                  audio.volume = 1;
-                  audio.play().catch(error => console.error("Background audio play failed:", error));
-                }
-            }
-
+                if (!isMuted) {
+                    fadeOutAudio(audio, 3000, () => {
+                        audio.pause();
+                        rainAudio.volume = 0; // Start at 0 volume
+                        rainAudio.play().catch(error => console.error("Rain audio play failed:", error));
+                        makeItRain();
+                        document.body.classList.add('mourning-active');
+                        fadeInRainAudio(); // Start the fade-in
+                    });
+                } else {
+                    audio.pause();
+                    rainAudio.volume = 0; // Start at 0 volume
+                    rainAudio.play().catch(error => console.error("Rain audio play failed:", error));
+                    makeItRain();
+                    document.body.classList.add('mourning-active');
+                    fadeInRainAudio(); // Start the fade-in
+                }
+            } else {
+                document.body.classList.remove('mourning-active');
+                if (!isMuted) {
+                    fadeOutAudio(rainAudio, 3000, () => {
+                        rainAudio.pause();
+                        audio.volume = 1;
+                        audio.play().catch(error => console.error("Background audio play failed:", error));
+                    });
+                } else {
+                    rainAudio.pause();
+                    audio.volume = 1;
+                    audio.play().catch(error => console.error("Background audio play failed:", error));
+                }
+            }
     if (this.dataset.filter === 'traitor') {
         document.querySelectorAll('.photo-container').forEach(container => {
             if (container.classList.contains('traitor')) {
@@ -741,6 +742,18 @@ document.addEventListener("DOMContentLoaded", function() {
             $('#rainContainer').append(drops);
             $('#backRowRainContainer').append(backDrops);
         }
+    function fadeInRainAudio() {
+        let volume = 0;
+        const fadeInterval = setInterval(() => {
+            volume += 0.05;
+            if (volume >= 0.8) { // Fade to 0.8 (or your desired max volume)
+                clearInterval(fadeInterval);
+                rainAudio.volume = 0.8;
+            } else {
+                rainAudio.volume = volume;
+            }
+        }, 75); // Adjust interval for smoother/faster fade
+    }
     });
 </script>
     <script src="script.js"></script>
