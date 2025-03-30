@@ -33,7 +33,7 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            transition: background-color 4s ease;
+            transition: background-color 2s ease; /* Changed to 2s */
         }
 
         .menu-bar {
@@ -41,8 +41,15 @@
             justify-content: center;
             padding: 20px 0;
             background-color: rgba(0, 0, 0, 0.3);
-            position: relative;
+            position: fixed;
+            top: 0;
+            width: 100%;
             z-index: 10;
+            transition: top 0.3s ease; /* Add transition for menu bar */
+        }
+
+        .menu-bar.hidden {
+            top: -80px; /* Hide above the viewport */
         }
 
         .menu-bar a {
@@ -94,7 +101,6 @@
             background-color: rgba(255, 255, 255, 0.4);
         }
 
-        /* Credits Styles */
         .credits-container {
             position: absolute;
             width: 100%;
@@ -225,7 +231,6 @@
             }
         }
     </style>
-    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-QJCJYMJ15J"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -235,7 +240,7 @@
     </script>
 </head>
 <body>
-    <div class="menu-bar">
+    <div class="menu-bar" id="menuBar">
         <a href="/cloakpixel/" id="home-link">Home</a>
         <a href="/cloakpixel/games" id="games-link">Games</a>
         <a href="/cloakpixel/schedule" id="schedule-link">Schedule</a>
@@ -321,6 +326,7 @@
             const creditsContent = document.getElementById('creditsContent');
             const finalMessage = document.getElementById('finalMessage');
             let isMuted = false;
+            const menuBar = document.getElementById('menuBar');
 
             // Fade in the credits container after page load
             setTimeout(() => {
@@ -338,7 +344,7 @@
                         setTimeout(() => {
                             finalMessage.style.opacity = '1';
                         }, 90000); // Wait until credits are done scrolling
-                    }, 4000); // Start scrolling after fade to black completes
+                    }, 2000); // Start scrolling after fade to black completes
                 }, 2000); // Start fade to black after 2 seconds
             }, 1000); // Show credits container after 1 second
 
@@ -379,6 +385,30 @@
             // Set up event listeners for user interaction to start audio
             document.addEventListener('click', initAudio);
             document.addEventListener('touchstart', initAudio);
+
+             // Menu bar hide logic
+            let lastScrollTop = 0;
+            window.addEventListener('scroll', function() {
+                let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                if (scrollTop > lastScrollTop){
+                    menuBar.classList.add('hidden');
+                } else {
+                    menuBar.classList.remove('hidden');
+                }
+                lastScrollTop = scrollTop;
+            });
+            
+            // Menu bar reveal on top hover/touch
+            window.addEventListener('mousemove', function(e) {
+                if (e.clientY < 80) { // Adjust as needed
+                    menuBar.classList.remove('hidden');
+                }
+            });
+            window.addEventListener('touchmove', function(e) {
+                if (e.touches[0].clientY < 80) { // Adjust as needed
+                    menuBar.classList.remove('hidden');
+                }
+            });
         });
     </script>
 </body>
