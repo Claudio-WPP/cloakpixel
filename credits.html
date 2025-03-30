@@ -33,7 +33,7 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            transition: background-color 2s ease; /* Changed to 2s */
+            transition: background-color 2s ease;
         }
 
         .menu-bar {
@@ -45,11 +45,11 @@
             top: 0;
             width: 100%;
             z-index: 10;
-            transition: top 0.3s ease; /* Add transition for menu bar */
+            transition: top 0.3s ease;
         }
 
         .menu-bar.hidden {
-            top: -80px; /* Hide above the viewport */
+            top: -80px;
         }
 
         .menu-bar a {
@@ -108,10 +108,22 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: center;
             overflow: hidden;
             opacity: 0;
             transition: opacity 2s ease;
+        }
+
+        .intro-credit {
+            font-family: 'PathwayGothicOne', sans-serif;
+            text-align: center;
+            width: 80%;
+            max-width: 800px;
+            color: white;
+            font-size: 36px;
+            opacity: 0;
+            position: absolute;
+            transition: opacity 0.5s ease;
         }
 
         .credits-content {
@@ -120,6 +132,10 @@
             width: 80%;
             max-width: 800px;
             color: white;
+            opacity: 0;
+        }
+
+        .credits-scroll {
             transform: translateY(100vh);
             animation: none;
         }
@@ -153,19 +169,28 @@
 
         .credits-content .cast-entry {
             margin: 5px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .credits-content .cast-name {
             font-weight: bold;
-            display: inline-block;
-            min-width: 120px;
             text-align: right;
-            margin-right: 15px;
+            flex: 1;
+            padding-right: 10px;
+        }
+
+        .credits-content .cast-separator {
+            display: inline-block;
+            text-align: center;
+            padding: 0 10px;
         }
 
         .credits-content .cast-role {
-            display: inline-block;
             text-align: left;
+            flex: 1;
+            padding-left: 10px;
         }
 
         .logo-container {
@@ -252,42 +277,152 @@
 
     <div class="content">
         <div class="credits-container" id="creditsContainer">
-            <div class="credits-content" id="creditsContent">
-                <h2>TPO Traitors #1</h2>
-                <p class="role">Directed by - Claudio Winkerman</p>
-                <p class="role">Written by - Claudio Winkerman</p>
-                <p class="role">Produced by - Claudio Winkerman</p>
-                <p class="role">Executive Produced by - Claudio Winkerman</p>
-                
+            <!-- Intro credits that appear one by one -->
+            <div class="intro-credit" id="title">TPO Traitors #1</div>
+            <div class="intro-credit" id="director">Directed by - Claudio Winkerman</div>
+            <div class="intro-credit" id="writer">Written by - Claudio Winkerman</div>
+            <div class="intro-credit" id="producer">Produced by - Claudio Winkerman</div>
+            <div class="intro-credit" id="executive">Executive Produced by - Claudio Winkerman</div>
+            
+            <!-- Cast and other credits that scroll -->
+            <div class="credits-content credits-scroll" id="creditsContent">
                 <h3>Your Cast of 2025:</h3>
                 
-                <p class="cast-entry"><span class="cast-name">Gavin</span> <span class="cast-role">- Faithful</span></p>
-                <p class="cast-entry"><span class="cast-name">Andre</span> <span class="cast-role">- Faithful</span></p>
-                <p class="cast-entry"><span class="cast-name">Glenn</span> <span class="cast-role">- Faithful</span></p>
-                <p class="cast-entry"><span class="cast-name">Georgia</span> <span class="cast-role">- Faithful</span></p>
-                <p class="cast-entry"><span class="cast-name">Frank</span> <span class="cast-role">- Traitor</span></p>
-                <p class="cast-entry"><span class="cast-name">Alex</span> <span class="cast-role">- Faithful</span></p>
-                <p class="cast-entry"><span class="cast-name">Claire</span> <span class="cast-role">- Faithful</span></p>
-                <p class="cast-entry"><span class="cast-name">Anusha</span> <span class="cast-role">- Faithful</span></p>
-                <p class="cast-entry"><span class="cast-name">Oana</span> <span class="cast-role">- Faithful</span></p>
-                <p class="cast-entry"><span class="cast-name">Santiago</span> <span class="cast-role">- Faithful</span></p>
-                <p class="cast-entry"><span class="cast-name">Isobel</span> <span class="cast-role">- Faithful</span></p>
-                <p class="cast-entry"><span class="cast-name">Shreya</span> <span class="cast-role">- Faithful</span></p>
-                <p class="cast-entry"><span class="cast-name">Temitope</span> <span class="cast-role">- Secret Traitor</span></p>
-                <p class="cast-entry"><span class="cast-name">Charlotte</span> <span class="cast-role">- Faithful</span></p>
-                <p class="cast-entry"><span class="cast-name">Joe</span> <span class="cast-role">- Faithful</span></p>
-                <p class="cast-entry"><span class="cast-name">Callum</span> <span class="cast-role">- Faithful</span></p>
-                <p class="cast-entry"><span class="cast-name">Fatima</span> <span class="cast-role">- Faithful</span></p>
-                <p class="cast-entry"><span class="cast-name">Tim</span> <span class="cast-role">- Faithful</span></p>
-                <p class="cast-entry"><span class="cast-name">Lisa</span> <span class="cast-role">- Faithful</span></p>
-                <p class="cast-entry"><span class="cast-name">Mehnaj</span> <span class="cast-role">- Faithful</span></p>
-                <p class="cast-entry"><span class="cast-name">Rita</span> <span class="cast-role">- Faithful</span></p>
-                <p class="cast-entry"><span class="cast-name">Mihaela</span> <span class="cast-role">- Faithful</span></p>
-                <p class="cast-entry"><span class="cast-name">Matt</span> <span class="cast-role">- Faithful</span></p>
-                <p class="cast-entry"><span class="cast-name">Lauren</span> <span class="cast-role">- Faithful</span></p>
-                <p class="cast-entry"><span class="cast-name">Jett</span> <span class="cast-role">- Traitor</span></p>
-                <p class="cast-entry"><span class="cast-name">Ellie</span> <span class="cast-role">- Last Minute Traitor Because They Say Anju Become a Traitor</span></p>
-                <p class="cast-entry"><span class="cast-name">Anju</span> <span class="cast-role">- Traitor</span></p>
+                <p class="cast-entry">
+                    <span class="cast-name">Gavin</span>
+                    <span class="cast-separator">-</span>
+                    <span class="cast-role">Faithful</span>
+                </p>
+                <p class="cast-entry">
+                    <span class="cast-name">Andre</span>
+                    <span class="cast-separator">-</span>
+                    <span class="cast-role">Faithful</span>
+                </p>
+                <p class="cast-entry">
+                    <span class="cast-name">Glenn</span>
+                    <span class="cast-separator">-</span>
+                    <span class="cast-role">Faithful</span>
+                </p>
+                <p class="cast-entry">
+                    <span class="cast-name">Georgia</span>
+                    <span class="cast-separator">-</span>
+                    <span class="cast-role">Faithful</span>
+                </p>
+                <p class="cast-entry">
+                    <span class="cast-name">Frank</span>
+                    <span class="cast-separator">-</span>
+                    <span class="cast-role">Traitor</span>
+                </p>
+                <p class="cast-entry">
+                    <span class="cast-name">Alex</span>
+                    <span class="cast-separator">-</span>
+                    <span class="cast-role">Faithful</span>
+                </p>
+                <p class="cast-entry">
+                    <span class="cast-name">Claire</span>
+                    <span class="cast-separator">-</span>
+                    <span class="cast-role">Faithful</span>
+                </p>
+                <p class="cast-entry">
+                    <span class="cast-name">Anusha</span>
+                    <span class="cast-separator">-</span>
+                    <span class="cast-role">Faithful</span>
+                </p>
+                <p class="cast-entry">
+                    <span class="cast-name">Oana</span>
+                    <span class="cast-separator">-</span>
+                    <span class="cast-role">Faithful</span>
+                </p>
+                <p class="cast-entry">
+                    <span class="cast-name">Santiago</span>
+                    <span class="cast-separator">-</span>
+                    <span class="cast-role">Faithful</span>
+                </p>
+                <p class="cast-entry">
+                    <span class="cast-name">Isobel</span>
+                    <span class="cast-separator">-</span>
+                    <span class="cast-role">Faithful</span>
+                </p>
+                <p class="cast-entry">
+                    <span class="cast-name">Shreya</span>
+                    <span class="cast-separator">-</span>
+                    <span class="cast-role">Faithful</span>
+                </p>
+                <p class="cast-entry">
+                    <span class="cast-name">Temitope</span>
+                    <span class="cast-separator">-</span>
+                    <span class="cast-role">Secret Traitor</span>
+                </p>
+                <p class="cast-entry">
+                    <span class="cast-name">Charlotte</span>
+                    <span class="cast-separator">-</span>
+                    <span class="cast-role">Faithful</span>
+                </p>
+                <p class="cast-entry">
+                    <span class="cast-name">Joe</span>
+                    <span class="cast-separator">-</span>
+                    <span class="cast-role">Faithful</span>
+                </p>
+                <p class="cast-entry">
+                    <span class="cast-name">Callum</span>
+                    <span class="cast-separator">-</span>
+                    <span class="cast-role">Faithful</span>
+                </p>
+                <p class="cast-entry">
+                    <span class="cast-name">Fatima</span>
+                    <span class="cast-separator">-</span>
+                    <span class="cast-role">Faithful</span>
+                </p>
+                <p class="cast-entry">
+                    <span class="cast-name">Tim</span>
+                    <span class="cast-separator">-</span>
+                    <span class="cast-role">Faithful</span>
+                </p>
+                <p class="cast-entry">
+                    <span class="cast-name">Lisa</span>
+                    <span class="cast-separator">-</span>
+                    <span class="cast-role">Faithful</span>
+                </p>
+                <p class="cast-entry">
+                    <span class="cast-name">Mehnaj</span>
+                    <span class="cast-separator">-</span>
+                    <span class="cast-role">Faithful</span>
+                </p>
+                <p class="cast-entry">
+                    <span class="cast-name">Rita</span>
+                    <span class="cast-separator">-</span>
+                    <span class="cast-role">Faithful</span>
+                </p>
+                <p class="cast-entry">
+                    <span class="cast-name">Mihaela</span>
+                    <span class="cast-separator">-</span>
+                    <span class="cast-role">Faithful</span>
+                </p>
+                <p class="cast-entry">
+                    <span class="cast-name">Matt</span>
+                    <span class="cast-separator">-</span>
+                    <span class="cast-role">Faithful</span>
+                </p>
+                <p class="cast-entry">
+                    <span class="cast-name">Lauren</span>
+                    <span class="cast-separator">-</span>
+                    <span class="cast-role">Faithful</span>
+                </p>
+                <p class="cast-entry">
+                    <span class="cast-name">Jett</span>
+                    <span class="cast-separator">-</span>
+                    <span class="cast-role">Traitor</span>
+                </p>
+                <p class="cast-entry">
+                    <span class="cast-name">Ellie</span>
+                    <span class="cast-separator">-</span>
+                    <span class="cast-role">Last Minute Traitor Because They Say Anju Become a Traitor</span>
+                </p>
+                <p class="cast-entry">
+                    <span class="cast-name">Anju</span>
+                    <span class="cast-separator">-</span>
+                    <span class="cast-role">Traitor</span>
+                </p>
                 
                 <h3>Production:</h3>
                 
@@ -327,26 +462,61 @@
             const finalMessage = document.getElementById('finalMessage');
             let isMuted = false;
             const menuBar = document.getElementById('menuBar');
+            
+            // Intro credits elements
+            const introCredits = [
+                document.getElementById('title'),
+                document.getElementById('director'),
+                document.getElementById('writer'),
+                document.getElementById('producer'),
+                document.getElementById('executive')
+            ];
 
             // Fade in the credits container after page load
             setTimeout(() => {
                 creditsContainer.style.opacity = '1';
+                body.style.backgroundColor = '#000000';
                 
-                // Start fade to black after a delay
-                setTimeout(() => {
-                    body.style.backgroundColor = '#000000';
+                // Start the intro credits sequence
+                showIntroCreditsSequentially(0);
+            }, 1000);
+
+            // Function to show intro credits one by one
+            function showIntroCreditsSequentially(index) {
+                if (index >= introCredits.length) {
+                    // All intro credits have been shown, start the scrolling cast credits
+                    introCredits.forEach(credit => {
+                        credit.style.opacity = '0';
+                    });
                     
-                    // Start credits scroll after fade to black
                     setTimeout(() => {
+                        // Make the scrolling credits visible
+                        creditsContent.style.opacity = '1';
+                        // Start the scrolling animation
                         creditsContent.style.animation = 'scrollCredits 90s linear forwards';
                         
                         // Show final message when credits are done
                         setTimeout(() => {
                             finalMessage.style.opacity = '1';
                         }, 90000); // Wait until credits are done scrolling
-                    }, 2000); // Start scrolling after fade to black completes
-                }, 2000); // Start fade to black after 2 seconds
-            }, 1000); // Show credits container after 1 second
+                    }, 500);
+                    
+                    return;
+                }
+                
+                // Show current credit
+                introCredits[index].style.opacity = '1';
+                
+                // Wait 2 seconds, then fade out
+                setTimeout(() => {
+                    introCredits[index].style.opacity = '0';
+                    
+                    // After fade out, show next credit
+                    setTimeout(() => {
+                        showIntroCreditsSequentially(index + 1);
+                    }, 500); // 0.5s for fade out
+                }, 2000); // 2s display time
+            }
 
             // Mute/Unmute functionality
             muteButton.addEventListener('click', function() {
@@ -386,7 +556,7 @@
             document.addEventListener('click', initAudio);
             document.addEventListener('touchstart', initAudio);
 
-             // Menu bar hide logic
+            // Menu bar hide logic
             let lastScrollTop = 0;
             window.addEventListener('scroll', function() {
                 let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
