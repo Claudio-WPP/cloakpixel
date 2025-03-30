@@ -593,10 +593,11 @@
         }
 
         muteButton.addEventListener('click', function() {
-            isMuted = !isMuted;
-            audio.muted = isMuted;
-            muteButton.textContent = isMuted ? 'Unmute' : 'Mute';
-        });
+    isMuted = !isMuted;
+    backgroundAudio.muted = isMuted;
+    rainAudio.muted = isMuted;
+    muteButton.textContent = isMuted ? 'Unmute' : 'Mute';
+});
 
         function initAudio() {
             audio.volume = 0;
@@ -623,44 +624,50 @@
 
         document.querySelectorAll('.filter-toggle button').forEach(button => {
     button.addEventListener('click', function() {
-        document.querySelectorAll('.filter-toggle button').forEach(btn => btn.classList.remove('active'));
-        this.classList.add('active');
-        createPhotoGallery(this.dataset.filter);
-        animateStatusChanges();
-        localStorage.setItem('selectedFilter', this.dataset.filter);
+    document.querySelectorAll('.filter-toggle button').forEach(btn => btn.classList.remove('active'));
+    this.classList.add('active');
+    createPhotoGallery(this.dataset.filter);
+    animateStatusChanges();
+    localStorage.setItem('selectedFilter', this.dataset.filter);
 
-        const backgroundAudio = document.getElementById('backgroundAudio');
-        const rainAudio = document.getElementById('rainAudio');
+    const backgroundAudio = document.getElementById('backgroundAudio');
+    const rainAudio = document.getElementById('rainAudio');
 
-        if (this.dataset.filter === 'mourning') {
-            document.body.classList.add('mourning-active');
-            makeItRain();
-            // Play rain audio at 80% volume
+    if (this.dataset.filter === 'mourning') {
+        document.body.classList.add('mourning-active');
+        fadeOutAudio(backgroundAudio, 3000, () => {
+            backgroundAudio.pause();
             rainAudio.volume = 0.8;
             rainAudio.play().catch(error => console.error("Rain audio play failed:", error));
-            // Optionally reduce main background audio volume if desired
-        } else {
-            document.body.classList.remove('mourning-active');
-            // Fade out rain audio over 3 seconds
-            fadeOutAudio(rainAudio, 3000);
-        }
+        });
+        makeItRain();
+    } else {
+        document.body.classList.remove('mourning-active');
+        fadeOutAudio(rainAudio, 3000, () => {
+            rainAudio.pause();
+            backgroundAudio.volume = 1;
+            backgroundAudio.play().catch(error => console.error("Background audio play failed:", error));
+        });
+    }
 
-        if (this.dataset.filter === 'traitor') {
-            document.querySelectorAll('.photo-container').forEach(container => {
-                if (container.classList.contains('traitor')) {
-                    container.style.cursor = "url('cursor-hand-grab-svgrepo-com.svg') 16 16, pointer";
-                } else {
-                    container.style.cursor = 'default';
-                }
-            });
-        } else {
-            document.querySelectorAll('.photo-container').forEach(container => {
+    if (this.dataset.filter === 'traitor') {
+        document.querySelectorAll('.photo-container').forEach(container => {
+            if (container.classList.contains('traitor')) {
+                container.style.cursor = "url('cursor-hand-grab-svgrepo-com.svg') 16 16, pointer";
+            } else {
                 container.style.cursor = 'default';
-            });
-        }
-    });
+            }
+        });
+    } else {
+        document.querySelectorAll('.photo-container').forEach(container => {
+            container.style.cursor = 'default';
+        });
+    }
 });
-        function fadeOutAudio(audio, duration) {
+});
+
+        
+        function fadeOutAudio(audio, duration, callback) {
     let currentVolume = audio.volume;
     const fadeInterval = setInterval(() => {
         if (currentVolume > 0.01) {
@@ -670,8 +677,9 @@
             clearInterval(fadeInterval);
             audio.pause();
             audio.volume = 0;
+            if (callback) callback();
         }
-    }, duration / 100); // Adjust interval for smoother fade
+    }, duration / 100);
 }
         
         // Rain effect function
