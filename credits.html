@@ -45,11 +45,11 @@
             top: 0;
             width: 100%;
             z-index: 10;
-            transition: top 0.3s ease;
+            transition: opacity 2s ease;
         }
 
         .menu-bar.hidden {
-            top: -80px;
+            opacity: 0;
         }
 
         .menu-bar a {
@@ -115,14 +115,18 @@
         }
 
         .game-title {
-            font-family: 'PathwayGothicOne', sans-serif;
+            font-family: 'YaroCut', sans-serif;
             text-align: center;
             width: 80%;
             max-width: 800px;
             color: #ff8100;
-            font-size: 36px;
+            font-size: 48px;
             position: absolute;
             line-height: 1.2;
+        }
+
+        .game-title span {
+            font-size: 36px;
         }
 
         .intro-credit {
@@ -135,6 +139,17 @@
             opacity: 0;
             position: absolute;
             transition: opacity 0.5s ease;
+        }
+
+        .intro-credit .role {
+            font-size: 24px;
+            display: block;
+        }
+
+        .intro-credit .name {
+            font-size: 36px;
+            display: block;
+            margin-top: 8px;
         }
 
         .credits-content {
@@ -232,6 +247,19 @@
             z-index: 1000;
         }
 
+        #fadeOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            opacity: 0;
+            z-index: 2000;
+            transition: opacity 2s ease;
+            pointer-events: none;
+        }
+
         @media screen and (max-width: 768px) {
             .menu-bar {
                 padding: 15px 0;
@@ -267,6 +295,14 @@
             .final-message {
                 font-size: 36px;
             }
+
+            .game-title {
+                font-size: 40px;
+            }
+
+            .game-title span {
+                font-size: 28px;
+            }
         }
     </style>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-QJCJYMJ15J"></script>
@@ -293,14 +329,26 @@
             <!-- Game title that lingers -->
             <div class="game-title" id="gameTitle">
                 The Traitors<br>
-                TPO Edition #1
+                <span>TPO Edition #1</span>
             </div>
             
             <!-- Intro credits that appear one by one -->
-            <div class="intro-credit" id="director">Directed by - Claudio Winkerman</div>
-            <div class="intro-credit" id="writer">Written by - Claudio Winkerman</div>
-            <div class="intro-credit" id="producer">Produced by - Claudio Winkerman</div>
-            <div class="intro-credit" id="executive">Executive Produced by - Claudio Winkerman</div>
+            <div class="intro-credit" id="director">
+                <span class="role">Directed by</span>
+                <span class="name">Claudio Winkerman</span>
+            </div>
+            <div class="intro-credit" id="writer">
+                <span class="role">Written by</span>
+                <span class="name">Claudio Winkerman</span>
+            </div>
+            <div class="intro-credit" id="producer">
+                <span class="role">Produced by</span>
+                <span class="name">Claudio Winkerman</span>
+            </div>
+            <div class="intro-credit" id="executive">
+                <span class="role">Executive Produced by</span>
+                <span class="name">Claudio Winkerman</span>
+            </div>
             
             <!-- Cast and other credits that scroll -->
             <div class="credits-content credits-scroll" id="creditsContent">
@@ -475,7 +523,7 @@
                     <img src="Cloak-Training-Logo-Background.png" alt="Cloak Training Logo">
                 </div>
                 
-                <h2>Claudio Thanks You For Your Participation</h2>
+                <h2 id="thankYouMessage">Claudio Thanks You For Your Participation</h2>
             </div>
         </div>
         
@@ -484,10 +532,11 @@
         </div>
     </div>
 
+    <div id="fadeOverlay"></div>
     <button id="muteButton">Click Page To Enable Audio</button>
 
     <audio id="backgroundAudio" loop preload="auto">
-        <source src="key-art-audio.wav" type="audio/wav">
+        <source src="Credit Music.mp3" type="audio/mp3">
     </audio>
 
     <script>
@@ -499,8 +548,11 @@
             const creditsContent = document.getElementById('creditsContent');
             const finalMessage = document.getElementById('finalMessage');
             const gameTitle = document.getElementById('gameTitle');
+            const thankYouMessage = document.getElementById('thankYouMessage');
+            const fadeOverlay = document.getElementById('fadeOverlay');
             let isMuted = false;
             const menuBar = document.getElementById('menuBar');
+            let menuTimeout;
             
             // Intro credits elements
             const introCredits = [
@@ -533,6 +585,11 @@
                         credit.style.opacity = '0';
                     });
                     
+                    // Start playing the credit music
+                    if (!isMuted) {
+                        audio.play();
+                    }
+                    
                     // Hide menu when starting the scrolling credits
                     menuBar.classList.add('hidden');
                     
@@ -542,10 +599,21 @@
                         // Start the scrolling animation
                         creditsContent.style.animation = 'scrollCredits 90s linear forwards';
                         
-                        // Show final message sooner - after 45 seconds (halfway through credits)
+                        // Calculate when "Thank You" message should be leaving the screen
+                        // This is roughly 80% through the animation (72 seconds)
                         setTimeout(() => {
                             finalMessage.style.opacity = '1';
-                        }, 45000);
+                            
+                            // Add fade to black and redirect after 2 more seconds
+                            setTimeout(() => {
+                                fadeOverlay.style.opacity = '1';
+                                
+                                // Redirect after fade completes
+                                setTimeout(() => {
+                                    window.location.href = 'https://claudio-wpp.github.io/cloakpixel/';
+                                }, 2000);
+                            }, 2000);
+                        }, 72000);
                     }, 500);
                     
                     return;
@@ -574,25 +642,8 @@
 
             // Start audio play on user interaction
             function initAudio() {
-                // Play audio with fade-in effect
-                audio.volume = 0;
-                audio.play().then(() => {
-                    // Update button text to 'Mute' after first interaction
-                    muteButton.textContent = 'Mute';
-                    
-                    // Fade in audio over 2 seconds
-                    let volume = 0;
-                    const fadeInterval = setInterval(() => {
-                        volume += 0.05;
-                        if (volume >= 1) {
-                            clearInterval(fadeInterval);
-                            volume = 1;
-                        }
-                        audio.volume = volume;
-                    }, 100);
-                }).catch((error) => {
-                    console.log("Audio play failed:", error);
-                });
+                // Don't auto-play, wait for the credits to scroll
+                muteButton.textContent = 'Mute';
                 
                 // Remove event listeners after first interaction
                 document.removeEventListener('click', initAudio);
@@ -603,26 +654,36 @@
             document.addEventListener('click', initAudio);
             document.addEventListener('touchstart', initAudio);
 
-            // Menu hover/touch at top detection
-            const topSensitiveArea = 40; // pixels from top
-            
-            window.addEventListener('mousemove', function(e) {
-                if (e.clientY < topSensitiveArea) {
-                    menuBar.classList.remove('hidden');
-                }
+            // Menu hover/touch detection
+            document.addEventListener('mousemove', function() {
+                menuBar.classList.remove('hidden');
+                
+                clearTimeout(menuTimeout);
+                menuTimeout = setTimeout(() => {
+                    menuBar.classList.add('hidden');
+                }, 1000);
             });
             
-            document.addEventListener('touchstart', function(e) {
-                if (e.touches[0].clientY < topSensitiveArea) {
-                    menuBar.classList.remove('hidden');
-                }
+            // Keep menu visible while hovering over it
+            menuBar.addEventListener('mouseenter', function() {
+                clearTimeout(menuTimeout);
+                menuBar.classList.remove('hidden');
             });
             
-            // Additional click event for top area to show menu
-            document.addEventListener('click', function(e) {
-                if (e.clientY < topSensitiveArea) {
-                    menuBar.classList.remove('hidden');
-                }
+            menuBar.addEventListener('mouseleave', function() {
+                menuTimeout = setTimeout(() => {
+                    menuBar.classList.add('hidden');
+                }, 1000);
+            });
+            
+            // Touch events for mobile
+            document.addEventListener('touchstart', function() {
+                menuBar.classList.remove('hidden');
+                
+                clearTimeout(menuTimeout);
+                menuTimeout = setTimeout(() => {
+                    menuBar.classList.add('hidden');
+                }, 1000);
             });
         });
     </script>
