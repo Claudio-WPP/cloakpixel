@@ -45,11 +45,11 @@
             top: 0;
             width: 100%;
             z-index: 10;
-            transition: top 0.3s ease, opacity 2s ease;
+            transition: top 0.3s ease;
         }
 
         .menu-bar.hidden {
-            opacity: 0;
+            top: -80px;
         }
 
         .menu-bar a {
@@ -115,19 +115,14 @@
         }
 
         .game-title {
-            font-family: 'YaroCut', sans-serif;
+            font-family: 'PathwayGothicOne', sans-serif;
             text-align: center;
             width: 80%;
             max-width: 800px;
             color: #ff8100;
-            font-size: 48px;
+            font-size: 36px;
             position: absolute;
             line-height: 1.2;
-        }
-
-        .game-subtitle {
-            font-family: 'YaroCut', sans-serif;
-            font-size: 32px;
         }
 
         .intro-credit {
@@ -140,17 +135,6 @@
             opacity: 0;
             position: absolute;
             transition: opacity 0.5s ease;
-        }
-
-        .intro-credit .role {
-            font-size: 24px;
-            display: block;
-            margin-bottom: 8px;
-        }
-
-        .intro-credit .person {
-            font-size: 36px;
-            display: block;
         }
 
         .credits-content {
@@ -200,17 +184,26 @@
         .credits-content .cast-entry {
             margin: 5px 0;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
         }
 
         .credits-content .cast-name {
-            font-size: 20px;
+            text-align: right;
+            flex: 1;
+            padding-right: 10px;
+        }
+
+        .credits-content .cast-separator {
+            display: inline-block;
+            text-align: center;
+            padding: 0 10px;
         }
 
         .credits-content .cast-role {
-            font-size: 28px;
+            text-align: left;
+            flex: 1;
+            padding-left: 10px;
         }
 
         .logo-container {
@@ -239,19 +232,6 @@
             z-index: 1000;
         }
 
-        #fade-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: black;
-            opacity: 0;
-            transition: opacity 2s ease;
-            z-index: 2000;
-            pointer-events: none;
-        }
-
         @media screen and (max-width: 768px) {
             .menu-bar {
                 padding: 15px 0;
@@ -261,14 +241,6 @@
             .menu-bar a {
                 margin: 5px 10px;
                 font-size: 16px;
-            }
-
-            .game-title {
-                font-size: 36px;
-            }
-
-            .game-subtitle {
-                font-size: 24px;
             }
 
             .credits-content h2 {
@@ -285,14 +257,6 @@
 
             .credits-content .role {
                 font-size: 20px;
-            }
-
-            .credits-content .cast-name {
-                font-size: 16px;
-            }
-
-            .credits-content .cast-role {
-                font-size: 22px;
             }
 
             .logo-container {
@@ -329,26 +293,14 @@
             <!-- Game title that lingers -->
             <div class="game-title" id="gameTitle">
                 The Traitors<br>
-                <span class="game-subtitle">TPO Edition #1</span>
+                TPO Edition #1
             </div>
             
             <!-- Intro credits that appear one by one -->
-            <div class="intro-credit" id="director">
-                <span class="role">Directed by</span>
-                <span class="person">Claudio Winkerman</span>
-            </div>
-            <div class="intro-credit" id="writer">
-                <span class="role">Written by</span>
-                <span class="person">Claudio Winkerman</span>
-            </div>
-            <div class="intro-credit" id="producer">
-                <span class="role">Produced by</span>
-                <span class="person">Claudio Winkerman</span>
-            </div>
-            <div class="intro-credit" id="executive">
-                <span class="role">Executive Produced by</span>
-                <span class="person">Claudio Winkerman</span>
-            </div>
+            <div class="intro-credit" id="director">Directed by - Claudio Winkerman</div>
+            <div class="intro-credit" id="writer">Written by - Claudio Winkerman</div>
+            <div class="intro-credit" id="producer">Produced by - Claudio Winkerman</div>
+            <div class="intro-credit" id="executive">Executive Produced by - Claudio Winkerman</div>
             
             <!-- Cast and other credits that scroll -->
             <div class="credits-content credits-scroll" id="creditsContent">
@@ -356,110 +308,137 @@
                 
                 <p class="cast-entry">
                     <span class="cast-name">Gavin</span>
+                    <span class="cast-separator">-</span>
                     <span class="cast-role">Faithful</span>
                 </p>
                 <p class="cast-entry">
                     <span class="cast-name">Andre</span>
+                    <span class="cast-separator">-</span>
                     <span class="cast-role">Faithful</span>
                 </p>
                 <p class="cast-entry">
                     <span class="cast-name">Glenn</span>
+                    <span class="cast-separator">-</span>
                     <span class="cast-role">Faithful</span>
                 </p>
                 <p class="cast-entry">
                     <span class="cast-name">Georgia</span>
+                    <span class="cast-separator">-</span>
                     <span class="cast-role">Faithful</span>
                 </p>
                 <p class="cast-entry">
                     <span class="cast-name">Frank</span>
+                    <span class="cast-separator">-</span>
                     <span class="cast-role">Traitor</span>
                 </p>
                 <p class="cast-entry">
                     <span class="cast-name">Alex</span>
+                    <span class="cast-separator">-</span>
                     <span class="cast-role">Faithful</span>
                 </p>
                 <p class="cast-entry">
                     <span class="cast-name">Claire</span>
+                    <span class="cast-separator">-</span>
                     <span class="cast-role">Faithful</span>
                 </p>
                 <p class="cast-entry">
                     <span class="cast-name">Anusha</span>
+                    <span class="cast-separator">-</span>
                     <span class="cast-role">Faithful</span>
                 </p>
                 <p class="cast-entry">
                     <span class="cast-name">Oana</span>
+                    <span class="cast-separator">-</span>
                     <span class="cast-role">Faithful</span>
                 </p>
                 <p class="cast-entry">
                     <span class="cast-name">Santiago</span>
+                    <span class="cast-separator">-</span>
                     <span class="cast-role">Faithful</span>
                 </p>
                 <p class="cast-entry">
                     <span class="cast-name">Isobel</span>
+                    <span class="cast-separator">-</span>
                     <span class="cast-role">Faithful</span>
                 </p>
                 <p class="cast-entry">
                     <span class="cast-name">Shreya</span>
+                    <span class="cast-separator">-</span>
                     <span class="cast-role">Faithful</span>
                 </p>
                 <p class="cast-entry">
                     <span class="cast-name">Temitope</span>
+                    <span class="cast-separator">-</span>
                     <span class="cast-role">Secret Traitor</span>
                 </p>
                 <p class="cast-entry">
                     <span class="cast-name">Charlotte</span>
+                    <span class="cast-separator">-</span>
                     <span class="cast-role">Faithful</span>
                 </p>
                 <p class="cast-entry">
                     <span class="cast-name">Joe</span>
+                    <span class="cast-separator">-</span>
                     <span class="cast-role">Faithful</span>
                 </p>
                 <p class="cast-entry">
                     <span class="cast-name">Callum</span>
+                    <span class="cast-separator">-</span>
                     <span class="cast-role">Faithful</span>
                 </p>
                 <p class="cast-entry">
                     <span class="cast-name">Fatima</span>
+                    <span class="cast-separator">-</span>
                     <span class="cast-role">Faithful</span>
                 </p>
                 <p class="cast-entry">
                     <span class="cast-name">Tim</span>
+                    <span class="cast-separator">-</span>
                     <span class="cast-role">Faithful</span>
                 </p>
                 <p class="cast-entry">
                     <span class="cast-name">Lisa</span>
+                    <span class="cast-separator">-</span>
                     <span class="cast-role">Faithful</span>
                 </p>
                 <p class="cast-entry">
                     <span class="cast-name">Mehnaj</span>
+                    <span class="cast-separator">-</span>
                     <span class="cast-role">Faithful</span>
                 </p>
                 <p class="cast-entry">
                     <span class="cast-name">Rita</span>
+                    <span class="cast-separator">-</span>
                     <span class="cast-role">Faithful</span>
                 </p>
                 <p class="cast-entry">
                     <span class="cast-name">Mihaela</span>
+                    <span class="cast-separator">-</span>
                     <span class="cast-role">Faithful</span>
                 </p>
                 <p class="cast-entry">
                     <span class="cast-name">Matt</span>
+                    <span class="cast-separator">-</span>
                     <span class="cast-role">Faithful</span>
                 </p>
                 <p class="cast-entry">
                     <span class="cast-name">Lauren</span>
+                    <span class="cast-separator">-</span>
                     <span class="cast-role">Faithful</span>
                 </p>
                 <p class="cast-entry">
                     <span class="cast-name">Jett</span>
+                    <span class="cast-separator">-</span>
                     <span class="cast-role">Traitor</span>
                 </p>
                 <p class="cast-entry">
                     <span class="cast-name">Ellie</span>
-                    <span class="cast-role">Last Minute Traitor Because They Saw Anju Become a Traitor</span>
+                    <span class="cast-separator">-</span>
+                    <span class="cast-role">Last Minute Traitor Because They Say Anju Become a Traitor</span>
                 </p>
                 <p class="cast-entry">
                     <span class="cast-name">Anju</span>
+                    <span class="cast-separator">-</span>
                     <span class="cast-role">Traitor</span>
                 </p>
                 
@@ -467,22 +446,27 @@
                 
                 <p class="cast-entry">
                     <span class="cast-name">Site Creation and Editing</span>
+                    <span class="cast-separator">-</span>
                     <span class="cast-role">Claudio Winkerman</span>
                 </p>
                 <p class="cast-entry">
                     <span class="cast-name">Editor</span>
+                    <span class="cast-separator">-</span>
                     <span class="cast-role">Claudio Winkerman</span>
                 </p>
                 <p class="cast-entry">
                     <span class="cast-name">Costumer Designer</span>
+                    <span class="cast-separator">-</span>
                     <span class="cast-role">Amazon</span>
                 </p>
                 <p class="cast-entry">
                     <span class="cast-name">Music Composer</span>
+                    <span class="cast-separator">-</span>
                     <span class="cast-role">Claudio Winkerman</span>
                 </p>
                 <p class="cast-entry">
                     <span class="cast-name">Casting Director</span>
+                    <span class="cast-separator">-</span>
                     <span class="cast-role">EssenceMediacom Hiring Policies</span>
                 </p>
                 
@@ -491,7 +475,7 @@
                     <img src="Cloak-Training-Logo-Background.png" alt="Cloak Training Logo">
                 </div>
                 
-                <h2 id="thanksMessage">Claudio Thanks You For Your Participation</h2>
+                <h2>Claudio Thanks You For Your Participation</h2>
             </div>
         </div>
         
@@ -499,8 +483,6 @@
             Claudio Will Return
         </div>
     </div>
-
-    <div id="fade-overlay"></div>
 
     <button id="muteButton">Click Page To Enable Audio</button>
 
@@ -517,11 +499,8 @@
             const creditsContent = document.getElementById('creditsContent');
             const finalMessage = document.getElementById('finalMessage');
             const gameTitle = document.getElementById('gameTitle');
-            const fadeOverlay = document.getElementById('fade-overlay');
-            const thanksMessage = document.getElementById('thanksMessage');
             let isMuted = false;
             const menuBar = document.getElementById('menuBar');
-            let menuFadeTimeout = null;
             
             // Intro credits elements
             const introCredits = [
@@ -563,30 +542,10 @@
                         // Start the scrolling animation
                         creditsContent.style.animation = 'scrollCredits 90s linear forwards';
                         
-                        // Set up an intersection observer to detect when the thanks message scrolls out of view
-                        const observer = new IntersectionObserver((entries) => {
-                            entries.forEach(entry => {
-                                if (!entry.isIntersecting && entry.boundingClientRect.y < 0) {
-                                    // The thanks message has scrolled off screen
-                                    finalMessage.style.opacity = '1';
-                                    
-                                    // After 4 seconds, fade to black and redirect
-                                    setTimeout(() => {
-                                        fadeOverlay.style.opacity = '1';
-                                        
-                                        setTimeout(() => {
-                                            window.location.href = 'https://claudio-wpp.github.io/cloakpixel/';
-                                        }, 2000); // 2 seconds of black before redirect
-                                    }, 2000); // 4 seconds of "Claudio Will Return"
-                                    
-                                    // Stop observing
-                                    observer.disconnect();
-                                }
-                            });
-                        }, { threshold: 0 });
-                        
-                        // Start observing the thanks message
-                        observer.observe(thanksMessage);
+                        // Show final message sooner - after 45 seconds (halfway through credits)
+                        setTimeout(() => {
+                            finalMessage.style.opacity = '1';
+                        }, 45000);
                     }, 500);
                     
                     return;
@@ -647,47 +606,24 @@
             // Menu hover/touch at top detection
             const topSensitiveArea = 40; // pixels from top
             
-            // Function to start menu fade timer
-            function startMenuFadeTimer() {
-                clearTimeout(menuFadeTimeout);
-                menuFadeTimeout = setTimeout(() => {
-                    menuBar.classList.add('hidden');
-                }, 1000); // 1 second before fading
-            }
-            
-            // Menu hover detection and handling
             window.addEventListener('mousemove', function(e) {
                 if (e.clientY < topSensitiveArea) {
                     menuBar.classList.remove('hidden');
-                    clearTimeout(menuFadeTimeout); // Clear any existing fade timeout
-                } else {
-                    startMenuFadeTimer();
                 }
             });
             
-            // Reset menu fade when hovering over menu
-            menuBar.addEventListener('mouseenter', function() {
-                menuBar.classList.remove('hidden');
-                clearTimeout(menuFadeTimeout);
-            });
-            
-            menuBar.addEventListener('mouseleave', function() {
-                startMenuFadeTimer();
-            });
-            
-            // Touch handling
             document.addEventListener('touchstart', function(e) {
                 if (e.touches[0].clientY < topSensitiveArea) {
                     menuBar.classList.remove('hidden');
-                    clearTimeout(menuFadeTimeout);
-                    startMenuFadeTimer();
                 }
             });
             
-            // Initial menu fade after page load
-            setTimeout(() => {
-                startMenuFadeTimer();
-            }, 2000);
+            // Additional click event for top area to show menu
+            document.addEventListener('click', function(e) {
+                if (e.clientY < topSensitiveArea) {
+                    menuBar.classList.remove('hidden');
+                }
+            });
         });
     </script>
 </body>
