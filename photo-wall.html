@@ -301,6 +301,106 @@
     .filter-toggle button:hover {
         background-color: rgba(255, 255, 255, 0.08);
     }
+
+    /* Rain Effect CSS */
+    .rain {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+        pointer-events: none;
+    }
+    
+    .rain.back-row {
+        z-index: 1;
+        bottom: 60px;
+        opacity: 0.5;
+    }
+    
+    .drop {
+        position: absolute;
+        bottom: 100%;
+        width: 15px;
+        height: 120px;
+        pointer-events: none;
+        animation: drop 0.5s linear infinite;
+    }
+    
+    @keyframes drop {
+        0% {
+            transform: translateY(0vh);
+        }
+        75% {
+            transform: translateY(90vh);
+        }
+        100% {
+            transform: translateY(90vh);
+        }
+    }
+    
+    .stem {
+        width: 1px;
+        height: 60%;
+        margin-left: 7px;
+        background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.25));
+        animation: stem 0.5s linear infinite;
+    }
+    
+    @keyframes stem {
+        0% {
+            opacity: 1;
+        }
+        65% {
+            opacity: 1;
+        }
+        75% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 0;
+        }
+    }
+    
+    .splat {
+        width: 15px;
+        height: 10px;
+        border-top: 2px dotted rgba(255, 255, 255, 0.5);
+        border-radius: 50%;
+        opacity: 1;
+        transform: scale(0);
+        animation: splat 0.5s linear infinite;
+    }
+    
+    @keyframes splat {
+        0% {
+            opacity: 1;
+            transform: scale(0);
+        }
+        80% {
+            opacity: 1;
+            transform: scale(0);
+        }
+        90% {
+            opacity: 0.5;
+            transform: scale(1);
+        }
+        100% {
+            opacity: 0;
+            transform: scale(1.5);
+        }
+    }
+    
+    /* Hide rain containers by default */
+    #rainContainer, #backRowRainContainer {
+        display: none;
+    }
+    
+    /* Show rain containers when mourning filter is active */
+    body.mourning-active #rainContainer,
+    body.mourning-active #backRowRainContainer {
+        display: block;
+    }
     </style>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-QJCJYMJ15J"></script>
     <script>
@@ -309,6 +409,7 @@
         gtag('js', new Date());
         gtag('config', 'G-QJCJYMJ15J');
     </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <div class="menu-bar">
@@ -320,15 +421,20 @@
         <a href="/cloakpixel/journal" id="journal-link">Journal</a>
     </div>
 
-     <div class="content">
+    <!-- Rain containers -->
+    <div id="rainContainer" class="rain front-row"></div>
+    <div id="backRowRainContainer" class="rain back-row"></div>
+
+    <div class="content">
         <div class="filter-container">
-    <div class="filter-background"></div> <div class="filter-toggle">
-        <button data-filter="all" class="active">All</button>
-        <button data-filter="remaining">Remaining</button>
-        <button data-filter="mourning">Mourning</button>
-        <button data-filter="traitor">Traitor</button>
-    </div>
-</div>
+            <div class="filter-background"></div>
+            <div class="filter-toggle">
+                <button data-filter="all" class="active">All</button>
+                <button data-filter="remaining">Remaining</button>
+                <button data-filter="mourning">Mourning</button>
+                <button data-filter="traitor">Traitor</button>
+            </div>
+        </div>
         <div class="photo-gallery" id="photoGallery">
         </div>
         <canvas id="crackCanvas"></canvas>
@@ -469,6 +575,14 @@
             });
             createPhotoGallery(storedFilter);
             animateStatusChanges();
+            
+            // Activate rain if mourning filter is stored
+            if (storedFilter === 'mourning') {
+                document.body.classList.add('mourning-active');
+                makeItRain();
+            } else {
+                document.body.classList.remove('mourning-active');
+            }
         } else {
             createPhotoGallery('all'); // Default to 'all' if no filter is stored
             animateStatusChanges();
@@ -511,6 +625,14 @@
                 animateStatusChanges();
                 localStorage.setItem('selectedFilter', this.dataset.filter); // Store the filter
 
+                // Toggle rain effect when mourning filter is selected
+                if (this.dataset.filter === 'mourning') {
+                    document.body.classList.add('mourning-active');
+                    makeItRain();
+                } else {
+                    document.body.classList.remove('mourning-active');
+                }
+
                 if (this.dataset.filter === 'traitor') {
                     document.querySelectorAll('.photo-container').forEach(container => {
                         if (container.classList.contains('traitor')) {
@@ -526,6 +648,33 @@
                 }
             });
         });
+        
+        // Rain effect function
+        function makeItRain() {
+            // Clear out existing rain drops
+            $('.rain').empty();
+            
+            var increment = 0;
+            var drops = "";
+            var backDrops = "";
+            
+            while (increment < 100) {
+                // Random numbers for various randomizations
+                var randoHundo = (Math.floor(Math.random() * (98 - 1 + 1) + 1));
+                var randoFiver = (Math.floor(Math.random() * (5 - 2 + 1) + 2));
+                
+                // Increment
+                increment += randoFiver;
+                
+                // Add new raindrops with various randomizations
+                drops += '<div class="drop" style="left: ' + increment + '%; bottom: ' + (randoFiver + randoFiver - 1 + 100) + '%; animation-delay: 0.' + randoHundo + 's; animation-duration: 0.5' + randoHundo + 's;"><div class="stem" style="animation-delay: 0.' + randoHundo + 's; animation-duration: 0.5' + randoHundo + 's;"></div><div class="splat" style="animation-delay: 0.' + randoHundo + 's; animation-duration: 0.5' + randoHundo + 's;"></div></div>';
+                backDrops += '<div class="drop" style="right: ' + increment + '%; bottom: ' + (randoFiver + randoFiver - 1 + 100) + '%; animation-delay: 0.' + randoHundo + 's; animation-duration: 0.5' + randoHundo + 's;"><div class="stem" style="animation-delay: 0.' + randoHundo + 's; animation-duration: 0.5' + randoHundo + 's;"></div><div class="splat" style="animation-delay: 0.' + randoHundo + 's; animation-duration: 0.5' + randoHundo + 's;"></div></div>';
+            }
+            
+            // Append drops to containers
+            $('#rainContainer').append(drops);
+            $('#backRowRainContainer').append(backDrops);
+        }
     });
 </script>
     <script src="script.js"></script>
