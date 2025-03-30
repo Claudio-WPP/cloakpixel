@@ -115,7 +115,7 @@
         }
 
         .intro-credit {
-            font-family: 'PathwayGothicOne', sans-serif;
+            font-family: 'YaroCut', sans-serif;
             text-align: center;
             width: 80%;
             max-width: 800px;
@@ -129,8 +129,8 @@
         .credits-content {
             font-family: 'PathwayGothicOne', sans-serif;
             text-align: center;
-            width: 80%;
-            max-width: 800px;
+            width: 90%;
+            max-width: 1000px;
             color: white;
             opacity: 0;
         }
@@ -278,7 +278,7 @@
     <div class="content">
         <div class="credits-container" id="creditsContainer">
             <!-- Intro credits that appear one by one -->
-            <div class="intro-credit" id="title">TPO Traitors #1</div>
+            <div class="intro-credit" id="title">The Traitors: TPO Edition #1</div>
             <div class="intro-credit" id="director">Directed by - Claudio Winkerman</div>
             <div class="intro-credit" id="writer">Written by - Claudio Winkerman</div>
             <div class="intro-credit" id="producer">Produced by - Claudio Winkerman</div>
@@ -489,16 +489,19 @@
                         credit.style.opacity = '0';
                     });
                     
+                    // Hide menu when starting the scrolling credits
+                    menuBar.classList.add('hidden');
+                    
                     setTimeout(() => {
                         // Make the scrolling credits visible
                         creditsContent.style.opacity = '1';
                         // Start the scrolling animation
                         creditsContent.style.animation = 'scrollCredits 90s linear forwards';
                         
-                        // Show final message when credits are done
+                        // Show final message sooner - after 45 seconds (halfway through credits)
                         setTimeout(() => {
                             finalMessage.style.opacity = '1';
-                        }, 90000); // Wait until credits are done scrolling
+                        }, 45000);
                     }, 500);
                     
                     return;
@@ -556,26 +559,24 @@
             document.addEventListener('click', initAudio);
             document.addEventListener('touchstart', initAudio);
 
-            // Menu bar hide logic
-            let lastScrollTop = 0;
-            window.addEventListener('scroll', function() {
-                let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                if (scrollTop > lastScrollTop){
-                    menuBar.classList.add('hidden');
-                } else {
+            // Menu hover/touch at top detection
+            const topSensitiveArea = 40; // pixels from top
+            
+            window.addEventListener('mousemove', function(e) {
+                if (e.clientY < topSensitiveArea) {
                     menuBar.classList.remove('hidden');
                 }
-                lastScrollTop = scrollTop;
             });
             
-            // Menu bar reveal on top hover/touch
-            window.addEventListener('mousemove', function(e) {
-                if (e.clientY < 80) { // Adjust as needed
+            document.addEventListener('touchstart', function(e) {
+                if (e.touches[0].clientY < topSensitiveArea) {
                     menuBar.classList.remove('hidden');
                 }
             });
-            window.addEventListener('touchmove', function(e) {
-                if (e.touches[0].clientY < 80) { // Adjust as needed
+            
+            // Additional click event for top area to show menu
+            document.addEventListener('click', function(e) {
+                if (e.clientY < topSensitiveArea) {
                     menuBar.classList.remove('hidden');
                 }
             });
