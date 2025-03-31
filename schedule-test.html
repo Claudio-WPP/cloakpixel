@@ -66,28 +66,20 @@
             position: relative;
         }
 
-        .info-box {
-            background-color: rgba(50, 50, 50, 0.4);
-            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.6);
-            border-radius: 10px;
-            padding: 10px;
-            max-width: 800px;
-            text-align: center;
+        .schedule-container {
+            margin-top: 80px;
             backdrop-filter: blur(15px);
-            position: absolute;
-            top: 80px;
-            left: 50%;
-            transform: translate(-50%, 0);
+            padding: 15px;
+            max-width: 100%;
             z-index: 30;
             opacity: 0;
             transition: opacity 1s ease;
-            grid-template-columns: 1fr;
         }
 
         .day-filter {
             display: flex;
             justify-content: center;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
         }
 
         .day-filter button {
@@ -115,7 +107,6 @@
             width: 100%;
             border-collapse: collapse;
             font-family: Arial, sans-serif;
-            display: block;
             min-width: 600px;
         }
 
@@ -195,10 +186,10 @@
                 font-size: 14px;
             }
 
-            .info-box {
-                top: 100px;
-                padding: 5px;
+            .schedule-container {
+                margin-top: 100px;
                 width: 98%;
+                padding: 10px;
             }
 
             .schedule-table {
@@ -304,121 +295,119 @@
     </div>
 
     <div class="content">
-        <div class="info-box">
+        <div class="schedule-container">
             <div class="day-filter">
                 <button class="day-btn" data-day="Mon">Monday</button>
                 <button class="day-btn" data-day="Wed">Wednesday</button>
                 <button class="day-btn" data-day="Thur">Thursday</button>
             </div>
             
-            <div class="schedule-container">
-                <table class="schedule-table">
-                    <!-- Wednesday Schedule -->
-                    <tr data-day="Wed" class="day-label">
-                        <td colspan="4">Wednesday</td>
-                    </tr>
-                    <tr data-day="Wed">
-                        <td data-label="Start Time">11:00</td>
-                        <td data-label="End Time">11:30</td>
-                        <td data-label="Location">The Anchor</td>
-                        <td data-label="Notes">Intro and Teams Setup</td>
-                    </tr>
-                    <tr data-day="Wed">
-                        <td data-label="Start Time">12:00</td>
-                        <td data-label="End Time">12:30</td>
-                        <td data-label="Location">Pink - 2-S10, Toad - 4-S18, Fish - 3-S12</td>
-                        <td data-label="Notes">Arrive before 12, and await a message</td>
-                    </tr>
-                    <tr data-day="Wed">
-                        <td data-label="Start Time">14:15</td>
-                        <td data-label="End Time">14:45</td>
-                        <td data-label="Location">Room 4-N4</td>
-                        <td data-label="Notes">Your first roundtable...</td>
-                    </tr>
-                    <tr data-day="Wed">
-                        <td data-label="Start Time">15:30</td>
-                        <td data-label="End Time">15:45</td>
-                        <td data-label="Location">The Library - 4th Floor</td>
-                        <td data-label="Notes">Another roundtable...</td>
-                    </tr>
-                    
-                    <!-- Thursday Schedule -->
-                    <tr data-day="Thur" class="day-label">
-                        <td colspan="4">Thursday</td>
-                    </tr>
-                    <tr data-day="Thur">
-                        <td data-label="Start Time">11:00</td>
-                        <td data-label="End Time">11:30</td>
-                        <td data-label="Location">3rd Floor - Bankside (below Library)</td>
-                        <td data-label="Notes">Team challenge pt.1</td>
-                    </tr>
-                    <tr data-day="Thur">
-                        <td data-label="Start Time">12:00</td>
-                        <td data-label="End Time">12:30</td>
-                        <td data-label="Location">Hosts will confirm on day</td>
-                        <td data-label="Notes">Banishment time!</td>
-                    </tr>
-                    <tr data-day="Thur">
-                        <td data-label="Start Time">13:00</td>
-                        <td data-label="End Time">14:00</td>
-                        <td data-label="Location">The Anchor</td>
-                        <td data-label="Notes">Team mingle</td>
-                    </tr>
-                    <tr data-day="Thur">
-                        <td data-label="Start Time">14:15</td>
-                        <td data-label="End Time">14:45</td>
-                        <td data-label="Location">Room 4-N4</td>
-                        <td data-label="Notes">Team challenge pt.2</td>
-                    </tr>
-                    <tr data-day="Thur">
-                        <td data-label="Start Time">15:20</td>
-                        <td data-label="End Time">15:30</td>
-                        <td data-label="Location">Classified</td>
-                        <td data-label="Notes">Classified</td>
-                    </tr>
-                    <tr data-day="Thur">
-                        <td data-label="Start Time">15:30</td>
-                        <td data-label="End Time">15:55</td>
-                        <td data-label="Location">Room 4-N4</td>
-                        <td data-label="Notes">EOD Banishment</td>
-                    </tr>
-                    
-                    <!-- Monday Schedule -->
-                    <tr data-day="Mon" class="day-label">
-                        <td colspan="4">Monday</td>
-                    </tr>
-                    <tr data-day="Mon">
-                        <td data-label="Start Time">11:00</td>
-                        <td data-label="End Time">11:30</td>
-                        <td data-label="Location">Classified</td>
-                        <td data-label="Notes">Classified</td>
-                    </tr>
-                    <tr data-day="Mon">
-                        <td data-label="Start Time">12:00</td>
-                        <td data-label="End Time">12:30</td>
-                        <td data-label="Location">Classified</td>
-                        <td data-label="Notes">Classified</td>
-                    </tr>
-                    <tr data-day="Mon">
-                        <td data-label="Start Time">13:00</td>
-                        <td data-label="End Time">14:00</td>
-                        <td data-label="Location">Classified</td>
-                        <td data-label="Notes">Classified</td>
-                    </tr>
-                    <tr data-day="Mon">
-                        <td data-label="Start Time">14:15</td>
-                        <td data-label="End Time">14:45</td>
-                        <td data-label="Location">Classified</td>
-                        <td data-label="Notes">Classified</td>
-                    </tr>
-                    <tr data-day="Mon">
-                        <td data-label="Start Time">15:30</td>
-                        <td data-label="End Time">15:45</td>
-                        <td data-label="Location">Classified</td>
-                        <td data-label="Notes">Classified</td>
-                    </tr>
-                </table>
-            </div>
+            <table class="schedule-table">
+                <!-- Wednesday Schedule -->
+                <tr data-day="Wed" class="day-label">
+                    <td colspan="4">Wednesday</td>
+                </tr>
+                <tr data-day="Wed">
+                    <td data-label="Start Time">11:00</td>
+                    <td data-label="End Time">11:30</td>
+                    <td data-label="Location">The Anchor</td>
+                    <td data-label="Notes">Intro and Teams Setup</td>
+                </tr>
+                <tr data-day="Wed">
+                    <td data-label="Start Time">12:00</td>
+                    <td data-label="End Time">12:30</td>
+                    <td data-label="Location">Pink - 2-S10, Toad - 4-S18, Fish - 3-S12</td>
+                    <td data-label="Notes">Arrive before 12, and await a message</td>
+                </tr>
+                <tr data-day="Wed">
+                    <td data-label="Start Time">14:15</td>
+                    <td data-label="End Time">14:45</td>
+                    <td data-label="Location">Room 4-N4</td>
+                    <td data-label="Notes">Your first roundtable...</td>
+                </tr>
+                <tr data-day="Wed">
+                    <td data-label="Start Time">15:30</td>
+                    <td data-label="End Time">15:45</td>
+                    <td data-label="Location">The Library - 4th Floor</td>
+                    <td data-label="Notes">Another roundtable...</td>
+                </tr>
+                
+                <!-- Thursday Schedule -->
+                <tr data-day="Thur" class="day-label">
+                    <td colspan="4">Thursday</td>
+                </tr>
+                <tr data-day="Thur">
+                    <td data-label="Start Time">11:00</td>
+                    <td data-label="End Time">11:30</td>
+                    <td data-label="Location">3rd Floor - Bankside (below Library)</td>
+                    <td data-label="Notes">Team challenge pt.1</td>
+                </tr>
+                <tr data-day="Thur">
+                    <td data-label="Start Time">12:00</td>
+                    <td data-label="End Time">12:30</td>
+                    <td data-label="Location">Hosts will confirm on day</td>
+                    <td data-label="Notes">Banishment time!</td>
+                </tr>
+                <tr data-day="Thur">
+                    <td data-label="Start Time">13:00</td>
+                    <td data-label="End Time">14:00</td>
+                    <td data-label="Location">The Anchor</td>
+                    <td data-label="Notes">Team mingle</td>
+                </tr>
+                <tr data-day="Thur">
+                    <td data-label="Start Time">14:15</td>
+                    <td data-label="End Time">14:45</td>
+                    <td data-label="Location">Room 4-N4</td>
+                    <td data-label="Notes">Team challenge pt.2</td>
+                </tr>
+                <tr data-day="Thur">
+                    <td data-label="Start Time">15:20</td>
+                    <td data-label="End Time">15:30</td>
+                    <td data-label="Location">Classified</td>
+                    <td data-label="Notes">Classified</td>
+                </tr>
+                <tr data-day="Thur">
+                    <td data-label="Start Time">15:30</td>
+                    <td data-label="End Time">15:55</td>
+                    <td data-label="Location">Room 4-N4</td>
+                    <td data-label="Notes">EOD Banishment</td>
+                </tr>
+                
+                <!-- Monday Schedule -->
+                <tr data-day="Mon" class="day-label">
+                    <td colspan="4">Monday</td>
+                </tr>
+                <tr data-day="Mon">
+                    <td data-label="Start Time">11:00</td>
+                    <td data-label="End Time">11:30</td>
+                    <td data-label="Location">Classified</td>
+                    <td data-label="Notes">Classified</td>
+                </tr>
+                <tr data-day="Mon">
+                    <td data-label="Start Time">12:00</td>
+                    <td data-label="End Time">12:30</td>
+                    <td data-label="Location">Classified</td>
+                    <td data-label="Notes">Classified</td>
+                </tr>
+                <tr data-day="Mon">
+                    <td data-label="Start Time">13:00</td>
+                    <td data-label="End Time">14:00</td>
+                    <td data-label="Location">Classified</td>
+                    <td data-label="Notes">Classified</td>
+                </tr>
+                <tr data-day="Mon">
+                    <td data-label="Start Time">14:15</td>
+                    <td data-label="End Time">14:45</td>
+                    <td data-label="Location">Classified</td>
+                    <td data-label="Notes">Classified</td>
+                </tr>
+                <tr data-day="Mon">
+                    <td data-label="Start Time">15:30</td>
+                    <td data-label="End Time">15:45</td>
+                    <td data-label="Location">Classified</td>
+                    <td data-label="Notes">Classified</td>
+                </tr>
+            </table>
         </div>
         <div class="image-container" id="imageContainer">
             <img src="Key-Image-Art.jpeg" alt="Key Image Art" class="key-image">
@@ -437,10 +426,10 @@
             const muteButton = document.getElementById('muteButton');
             let isMuted = false;
 
-            // Fade in the image and info box
+            // Fade in the image and schedule container
             setTimeout(() => {
                 document.getElementById('imageContainer').style.opacity = '1';
-                document.querySelector('.info-box').style.opacity = '1';
+                document.querySelector('.schedule-container').style.opacity = '1';
             }, 100);
 
             // Mute/Unmute functionality
