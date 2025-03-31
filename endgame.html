@@ -113,10 +113,18 @@
         }
 
         .choice-buttons {
-            display: none;
+            display: flex;
             justify-content: space-between;
             width: 100%;
             margin-top: 40px;
+            opacity: 0;
+            transition: opacity 2s ease;
+        }
+
+        .key-hint {
+            display: block;
+            font-size: 14px;
+            margin-top: 5px;
         }
 
         .end-game {
@@ -150,6 +158,26 @@
             box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
         }
 
+        .everyone-ready {
+            background-color: #2196F3;
+            color: white;
+            padding: 20px 40px;
+            font-size: 24px;
+            font-family: 'YaroCut', sans-serif;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+            width: 80%;
+            margin: 20px auto;
+            display: none;
+        }
+
+        .everyone-ready:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+        }
+
         .overlay {
             position: fixed;
             top: 0;
@@ -172,6 +200,7 @@
             opacity: 0;
             z-index: 110;
             pointer-events: none;
+            transition: opacity 1s ease;
         }
 
         #muteButton {
@@ -223,6 +252,11 @@
                 font-size: 20px;
             }
 
+            .everyone-ready {
+                width: 100%;
+                font-size: 20px;
+            }
+
             #muteButton {
                 bottom: 10px;
                 right: 10px;
@@ -255,9 +289,10 @@
             <div class="finale-title">The Finale</div>
             <button id="decisionButton" class="decision-button">I have made my decision</button>
             <div id="choiceButtons" class="choice-buttons">
-                <button id="endGameButton" class="end-game">End Game</button>
-                <button id="continueBanishingButton" class="continue-banishing">Continue Banishing</button>
+                <button id="endGameButton" class="end-game">End Game<span class="key-hint">Press E</span></button>
+                <button id="continueBanishingButton" class="continue-banishing">Continue Banishing<span class="key-hint">Press C</span></button>
             </div>
+            <button id="everyoneReadyButton" class="everyone-ready">Everyone Is Ready</button>
         </div>
     </div>
 
@@ -288,12 +323,15 @@
             const choiceButtons = document.getElementById('choiceButtons');
             const endGameButton = document.getElementById('endGameButton');
             const continueBanishingButton = document.getElementById('continueBanishingButton');
+            const everyoneReadyButton = document.getElementById('everyoneReadyButton');
             const overlay = document.getElementById('overlay');
             const flash = document.getElementById('flash');
             const infoBox = document.getElementById('infoBox');
             
             let isMuted = false;
             let audioInitialized = false;
+            let choiceMade = false;
+            let selectedColor = '';
 
             // Fade in the info box
             setTimeout(() => {
@@ -342,27 +380,58 @@
                     initAudio();
                 }
                 
-                // Pause background audio and play decision audio
-                backgroundAudio.pause();
-                decisionAudio.play();
+                // Fade out background audio over 2 seconds
+                let bgVolume = backgroundAudio.volume;
+                const fadeOutInterval = setInterval(() => {
+                    bgVolume -= 0.05;
+                    if (bgVolume <= 0) {
+                        clearInterval(fadeOutInterval);
+                        bgVolume = 0;
+                        backgroundAudio.pause();
+                        
+                        // Play decision audio
+                        decisionAudio.play();
+                    }
+                    backgroundAudio.volume = bgVolume;
+                }, 100);
                 
-                // Hide decision button and show choice buttons
+                // Hide decision button
                 decisionButton.style.display = 'none';
+                
+                // Show and fade in choice buttons over 2 seconds
                 choiceButtons.style.display = 'flex';
+                setTimeout(() => {
+                    choiceButtons.style.opacity = '1';
+                }, 50);
             });
             
             // End Game button click
             endGameButton.addEventListener('click', function() {
-                handleChoice('#4CAF50'); // Green
+                if (!choiceMade) {
+                    handleChoice('#4CAF50'); // Green
+                }
             });
             
             // Continue Banishing button click
             continueBanishingButton.addEventListener('click', function() {
-                handleChoice('#f44336'); // Red
+                if (!choiceMade) {
+                    handleChoice('#f44336'); // Red
+                }
+            });
+            
+            // Everyone Ready button click
+            everyoneReadyButton.addEventListener('click', function() {
+                // Trigger flash after click
+                flash.style.backgroundColor = selectedColor;
+                flash.style.opacity = '1';
+                // Flash stays on screen (no fade out)
             });
             
             // Handle choice selection
             function handleChoice(color) {
+                choiceMade = true;
+                selectedColor = color;
+                
                 // Fade out decision audio
                 let volume = decisionAudio.volume;
                 const fadeOutInterval = setInterval(() => {
@@ -379,17 +448,24 @@
                 // Fade to black
                 overlay.style.opacity = '1';
                 
-                // Set flash color
-                flash.style.backgroundColor = color;
-                
-                // Trigger flash after 5 seconds
+                // Display everyone ready button
+                choiceButtons.style.opacity = '0';
                 setTimeout(() => {
-                    flash.style.opacity = '1';
-                    setTimeout(() => {
-                        flash.style.opacity = '0';
-                    }, 1000); // Flash for 1 second
-                }, 5000);
+                    choiceButtons.style.display = 'none';
+                    everyoneReadyButton.style.display = 'block';
+                }, 2000);
             }
+            
+            // Keyboard shortcuts
+            document.addEventListener('keydown', function(event) {
+                if (!choiceMade) {
+                    if (event.key.toLowerCase() === 'e' && choiceButtons.style.opacity === '1') {
+                        handleChoice('#4CAF50'); // Green for End Game
+                    } else if (event.key.toLowerCase() === 'c' && choiceButtons.style.opacity === '1') {
+                        handleChoice('#f44336'); // Red for Continue Banishing
+                    }
+                }
+            });
             
             // Set up event listeners for user interaction to start audio
             document.addEventListener('click', initAudio);
