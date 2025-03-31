@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Finale</title>
+    <link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <style>
+        @font-face {
+            font-family: 'YaroCut';
+            src: url('css/YaroCut.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'YaroCut', sans-serif;
+            background-color: #111b34;
+            color: white;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .menu-bar {
+            display: flex;
+            justify-content: center;
+            padding: 20px 0;
+            background-color: rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 10;
+        }
+
+        .menu-bar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 18px;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .menu-bar a:hover {
+            color: #a0a0a0;
+            animation: wiggle 0.5s ease;
+        }
+
+        @keyframes wiggle {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(2deg); }
+            50% { transform: rotate(0deg); }
+            75% { transform: rotate(-2deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+            position: relative;
+        }
+
+        .info-box {
+            background-color: rgba(50, 50, 50, 0.4);
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.6);
+            border-radius: 10px;
+            padding: 30px;
+            max-width: 600px;
+            width: 80%;
+            text-align: center;
+            backdrop-filter: blur(15px);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 30;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .finale-title {
+            font-size: 48px;
+            font-weight: bold;
+            color: #ff8201;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .decision-button {
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 15px 30px;
+            font-size: 24px;
+            font-family: 'YaroCut', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        .decision-button:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .choice-buttons {
+            display: none;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 40px;
+        }
+
+        .end-game {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px 40px;
+            font-size: 24px;
+            font-family: 'YaroCut', sans-serif;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+            width: 45%;
+        }
+
+        .continue-banishing {
+            background-color: #f44336;
+            color: white;
+            padding: 20px 40px;
+            font-size: 24px;
+            font-family: 'YaroCut', sans-serif;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+            width: 45%;
+        }
+
+        .end-game:hover, .continue-banishing:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            opacity: 0;
+            transition: opacity 2s ease;
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        .flash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            z-index: 110;
+            pointer-events: none;
+        }
+
+        #muteButton {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 1px solid white;
+            color: white;
+            padding: 10px 15px;
+            cursor: pointer;
+            z-index: 120;
+            font-family: 'YaroCut', sans-serif;
+            transition: background-color 0.3s ease;
+        }
+
+        #muteButton:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+
+        @media screen and (max-width: 768px) {
+            .menu-bar {
+                padding: 15px 0;
+                flex-wrap: wrap;
+            }
+
+            .menu-bar a {
+                margin: 5px 10px;
+                font-size: 16px;
+            }
+
+            .finale-title {
+                font-size: 36px;
+            }
+
+            .decision-button {
+                font-size: 20px;
+                padding: 12px 24px;
+            }
+
+            .choice-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .end-game, .continue-banishing {
+                width: 100%;
+                margin-bottom: 20px;
+                font-size: 20px;
+            }
+
+            #muteButton {
+                bottom: 10px;
+                right: 10px;
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+        }
+    </style>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-QJCJYMJ15J"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-QJCJYMJ15J');
+    </script>
+</head>
+<body>
+    <div class="menu-bar">
+        <a href="/cloakpixel/" id="home-link">Home</a>
+        <a href="/cloakpixel/games" id="games-link">Games</a>
+        <a href="/cloakpixel/schedule" id="schedule-link">Schedule</a>
+        <a href="/cloakpixel/photo-wall" id="photo-wall-link">Photo Wall</a>
+        <a href="/cloakpixel/game-info" id="game-info-link">Game Info</a>
+        <a href="/cloakpixel/journal" id="journal-link">Journal</a>
+    </div>
+
+    <div class="content">
+        <div class="info-box" id="infoBox">
+            <div class="finale-title">The Finale</div>
+            <button id="decisionButton" class="decision-button">I have made my decision</button>
+            <div id="choiceButtons" class="choice-buttons">
+                <button id="endGameButton" class="end-game">End Game</button>
+                <button id="continueBanishingButton" class="continue-banishing">Continue Banishing</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="flash" id="flash"></div>
+    
+    <button id="muteButton">Click Page To Enable Audio</button>
+
+    <audio id="backgroundAudio" loop preload="auto">
+        <source src="key-art-audio.wav" type="audio/wav">
+    </audio>
+    
+    <audio id="decisionAudio" preload="auto">
+        <source src="Decision-Time.mp3" type="audio/mpeg">
+    </audio>
+    
+    <audio id="decidedAudio" preload="auto">
+        <source src="Decided.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const backgroundAudio = document.getElementById('backgroundAudio');
+            const decisionAudio = document.getElementById('decisionAudio');
+            const decidedAudio = document.getElementById('decidedAudio');
+            const muteButton = document.getElementById('muteButton');
+            const decisionButton = document.getElementById('decisionButton');
+            const choiceButtons = document.getElementById('choiceButtons');
+            const endGameButton = document.getElementById('endGameButton');
+            const continueBanishingButton = document.getElementById('continueBanishingButton');
+            const overlay = document.getElementById('overlay');
+            const flash = document.getElementById('flash');
+            const infoBox = document.getElementById('infoBox');
+            
+            let isMuted = false;
+            let audioInitialized = false;
+
+            // Fade in the info box
+            setTimeout(() => {
+                infoBox.style.opacity = '1';
+            }, 100);
+
+            // Mute/Unmute functionality
+            muteButton.addEventListener('click', function() {
+                isMuted = !isMuted;
+                backgroundAudio.muted = isMuted;
+                decisionAudio.muted = isMuted;
+                decidedAudio.muted = isMuted;
+                muteButton.textContent = isMuted ? 'Unmute' : 'Mute';
+            });
+
+            // Start audio play on user interaction
+            function initAudio() {
+                if (!audioInitialized) {
+                    audioInitialized = true;
+                    
+                    // Play background audio with fade-in effect
+                    backgroundAudio.volume = 0;
+                    backgroundAudio.play().then(() => {
+                        // Update button text to 'Mute' after first interaction
+                        muteButton.textContent = 'Mute';
+                        
+                        // Fade in audio over 2 seconds
+                        let volume = 0;
+                        const fadeInterval = setInterval(() => {
+                            volume += 0.05;
+                            if (volume >= 1) {
+                                clearInterval(fadeInterval);
+                                volume = 1;
+                            }
+                            backgroundAudio.volume = volume;
+                        }, 100);
+                    }).catch((error) => {
+                        console.log("Audio play failed:", error);
+                    });
+                }
+            }
+            
+            // Decision button click
+            decisionButton.addEventListener('click', function() {
+                if (!audioInitialized) {
+                    initAudio();
+                }
+                
+                // Pause background audio and play decision audio
+                backgroundAudio.pause();
+                decisionAudio.play();
+                
+                // Hide decision button and show choice buttons
+                decisionButton.style.display = 'none';
+                choiceButtons.style.display = 'flex';
+            });
+            
+            // End Game button click
+            endGameButton.addEventListener('click', function() {
+                handleChoice('#4CAF50'); // Green
+            });
+            
+            // Continue Banishing button click
+            continueBanishingButton.addEventListener('click', function() {
+                handleChoice('#f44336'); // Red
+            });
+            
+            // Handle choice selection
+            function handleChoice(color) {
+                // Fade out decision audio
+                let volume = decisionAudio.volume;
+                const fadeOutInterval = setInterval(() => {
+                    volume -= 0.05;
+                    if (volume <= 0) {
+                        clearInterval(fadeOutInterval);
+                        volume = 0;
+                        decisionAudio.pause();
+                        decidedAudio.play();
+                    }
+                    decisionAudio.volume = volume;
+                }, 100);
+                
+                // Fade to black
+                overlay.style.opacity = '1';
+                
+                // Set flash color
+                flash.style.backgroundColor = color;
+                
+                // Trigger flash after 5 seconds
+                setTimeout(() => {
+                    flash.style.opacity = '1';
+                    setTimeout(() => {
+                        flash.style.opacity = '0';
+                    }, 1000); // Flash for 1 second
+                }, 5000);
+            }
+            
+            // Set up event listeners for user interaction to start audio
+            document.addEventListener('click', initAudio);
+            document.addEventListener('touchstart', initAudio);
+        });
+    </script>
+</body>
+</html>
