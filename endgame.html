@@ -304,188 +304,255 @@
     <button id="muteButton">Click Page To Enable Audio</button>
 
     <audio id="backgroundAudio" loop preload="auto">
-        <source src="key-art-audio.wav" type="audio/wav">
-    </audio>
-    
-    <audio id="decisionAudio" loop preload="auto">
-        <source src="Decision-Time.mp3" type="audio/mpeg">
-    </audio>
-    
-    <audio id="decidedAudio" loop preload="auto">
-        <source src="Decided.mp3" type="audio/mpeg">
-    </audio>
+    <source src="key-art-audio.wav" type="audio/wav">
+</audio>
 
+<audio id="decisionAudio" loop preload="auto">
+    <source src="Decision-Time.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="decidedAudio" loop preload="auto">
+    <source src="Decided.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="endAudio" loop preload="auto">
+    <source src="End.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="continueAudio" loop preload="auto">
+    <source src="Continue.mp3" type="audio/mpeg">
+</audio>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const backgroundAudio = document.getElementById('backgroundAudio');
-            const decisionAudio = document.getElementById('decisionAudio');
-            const decidedAudio = document.getElementById('decidedAudio');
-            const muteButton = document.getElementById('muteButton');
-            const decisionButton = document.getElementById('decisionButton');
-            const choiceButtons = document.getElementById('choiceButtons');
-            const endGameButton = document.getElementById('endGameButton');
-            const continueBanishingButton = document.getElementById('continueBanishingButton');
-            const everyoneReadyButton = document.getElementById('everyoneReadyButton');
-            const overlay = document.getElementById('overlay');
-            const flash = document.getElementById('flash');
-            const infoBox = document.getElementById('infoBox');
+document.addEventListener("DOMContentLoaded", function() {
+    const backgroundAudio = document.getElementById('backgroundAudio');
+    const decisionAudio = document.getElementById('decisionAudio');
+    const decidedAudio = document.getElementById('decidedAudio');
+    const muteButton = document.getElementById('muteButton');
+    const decisionButton = document.getElementById('decisionButton');
+    const choiceButtons = document.getElementById('choiceButtons');
+    const endGameButton = document.getElementById('endGameButton');
+    const continueBanishingButton = document.getElementById('continueBanishingButton');
+    const everyoneReadyButton = document.getElementById('everyoneReadyButton');
+    const overlay = document.getElementById('overlay');
+    const flash = document.getElementById('flash');
+    const infoBox = document.getElementById('infoBox');
+    
+    // Add new audio elements for End and Continue
+    const endAudio = new Audio('End.mp3');
+    const continueAudio = new Audio('Continue.mp3');
+    endAudio.loop = true;
+    continueAudio.loop = true;
+    
+    let isMuted = false;
+    let audioInitialized = false;
+    let choiceMade = false;
+    let selectedChoice = '';
+    let selectedColor = '';
+
+    // Fade in the info box
+    setTimeout(() => {
+        infoBox.style.opacity = '1';
+    }, 100);
+
+    // Mute/Unmute functionality
+    muteButton.addEventListener('click', function() {
+        isMuted = !isMuted;
+        backgroundAudio.muted = isMuted;
+        decisionAudio.muted = isMuted;
+        decidedAudio.muted = isMuted;
+        endAudio.muted = isMuted;
+        continueAudio.muted = isMuted;
+        muteButton.textContent = isMuted ? 'Unmute' : 'Mute';
+    });
+
+    // Start audio play on user interaction
+    function initAudio() {
+        if (!audioInitialized) {
+            audioInitialized = true;
             
-            let isMuted = false;
-            let audioInitialized = false;
-            let choiceMade = false;
-            let selectedColor = '';
-
-            // Fade in the info box
-            setTimeout(() => {
-                infoBox.style.opacity = '1';
-            }, 100);
-
-            // Mute/Unmute functionality
-            muteButton.addEventListener('click', function() {
-                isMuted = !isMuted;
-                backgroundAudio.muted = isMuted;
-                decisionAudio.muted = isMuted;
-                decidedAudio.muted = isMuted;
-                muteButton.textContent = isMuted ? 'Unmute' : 'Mute';
-            });
-
-            // Start audio play on user interaction
-            function initAudio() {
-                if (!audioInitialized) {
-                    audioInitialized = true;
-                    
-                    // Play background audio with fade-in effect
-                    backgroundAudio.volume = 0;
-                    backgroundAudio.play().then(() => {
-                        // Update button text to 'Mute' after first interaction
-                        muteButton.textContent = 'Mute';
-                        
-                        // Fade in audio over 2 seconds
-                        let volume = 0;
-                        const fadeInterval = setInterval(() => {
-                            volume += 0.05;
-                            if (volume >= 1) {
-                                clearInterval(fadeInterval);
-                                volume = 1;
-                            }
-                            backgroundAudio.volume = volume;
-                        }, 100);
-                    }).catch((error) => {
-                        console.log("Audio play failed:", error);
-                    });
-                }
-            }
+            // Preload the end and continue audio
+            endAudio.load();
+            continueAudio.load();
             
-            // Decision button click
-            decisionButton.addEventListener('click', function() {
-                if (!audioInitialized) {
-                    initAudio();
-                }
+            // Play background audio with fade-in effect
+            backgroundAudio.volume = 0;
+            backgroundAudio.play().then(() => {
+                // Update button text to 'Mute' after first interaction
+                muteButton.textContent = 'Mute';
                 
-                // Fade out background audio over 2 seconds
-                let bgVolume = backgroundAudio.volume;
-                const fadeOutInterval = setInterval(() => {
-                    bgVolume -= 0.05;
-                    if (bgVolume <= 0) {
-                        clearInterval(fadeOutInterval);
-                        bgVolume = 0;
-                        backgroundAudio.pause();
-                        
-                        // Play decision audio
-                        decisionAudio.volume = 1;
-                        decisionAudio.play();
+                // Fade in audio over 2 seconds
+                let volume = 0;
+                const fadeInterval = setInterval(() => {
+                    volume += 0.05;
+                    if (volume >= 1) {
+                        clearInterval(fadeInterval);
+                        volume = 1;
                     }
-                    backgroundAudio.volume = bgVolume;
+                    backgroundAudio.volume = volume;
                 }, 100);
-                
-                // Hide decision button
-                decisionButton.style.display = 'none';
-                
-                // Show and fade in choice buttons over 2 seconds
-                choiceButtons.style.display = 'flex';
-                setTimeout(() => {
-                    choiceButtons.style.opacity = '1';
-                }, 50);
+            }).catch((error) => {
+                console.log("Audio play failed:", error);
             });
-            
-            // End Game button click
-            endGameButton.addEventListener('click', function() {
-                if (!choiceMade) {
-                    handleChoice('#4CAF50'); // Green
-                }
-            });
-            
-            // Continue Banishing button click
-            continueBanishingButton.addEventListener('click', function() {
-                if (!choiceMade) {
-                    handleChoice('#f44336'); // Red
-                }
-            });
-            
-            // Everyone Ready button click
-            everyoneReadyButton.addEventListener('click', function() {
-                // Fade out the button
-                everyoneReadyButton.style.opacity = '0';
-                
-                // After 4 seconds, show the flash with the selected color
-                setTimeout(() => {
-                    flash.style.backgroundColor = selectedColor;
-                    flash.style.opacity = '1';
-                }, 4000);
-            });
-            
-            // Handle choice selection
-            function handleChoice(color) {
-                choiceMade = true;
-                selectedColor = color;
-                
-                // Fade out decision audio
-                let volume = decisionAudio.volume;
-                const fadeOutInterval = setInterval(() => {
-                    volume -= 0.05;
-                    if (volume <= 0) {
-                        clearInterval(fadeOutInterval);
-                        volume = 0;
-                        decisionAudio.pause();
-                        
-                        // Play decided audio
-                        decidedAudio.volume = 1;
-                        decidedAudio.play();
-                    }
-                    decisionAudio.volume = volume;
-                }, 100);
-                
-                // Fade to black
-                overlay.style.opacity = '1';
-                
-                // Hide choice buttons and show everyone ready button
-                choiceButtons.style.opacity = '0';
-                setTimeout(() => {
-                    choiceButtons.style.display = 'none';
-                    everyoneReadyButton.style.display = 'block';
-                    
-                    // Fade in the everyone ready button
-                    setTimeout(() => {
-                        everyoneReadyButton.style.opacity = '1';
-                    }, 100);
-                }, 2000);
+        }
+    }
+    
+    // Ensure smooth audio loop
+    function setupSmoothLoop(audioElement) {
+        audioElement.addEventListener('timeupdate', function() {
+            // When we're 0.5 seconds from the end, reset to the beginning
+            if (this.duration - this.currentTime < 0.5) {
+                this.currentTime = 0;
             }
-            
-            // Keyboard shortcuts
-            document.addEventListener('keydown', function(event) {
-                if (!choiceMade) {
-                    if (event.key.toLowerCase() === 'e' && choiceButtons.style.opacity === '1') {
-                        handleChoice('#4CAF50'); // Green for End Game
-                    } else if (event.key.toLowerCase() === 'c' && choiceButtons.style.opacity === '1') {
-                        handleChoice('#f44336'); // Red for Continue Banishing
-                    }
-                }
-            });
-            
-            // Set up event listeners for user interaction to start audio
-            document.addEventListener('click', initAudio);
-            document.addEventListener('touchstart', initAudio);
         });
+    }
+    
+    // Setup smooth looping for all audio elements
+    setupSmoothLoop(backgroundAudio);
+    setupSmoothLoop(decisionAudio);
+    setupSmoothLoop(decidedAudio);
+    setupSmoothLoop(endAudio);
+    setupSmoothLoop(continueAudio);
+    
+    // Decision button click
+    decisionButton.addEventListener('click', function() {
+        if (!audioInitialized) {
+            initAudio();
+        }
+        
+        // Fade out background audio over 2 seconds
+        let bgVolume = backgroundAudio.volume;
+        const fadeOutInterval = setInterval(() => {
+            bgVolume -= 0.05;
+            if (bgVolume <= 0) {
+                clearInterval(fadeOutInterval);
+                bgVolume = 0;
+                backgroundAudio.pause();
+                
+                // Play decision audio
+                decisionAudio.volume = 1;
+                decisionAudio.play();
+            }
+            backgroundAudio.volume = bgVolume;
+        }, 100);
+        
+        // Hide decision button
+        decisionButton.style.display = 'none';
+        
+        // Show and fade in choice buttons over 2 seconds
+        choiceButtons.style.display = 'flex';
+        setTimeout(() => {
+            choiceButtons.style.opacity = '1';
+        }, 50);
+    });
+    
+    // End Game button click
+    endGameButton.addEventListener('click', function() {
+        if (!choiceMade) {
+            handleChoice('end', '#4CAF50'); // Green
+        }
+    });
+    
+    // Continue Banishing button click
+    continueBanishingButton.addEventListener('click', function() {
+        if (!choiceMade) {
+            handleChoice('continue', '#f44336'); // Red
+        }
+    });
+    
+    // Everyone Ready button click
+    everyoneReadyButton.addEventListener('click', function() {
+        // Fade out the button
+        everyoneReadyButton.style.opacity = '0';
+        
+        // Fade out decided audio
+        let volume = decidedAudio.volume;
+        const fadeOutInterval = setInterval(() => {
+            volume -= 0.05;
+            if (volume <= 0) {
+                clearInterval(fadeOutInterval);
+                volume = 0;
+                decidedAudio.pause();
+            }
+            decidedAudio.volume = volume;
+        }, 100);
+        
+        // After 4 seconds, show the flash with the selected color
+        setTimeout(() => {
+            flash.style.backgroundColor = selectedColor;
+            flash.style.opacity = '1';
+            
+            // Play the appropriate audio based on the choice
+            if (selectedChoice === 'end') {
+                endAudio.volume = 1;
+                endAudio.play();
+            } else if (selectedChoice === 'continue') {
+                continueAudio.volume = 1;
+                continueAudio.play();
+            }
+        }, 4000);
+    });
+    
+    // Handle choice selection
+    function handleChoice(choice, color) {
+        choiceMade = true;
+        selectedChoice = choice;
+        selectedColor = color;
+        
+        // Fade out decision audio
+        let volume = decisionAudio.volume;
+        const fadeOutInterval = setInterval(() => {
+            volume -= 0.05;
+            if (volume <= 0) {
+                clearInterval(fadeOutInterval);
+                volume = 0;
+                decisionAudio.pause();
+                
+                // Play decided audio
+                decidedAudio.volume = 1;
+                decidedAudio.play();
+            }
+            decisionAudio.volume = volume;
+        }, 100);
+        
+        // Fade to black
+        overlay.style.opacity = '1';
+        
+        // Hide choice buttons
+        choiceButtons.style.opacity = '0';
+        
+        // Fix: Make sure the infoBox remains clearly visible above the overlay
+        infoBox.style.zIndex = '101';
+        
+        setTimeout(() => {
+            choiceButtons.style.display = 'none';
+            
+            // Show everyone ready button
+            everyoneReadyButton.style.display = 'block';
+            
+            // Fade in the everyone ready button
+            setTimeout(() => {
+                everyoneReadyButton.style.opacity = '1';
+            }, 100);
+        }, 2000);
+    }
+    
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function(event) {
+        if (!choiceMade) {
+            if (decisionButton.style.display === 'none') { // Only if decision button is hidden
+                if (event.key.toLowerCase() === 'e') {
+                    handleChoice('end', '#4CAF50'); // Green for End Game
+                } else if (event.key.toLowerCase() === 'c') {
+                    handleChoice('continue', '#f44336'); // Red for Continue Banishing
+                }
+            }
+        }
+    });
+    
+    // Set up event listeners for user interaction to start audio
+    document.addEventListener('click', initAudio);
+    document.addEventListener('touchstart', initAudio);
+});
     </script>
 </body>
 </html>
