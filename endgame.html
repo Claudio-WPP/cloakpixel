@@ -171,6 +171,8 @@
             width: 80%;
             margin: 20px auto;
             display: none;
+            opacity: 0;
+            transition: opacity 1s ease;
         }
 
         .everyone-ready:hover {
@@ -305,11 +307,11 @@
         <source src="key-art-audio.wav" type="audio/wav">
     </audio>
     
-    <audio id="decisionAudio" preload="auto">
+    <audio id="decisionAudio" loop preload="auto">
         <source src="Decision-Time.mp3" type="audio/mpeg">
     </audio>
     
-    <audio id="decidedAudio" preload="auto">
+    <audio id="decidedAudio" loop preload="auto">
         <source src="Decided.mp3" type="audio/mpeg">
     </audio>
 
@@ -390,6 +392,7 @@
                         backgroundAudio.pause();
                         
                         // Play decision audio
+                        decisionAudio.volume = 1;
                         decisionAudio.play();
                     }
                     backgroundAudio.volume = bgVolume;
@@ -421,10 +424,14 @@
             
             // Everyone Ready button click
             everyoneReadyButton.addEventListener('click', function() {
-                // Trigger flash after click
-                flash.style.backgroundColor = selectedColor;
-                flash.style.opacity = '1';
-                // Flash stays on screen (no fade out)
+                // Fade out the button
+                everyoneReadyButton.style.opacity = '0';
+                
+                // After 4 seconds, show the flash with the selected color
+                setTimeout(() => {
+                    flash.style.backgroundColor = selectedColor;
+                    flash.style.opacity = '1';
+                }, 4000);
             });
             
             // Handle choice selection
@@ -440,6 +447,9 @@
                         clearInterval(fadeOutInterval);
                         volume = 0;
                         decisionAudio.pause();
+                        
+                        // Play decided audio
+                        decidedAudio.volume = 1;
                         decidedAudio.play();
                     }
                     decisionAudio.volume = volume;
@@ -448,11 +458,16 @@
                 // Fade to black
                 overlay.style.opacity = '1';
                 
-                // Display everyone ready button
+                // Hide choice buttons and show everyone ready button
                 choiceButtons.style.opacity = '0';
                 setTimeout(() => {
                     choiceButtons.style.display = 'none';
                     everyoneReadyButton.style.display = 'block';
+                    
+                    // Fade in the everyone ready button
+                    setTimeout(() => {
+                        everyoneReadyButton.style.opacity = '1';
+                    }, 100);
                 }, 2000);
             }
             
